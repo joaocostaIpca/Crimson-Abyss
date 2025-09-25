@@ -6,9 +6,9 @@ public class Weapon : MonoBehaviour
     public Transform firePoint;       // Ponto de disparo
     public float bulletSpeed = 20f;
 
-    public int maxMagAmmo;
-    public int maxAmmo;
-    private int currentAmmo;
+    public int maxMagAmmo=30;
+    public int maxAmmo=120;
+    private int currentAmmo=30;
 
 
     public float fireRate = 0.5f;     // Intervalo entre tiros
