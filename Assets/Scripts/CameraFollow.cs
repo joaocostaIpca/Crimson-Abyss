@@ -10,10 +10,24 @@ public class CameraFollow : MonoBehaviour
     private float rotationX;
     private bool isFirstPerson = true;
 
+    // Referência ao PlayerMovement
+    private PlayerMovement playerMovement;
+
+    // Altura dos olhos em 1ª pessoa
+    public float eyeHeight = 1.7f; 
+
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (target != null)
+        {
+            playerMovement = target.GetComponent<PlayerMovement>();
+
+           
+        }
     }
 
     void Update()
@@ -24,6 +38,8 @@ public class CameraFollow : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.V))
         {
             isFirstPerson = !isFirstPerson;
+
+           
         }
 
         // Input do rato
@@ -32,9 +48,9 @@ public class CameraFollow : MonoBehaviour
 
         rotationY += mouseX;
         rotationX -= mouseY;
-        rotationX = Mathf.Clamp(rotationX, -60f, 60f);
+        rotationX = Mathf.Clamp(rotationX, -80f, 80f);
 
-        // Rodar o cubo no eixo Y (apenas horizontal)
+        // Rodar o jogador no eixo Y
         target.rotation = Quaternion.Euler(0, rotationY, 0);
     }
 
@@ -44,18 +60,38 @@ public class CameraFollow : MonoBehaviour
 
         if (isFirstPerson)
         {
-            // 1ª pessoa: câmara na cabeça do cubo
-            transform.position = target.position + new Vector3(0, 2.5f, 0);
+            // Posição da câmara = olhos
+            float height = eyeHeight;
+
+            if (playerMovement != null && playerMovement.isCrouching)
+            {
+                height -= 0.8f; 
+            }
+
+            // offset ligeiro para cima e para a frente (10cm)
+            Vector3 headOffset = target.forward * 0.3f + Vector3.up * 0.3f;
+
+            transform.position = target.position + new Vector3(0, height, 0) + headOffset;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
+
         else
         {
-            // 3ª pessoa: atrás do cubo
+            // 3ª pessoa
+            float baseHeight = 1.5f;
+            if (playerMovement != null && playerMovement.isCrouching)
+            {
+                baseHeight -= 1.0f;
+            }
+
             Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
             Vector3 desiredPosition = target.position + rotation * thirdPersonOffset;
 
+            // aplica a diferença da altura do crouch
+            desiredPosition.y += (baseHeight - 1.5f);
+
             transform.position = desiredPosition;
-            transform.LookAt(target.position + Vector3.up * 1.5f);
+            transform.LookAt(target.position + Vector3.up * baseHeight);
         }
     }
 }
