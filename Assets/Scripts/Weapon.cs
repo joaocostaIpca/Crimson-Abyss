@@ -1,6 +1,5 @@
 using UnityEngine;
-
-
+using TMPro;
 public class Weapon : MonoBehaviour
 {
     public GameObject bulletPrefab;   // Prefab do projetil
@@ -17,6 +16,7 @@ public class Weapon : MonoBehaviour
     private float nextFireTime = 0f;
     private float nextReloadTime = 0f;
 
+    public TextMeshProUGUI ammoText;
     void Start()
     {
         currentAmmo = maxMagAmmo;
@@ -74,6 +74,6 @@ public class Weapon : MonoBehaviour
     
     void UpdateAmmoUI()
     {
-        GameData.InterfaceController.UpdateAmmo(currentAmmo, maxMagAmmo, maxAmmo);        
+        ammoText.text = "Ammo: " + currentAmmo + " / " + maxMagAmmo + " | Total: " + maxAmmo;
     }
 }
