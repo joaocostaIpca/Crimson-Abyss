@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class InterfaceController : MonoBehaviour
 {
-    [SerializeField] int currentAmmo = 30;
-    [SerializeField] float minimapUpdateDelay = 50f; // in milliseconds
+      [SerializeField] float minimapUpdateDelay = 50f; // in milliseconds
     [SerializeField] float minimapRange = 50f; // in world units
 
     private TextMeshProUGUI ammoText;
     private TextMeshProUGUI[] playerNames;
     private Coroutine updateCoroutine = null;
+
+    private int currentAmmo;
     private float minimapUpdateDelaySeconds;
     private GameObject minimapCompass;
     private Sprite minimapEnemy;

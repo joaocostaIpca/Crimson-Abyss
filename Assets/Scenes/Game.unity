@@ -391,7 +391,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16.8
+  m_fontSize: 27.7
   m_fontSizeBase: 19
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -969,7 +969,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 1663833118}
-  thirdPersonOffset: {x: 0, y: 3, z: -6}
   sensitivity: 3
   eyeHeight: 1.7
 --- !u!1 &345990301
@@ -1479,6 +1478,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 772e471554b9d2b4a84100478361d704, type: 3}
       insertIndex: -1
       addedObject: {fileID: 483310887}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 772e471554b9d2b4a84100478361d704, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 483310890}
   m_SourcePrefab: {fileID: 100100000, guid: 772e471554b9d2b4a84100478361d704, type: 3}
 --- !u!1 &483310886 stripped
 GameObject:
@@ -1508,6 +1510,19 @@ CapsuleCollider:
   m_Height: 0.2612895
   m_Direction: 1
   m_Center: {x: -0.01004076, y: 0.12808636, z: 0.008537596}
+--- !u!114 &483310890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483310886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09acefc8143731045b3c12aefe92caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  health: 50
 --- !u!1 &495498451
 GameObject:
   m_ObjectHideFlags: 0
@@ -2285,7 +2300,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 24.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2740,7 +2755,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 24.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3088,6 +3103,19 @@ CapsuleCollider:
   m_Height: 0.2612895
   m_Direction: 1
   m_Center: {x: -0.01004076, y: 0.12808636, z: 0.008537596}
+--- !u!114 &1430084710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430084708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09acefc8143731045b3c12aefe92caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  health: 50
 --- !u!1 &1462084604
 GameObject:
   m_ObjectHideFlags: 0
@@ -3503,7 +3531,7 @@ MonoBehaviour:
   staminaRegenRate: 30
   staminaCooldown: 2
   isCrouching: 0
-  staminaBar: {fileID: 0}
+  staminaBar: {fileID: 1778118688}
 --- !u!136 &1663833116
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3720,7 +3748,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 24.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3794,13 +3822,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce2d0d29a9a8f44cb15b48f3b9c6b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  bulletPrefab: {fileID: 212863813704291644, guid: 252c40fe921ec6c499386ee720e97f77, type: 3}
   firePoint: {fileID: 457752003}
-  bulletSpeed: 20
-  maxMagAmmo: 30
-  maxAmmo: 120
+  range: 100
+  damage: 20
   fireRate: 0.5
   reloadCooldown: 5
+  maxMagAmmo: 30
+  maxAmmo: 120
+  muzzleFlash: {fileID: 0}
+  hitEffect: {fileID: 0}
+  ammoText: {fileID: 0}
 --- !u!23 &1685738808
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4101,6 +4132,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 772e471554b9d2b4a84100478361d704, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1430084709}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 772e471554b9d2b4a84100478361d704, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1430084710}
   m_SourcePrefab: {fileID: 100100000, guid: 772e471554b9d2b4a84100478361d704, type: 3}
 --- !u!1 &1778118686
 GameObject:
@@ -4224,7 +4258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c42a0d29c54d5429965b0ec79afba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterfaceController
-  currentAmmo: 30
   minimapUpdateDelay: 0.05
   minimapRange: 50
 --- !u!114 &1853013016
@@ -4612,7 +4645,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 24.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
