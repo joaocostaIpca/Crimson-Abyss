@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using TMPro;
 
@@ -118,7 +119,6 @@ public class Weapon : MonoBehaviour
 
     void UpdateAmmoUI()
     {
-        if (ammoText != null)
-            ammoText.text = $"Ammo: {currentAmmo} / {maxMagAmmo} | Total: {maxAmmo}";
+        GameData.InterfaceController.UpdateAmmo(currentAmmo, maxMagAmmo, maxAmmo);
     }
 }
