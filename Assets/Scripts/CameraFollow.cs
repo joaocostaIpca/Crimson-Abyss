@@ -2,15 +2,13 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-
-    
     public Transform target;       // O jogador
-   
+    public Vector3 thirdPersonOffset = new Vector3(0, 3, -6);
     public float sensitivity = 3f;
 
     private float rotationY;
     private float rotationX;
-  
+    private bool isFirstPerson = true;
 
     // Referência ao PlayerMovement
     private PlayerMovement playerMovement;
@@ -36,6 +34,13 @@ public class CameraFollow : MonoBehaviour
     {
         if (!target) return;
 
+        // Alternar entre 1ª e 3ª pessoa
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            isFirstPerson = !isFirstPerson;
+
+           
+        }
 
         // Input do rato
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;
@@ -53,7 +58,8 @@ public class CameraFollow : MonoBehaviour
     {
         if (!target) return;
 
-        
+        if (isFirstPerson)
+        {
             // Posição da câmara = olhos
             float height = eyeHeight;
 
@@ -67,8 +73,25 @@ public class CameraFollow : MonoBehaviour
 
             transform.position = target.position + new Vector3(0, height, 0) + headOffset;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+        }
+
+        else
+        {
+            // 3ª pessoa
+            float baseHeight = 1.5f;
+            if (playerMovement != null && playerMovement.isCrouching)
+            {
+                baseHeight -= 1.0f;
+            }
+
+            Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
+            Vector3 desiredPosition = target.position + rotation * thirdPersonOffset;
+
+            // aplica a diferença da altura do crouch
+            desiredPosition.y += (baseHeight - 1.5f);
+
+            transform.position = desiredPosition;
+            transform.LookAt(target.position + Vector3.up * baseHeight);
+        }
     }
-
-        
 }
-
