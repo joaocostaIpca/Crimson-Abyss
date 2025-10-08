@@ -5,7 +5,6 @@ using TMPro;
 public class Weapon : MonoBehaviour
 {
     [Header("Weapon Settings")]
-    public Transform firePoint;           // Ponto de disparo
     public float range = 100f;            // Alcance do tiro
     public float damage = 20f;            // Dano por tiro
     public float fireRate = 0.5f;         // Intervalo entre tiros
@@ -43,59 +42,56 @@ public class Weapon : MonoBehaviour
         }
     }
 
-   void Shoot()
-{
-    if (currentAmmo <= 0)
-        return;
-
-    currentAmmo--;
-    nextFireTime = Time.time + fireRate;
-    UpdateAmmoUI();
-
-    // Efeito visual (muzzle flash)
-    if (muzzleFlash != null)
-        muzzleFlash.Play();
-
-    // --- RAYCAST A PARTIR DO CENTRO DA CÂMARA ---
-    Camera cam = Camera.main;
-    Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // centro do ecrã
-    RaycastHit hit;
-    Vector3 targetPoint;
-
-    // 1️⃣ Primeiro raycast a partir da câmara (para saber onde o jogador está a olhar)
-    if (Physics.Raycast(ray, out hit, range))
+    void Shoot()
     {
-        targetPoint = hit.point;
+        if (currentAmmo <= 0)
+            return;
 
-        // Se o alvo tiver o script Target (para levar dano)
-        Target target = hit.transform.GetComponent<Target>();
-        if (target != null)
+        currentAmmo--;
+        nextFireTime = Time.time + fireRate;
+        UpdateAmmoUI();
+
+        // Efeito visual (muzzle flash)
+        if (muzzleFlash != null)
+            muzzleFlash.Play();
+
+        // --- RAYCAST A PARTIR DO CENTRO DA CÂMARA ---
+        Camera cam = Camera.main;
+        if (cam == null)
         {
-            target.TakeDamage(damage);
+            Debug.LogWarning("No main camera found for shooting.");
+            return;
         }
 
-        // Efeito de impacto visual
-        if (hitEffect != null)
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // centro do ecrã
+        RaycastHit hit;
+
+        // Primeiro raycast a partir da câmara (para saber onde o jogador está a olhar)
+        if (Physics.Raycast(ray, out hit, range))
         {
-            GameObject impact = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impact, 1f);
+            // Se o alvo tiver o script Target (para levar dano)
+            Target target = hit.transform.GetComponent<Target>();
+            if (target != null)
+            {
+                target.TakeDamage(damage);
+            }
+
+            // Efeito de impacto visual
+            if (hitEffect != null)
+            {
+                GameObject impact = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impact, 1f);
+            }
+
+            // Linha de debug no editor (ajuda a ver para onde o tiro vai)
+            Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red, 1f);
+        }
+        else
+        {
+            // Caso não acerte nada, desenha até ao alcance máximo
+            Debug.DrawRay(ray.origin, ray.direction * range, Color.red, 1f);
         }
     }
-    else
-    {
-        // Caso não acerte nada, dispara em linha reta até ao limite do alcance
-        targetPoint = ray.origin + ray.direction * range;
-    }
-
-    // 2️⃣ Corrigir a direção real do disparo para sair do cano da arma (firePoint)
-    Vector3 direction = (targetPoint - firePoint.position).normalized;
-
-    // --- EFEITO VISUAL DO TRAJECTO (se tiveres um bullet trail configurado) ---
-   
-
-    // Linha de debug no editor (ajuda a ver para onde o tiro vai)
-    Debug.DrawRay(firePoint.position, direction * range, Color.red, 1f);
-}
    
     void Reload()
     {
