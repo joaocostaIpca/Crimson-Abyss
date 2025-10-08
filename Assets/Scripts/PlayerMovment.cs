@@ -126,6 +126,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
+            // GameData.InterfaceController.UpdateWeapon("AK-47"); // Exemplo de atualização de arma
         }
 
         // Placeholder para animações de movimento
