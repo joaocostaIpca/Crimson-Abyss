@@ -124,9 +124,23 @@ public class PlayerMovement : MonoBehaviour
         // Salto (não salta se estiver crouch)
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isCrouching)
         {
+            // Determinar se estamos parados (idle) para tocar animação específica
+            float horizontalVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
+            bool isIdle = horizontalVel < 0.1f;
+
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
-            // GameData.InterfaceController.UpdateWeapon("AK-47"); // Exemplo de atualização de arma
+
+            // Trigger de animação: IdleJump se está parado, senão Jump
+            if (anim != null)
+            {
+                if (isIdle)
+                {
+                    anim.SetTrigger("IdleJump");
+                }
+                else
+                    anim.SetTrigger("Jump");
+            }
         }
 
         // Placeholder para animações de movimento
