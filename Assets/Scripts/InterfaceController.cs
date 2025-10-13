@@ -10,7 +10,10 @@ public class InterfaceController : MonoBehaviour
     [SerializeField] float minimapRange = 50f; // in world units
 
     private TextMeshProUGUI ammoText;
-    private TextMeshProUGUI[] playerNames;
+    private TextMeshProUGUI[] playerNames = new TextMeshProUGUI[4];
+    private Image[] playerPictures = new Image[4];
+    private Slider[] playerHealth = new Slider[4];
+    private GameObject[] playerDisplay = new GameObject[4];
     private Coroutine updateCoroutine = null;
 
     private int currentAmmo;
@@ -20,6 +23,7 @@ public class InterfaceController : MonoBehaviour
     private List<string> weaponImageNames = new List<string>();
     private List<Sprite> weaponImages = new List<Sprite>();
     private Image weaponPicture;
+
 
     private void Start()
     {
@@ -33,8 +37,11 @@ public class InterfaceController : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             playerNames[i] = GameObject.Find($"Canvas/Health/Health{i + 1}/PlayerName").GetComponent<TextMeshProUGUI>();
-            playerNames[i].text = "Teste";
+            playerPictures[i] = GameObject.Find($"Canvas/Health/Health{i + 1}/PlayerPicture").GetComponent<Image>();
+            playerHealth[i] = GameObject.Find($"Canvas/Health/Health{i + 1}/PlayerHealth").GetComponent<Slider>();
+            playerDisplay[i] = GameObject.Find($"Canvas/Health/Health{i + 1}");
         }
+
         // find in canvas the MinimapCompass object
         minimapCompass = GameObject.Find("Canvas/Minimap/MinimapImage");
         // load the enemy icon sprite from Resources/Images/MinimapEnemy
@@ -131,4 +138,26 @@ public class InterfaceController : MonoBehaviour
 
         updateCoroutine = null;
     }
+
+    public void UpdatePlayer(bool isActive, int playerNumber, string playerName, int playerHealth, Sprite playerPicture)
+    {
+        if (playerNumber < 1 || playerNumber > 4) 
+            return;
+        int index = playerNumber - 1;
+        playerDisplay[index].SetActive(isActive);
+        if(!isActive)
+            return;
+        playerNames[index].text = playerName;
+        this.playerHealth[index].value = playerHealth;
+        this.playerPictures[index].sprite = playerPicture;
+    }
+
+    public void UpdatePlayerHealth(int playerNumber, int healthValue)
+    {
+        if (playerNumber < 1 || playerNumber > 4)
+            return;
+        int index = playerNumber - 1;
+        playerHealth[index].value = healthValue;
+    }
+
 }
