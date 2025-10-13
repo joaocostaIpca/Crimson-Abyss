@@ -10,6 +10,17 @@ public class LevelManager : MonoBehaviour
         if (GameData.Players.Count > 0)
         {
             GameData.LocalPlayer = GameData.Players[0];
+            for (int i = 1; i < 5; i++)
+            {
+                if (i <= GameData.Players.Count)
+                {
+                    GameData.InterfaceController.UpdatePlayer(true, i, "Player" + i, 100, null);
+                }
+                else
+                {
+                    GameData.InterfaceController.UpdatePlayer(false, i, "Player" + i, 100, null);
+                }
+            }
         }
 
         // get the list of enemies in scene using tag Enemy
