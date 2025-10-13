@@ -4853,8 +4853,7 @@ MonoBehaviour:
   reloadCooldown: 5
   maxMagAmmo: 30
   maxAmmo: 300
-  muzzleFlash: {fileID: 0}
-  hitEffect: {fileID: 0}
+  hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
   ammoText: {fileID: 1456238812}
 --- !u!65 &1861790271
 BoxCollider:

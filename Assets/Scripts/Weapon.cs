@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
     private int currentAmmo;
 
     [Header("Effects")]
-    public ParticleSystem muzzleFlash;    // efeito de disparo
+      // efeito de disparo
     public GameObject hitEffect;          // prefab do impacto (opcional)
     public TextMeshProUGUI ammoText;
 
@@ -52,8 +52,7 @@ public class Weapon : MonoBehaviour
         UpdateAmmoUI();
 
         // Efeito visual (muzzle flash)
-        if (muzzleFlash != null)
-            muzzleFlash.Play();
+        
 
         // --- RAYCAST A PARTIR DO CENTRO DA CÂMARA ---
         Camera cam = Camera.main;
