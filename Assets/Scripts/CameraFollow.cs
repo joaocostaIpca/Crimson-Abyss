@@ -63,7 +63,7 @@ public class CameraFollow : MonoBehaviour
             }
 
             // offset ligeiro para cima e para a frente (10cm)
-            Vector3 headOffset = target.forward * 0.3f + Vector3.up * 0.3f;
+            Vector3 headOffset = target.forward * 0.15f + Vector3.up * 0.3f;
 
             transform.position = target.position + new Vector3(0, height, 0) + headOffset;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
