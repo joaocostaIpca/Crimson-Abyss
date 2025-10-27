@@ -112,7 +112,7 @@ public class Weapon : MonoBehaviour
         UpdateAmmoUI();
     }
 
-    void UpdateAmmoUI()
+    public void UpdateAmmoUI()
     {
         GameData.InterfaceController.UpdateAmmo(currentAmmo, maxMagAmmo, maxAmmo);
     }
