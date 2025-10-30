@@ -11,6 +11,7 @@ public class WavControllerScript : MonoBehaviour
     public float spawnRadius = 2f;
 
     [Header("Wave Settings")]
+    public bool unlimitedWaves = false;
     public float waveDelay = 5f;
 
     private int enemiesSpawned = 0;
@@ -46,29 +47,41 @@ public class WavControllerScript : MonoBehaviour
 
     private IEnumerator SpawnWaveRoutine()
     {
-        while (enemiesSpawned < totalEnemiesToSpawn)
+        if (unlimitedWaves)
         {
-            SpawnWave();
-            Debug.Log("Wave Spawned");
-            yield return new WaitForSeconds(waveDelay);
+            
+            while (true)
+            {
+                SpawnWave();
+                yield return new WaitForSeconds(waveDelay);
+            }
         }
+        else
+        {
+            
+            while (enemiesSpawned < totalEnemiesToSpawn)
+            {
+                SpawnWave();
+                yield return new WaitForSeconds(waveDelay);
+            }
 
-        while (enemiesAlive > 0)
-        {
-            yield return null;
+            // Wait until all enemies are dead before reopening
+            while (enemiesAlive > 0)
+                yield return null;
+
+            OpenGate();
         }
-        Debug.Log("All enemies were killed");
-        OpenGate();
 
     }
 
     private void SpawnWave()
     {
-        int toSpawn = Mathf.Min(releasePerWave, totalEnemiesToSpawn - enemiesSpawned);
-
+        int toSpawn = unlimitedWaves
+            ? releasePerWave
+            : Mathf.Min(releasePerWave, totalEnemiesToSpawn - enemiesSpawned);
         for (int i = 0; i < toSpawn; i++)
         {
-            if (enemiesSpawned >= totalEnemiesToSpawn) break;
+            if (!unlimitedWaves && enemiesSpawned >= totalEnemiesToSpawn) break;
 
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
