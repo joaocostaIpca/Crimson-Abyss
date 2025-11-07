@@ -6,10 +6,10 @@ using Unity.Netcode.Transports.UTP;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement; // Precisamos disto!
+using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(100)] 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : NetworkBehaviour 
 {
     [Header("UI General")]
     [SerializeField] private Canvas lobbyCanvas; 
@@ -31,11 +31,20 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textHostIP;
     [SerializeField] private TextMeshProUGUI textPlayerList;
     [SerializeField] private Button buttonStartGame;
+    
+    [Header("Character Selection UI")]
+    [SerializeField] private List<TextMeshProUGUI> characterStatusTexts; 
+    [SerializeField] private Image previewImage; 
+    [SerializeField] private List<Sprite> characterPreviews; 
 
     [Header("Game Settings")]
     [SerializeField] private int maxPlayers = 4;
     [SerializeField] private string gameSceneName = "Level";
+    
+    [SerializeField] private List<GameObject> characterPrefabs; 
 
+    public NetworkList<ulong> characterLocks;
+    
     public static LobbyManager Instance;
 
     private void Awake()
@@ -48,10 +57,29 @@ public class LobbyManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject); 
 
+        characterLocks = new NetworkList<ulong>();
+        
         buttonShowCreate.onClick.AddListener(OnShowCreatePanel);
         buttonShowJoin.onClick.AddListener(OnShowJoinPanel);
         buttonDoConnect.onClick.AddListener(OnJoinServer);
         buttonStartGame.onClick.AddListener(OnStartGame);
+    }
+    
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (IsServer)
+        {
+            characterLocks.Clear();
+            for (int i = 0; i < maxPlayers; i++)
+            {
+                characterLocks.Add(99); // 99 = ID "Livre"
+            }
+        }
+        
+        characterLocks.OnListChanged += OnCharacterLocksChanged;
+        UpdateCharacterSelectionUI();
     }
     
     private void Start()
@@ -63,23 +91,26 @@ public class LobbyManager : MonoBehaviour
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
         NetworkManager.Singleton.ConnectionApprovalCallback = ConnectionApprovalCheck;
-        
-        // --- MUDANÇA 1: Subscrever ao evento de cena carregada ---
         SceneManager.sceneLoaded += OnSceneWasLoaded;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
-        // Esta função agora só limpa os eventos se for destruída
-        // ANTES de o jogo começar (ex: se for um duplicado)
-        if (NetworkManager.Singleton != null)
+        if (Instance == this && NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
             NetworkManager.Singleton.ConnectionApprovalCallback = null;
         }
-        // --- MUDANÇA 2: Limpar também o evento de cena ---
         SceneManager.sceneLoaded -= OnSceneWasLoaded;
+        
+        if(characterLocks != null)
+        {
+            characterLocks.OnListChanged -= OnCharacterLocksChanged;
+            characterLocks.Dispose();
+        }
+        
+        base.OnDestroy(); // Chama o OnDestroy original
     }
 
     // --- Gestão da UI ---
@@ -89,7 +120,7 @@ public class LobbyManager : MonoBehaviour
         panelJoin.SetActive(panelToShow == panelJoin);
         panelWaiting.SetActive(panelToShow == panelWaiting);
     }
-
+    
     // --- Lógica de Rede ---
     private void OnShowCreatePanel()
     {
@@ -99,6 +130,8 @@ public class LobbyManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         NetworkManager.Singleton.StartHost();
+        
+        GetComponent<NetworkObject>().Spawn(); 
     }
 
     private void OnShowJoinPanel()
@@ -120,10 +153,70 @@ public class LobbyManager : MonoBehaviour
         textHostIP.text = $"A ligar a {ip}...";
     }
 
+    public bool TryLockCharacter(int charIndex, ulong clientId)
+    {
+        if (!NetworkManager.Singleton.IsServer) return false;
+        if (characterLocks[charIndex] != 99) return false; 
+        for (int i = 0; i < characterLocks.Count; i++)
+        {
+            if (characterLocks[i] == clientId)
+            {
+                characterLocks[i] = 99;
+            }
+        }
+        characterLocks[charIndex] = clientId;
+        return true;
+    }
+
+    // --- MUDANÇA AQUI: ESTA FUNÇÃO AGORA ATUALIZA A IMAGEM ---
+    private void OnCharacterLocksChanged(NetworkListEvent<ulong> changeEvent)
+    {
+        // changeEvent.Value é o ID do cliente. 99 significa "Livre".
+        // Se a mudança foi alguém a "pegar" uma personagem (e não a "largar")
+        if (changeEvent.Value != 99) 
+        {
+            // changeEvent.Index é o índice da personagem (0=Freira, 1=Comandante, etc.)
+            int charIndex = changeEvent.Index;
+
+            // Garante que a Imagem e a lista de Previews existem
+            if (previewImage != null && characterPreviews != null && charIndex < characterPreviews.Count)
+            {
+                // Mostra o sprite correspondente
+                previewImage.sprite = characterPreviews[charIndex];
+                
+                // Garante que a imagem está visível (se estivesse escondida)
+                previewImage.enabled = true; 
+            }
+        }
+        
+        // Esta função atualiza os textos ("Livre", "Pego por...", etc.)
+        UpdateCharacterSelectionUI();
+    }
+
+    private void UpdateCharacterSelectionUI()
+    {
+        if (characterStatusTexts == null || characterStatusTexts.Count == 0) return;
+
+        for (int i = 0; i < characterStatusTexts.Count; i++)
+        {
+            if (i >= characterLocks.Count) break; 
+
+            if (characterLocks[i] == 99)
+            {
+                characterStatusTexts[i].text = "Livre";
+                characterStatusTexts[i].color = Color.green;
+            }
+            else
+            {
+                characterStatusTexts[i].text = $"Pego por: Jogador {characterLocks[i]}";
+                characterStatusTexts[i].color = Color.red;
+            }
+        }
+    }
+
     private void OnStartGame()
     {
-        int playerCount = NetworkManager.Singleton.ConnectedClients.Count;
-        if (playerCount >= 1 && playerCount <= maxPlayers)
+        if (NetworkManager.Singleton.IsServer)
         {
             if (lobbyCanvas != null)
             {
@@ -133,7 +226,6 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    // --- Eventos do NetworkManager ---
     private void ConnectionApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
         if (NetworkManager.Singleton.ConnectedClients.Count >= maxPlayers)
@@ -143,7 +235,7 @@ public class LobbyManager : MonoBehaviour
         else
         {
             response.Approved = true;
-            response.CreatePlayerObject = true; 
+            response.CreatePlayerObject = true; // SIM, criar o PlayerLobbyShell
         }
         response.Pending = false;
     }
@@ -159,32 +251,66 @@ public class LobbyManager : MonoBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        if (NetworkManager.Singleton.IsServer) UpdatePlayerListUI();
+        if (NetworkManager.Singleton.IsServer)
+        {
+            for (int i = 0; i < characterLocks.Count; i++)
+            {
+                if (characterLocks[i] == clientId)
+                {
+                    characterLocks[i] = 99;
+                    break;
+                }
+            }
+            UpdatePlayerListUI();
+        }
     }
     
-    // --- MUDANÇA 3: A nossa nova função de "auto-destruição" ---
     private void OnSceneWasLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Se a cena que acabou de carregar é a nossa cena de jogo...
-        if (scene.name == gameSceneName)
+        if (scene.name == gameSceneName && NetworkManager.Singleton.IsServer)
         {
-            Debug.Log("[LobbyManager] Cena 'Level' carregada. A auto-destruir-me...");
+            Vector3 spawnPos = new Vector3(-215, 1, -19);
+            Quaternion spawnRot = Quaternion.identity;
             
-            // Limpa todos os eventos para não deixar lixo
-            if (NetworkManager.Singleton != null)
+            foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
             {
-                NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
-                NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
-                NetworkManager.Singleton.ConnectionApprovalCallback = null;
+                ulong clientId = client.ClientId;
+                PlayerLobbyShell shell = client.PlayerObject.GetComponent<PlayerLobbyShell>();
+                int charIndex = shell.SelectedCharacterIndex.Value;
+
+                if (charIndex == -1)
+                {
+                    charIndex = FindFirstFreeCharacter();
+                    if (charIndex != -1) TryLockCharacter(charIndex, clientId);
+                    else charIndex = 0; 
+                }
+
+                GameObject prefabToSpawn = characterPrefabs[charIndex];
+                GameObject playerInstance = Instantiate(prefabToSpawn, spawnPos, spawnRot);
+                
+                spawnPos.x += 2.0f; // Offset para o próximo jogador
+                
+                // "Carimba" o jogador com o índice da sua personagem
+                playerInstance.GetComponent<PlayerController>().CharacterIndex.Value = charIndex;
+                
+                playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+                shell.NetworkObject.Despawn(true);
             }
-            SceneManager.sceneLoaded -= OnSceneWasLoaded;
             
-            // Destrói o GameObject do LobbyManager (e o seu filho, o Canvas)
+            // Auto-destruição
             Destroy(gameObject);
         }
     }
 
-    // --- Funções de Ajuda ---
+    private int FindFirstFreeCharacter()
+    {
+        for (int i = 0; i < characterLocks.Count; i++)
+        {
+            if (characterLocks[i] == 99) return i;
+        }
+        return -1; 
+    }
+
     private void UpdatePlayerListUI()
     {
         string playerList = "Jogadores Ligados:\n";
