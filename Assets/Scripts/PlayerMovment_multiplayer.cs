@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.SceneManagement; 
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : NetworkBehaviour
@@ -14,127 +14,127 @@ public class PlayerController : NetworkBehaviour
     [Header("Movimento")]
     public float speed = 10f;
     public float jumpForce = 7f;
-
     [Header("Câmara")]
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
-
     [Header("Ground Check")]
     private bool isGrounded;
     private float groundCheckTimer; 
-
+    
     private Vector2 moveInput;
     private bool jumpInput;
     
-    private bool isGameScene = false;
-    private bool teleportedOnce = false; 
+    private InterfaceController ui;
+    private TargetMultiplayer target;
+    private int playerSlot = -1; // Começa como -1 (inválido)
+
+    // NetworkVariable para o nome
+    public NetworkVariable<int> CharacterIndex = new NetworkVariable<int>(-1);
 
     void Awake()
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
         if (networkWeapon == null) networkWeapon = GetComponent<NetworkWeapon>();
+        target = GetComponent<TargetMultiplayer>();
     }
     
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        
+        // Subscreve à mudança de nome
+        CharacterIndex.OnValueChanged += OnCharacterIndexChanged;
 
-        if (!IsOwner)
+        StartCoroutine(InitializeUI());
+
+        if (IsOwner)
+        {
+            playerCamera.enabled = true;
+            if (playerAudioListener != null) playerAudioListener.enabled = true;
+            if (networkWeapon != null) networkWeapon.enabled = true; 
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
         {
             playerCamera.enabled = false;
             if (playerAudioListener != null) playerAudioListener.enabled = false;
-            this.enabled = false;
-            return; 
+            if (networkWeapon != null) networkWeapon.enabled = false;
+            this.enabled = false; 
         }
+    }
 
-        SceneManager.sceneLoaded += OnSceneWasLoaded;
-        HandleSceneChange(SceneManager.GetActiveScene());
+    private IEnumerator InitializeUI()
+    {
+        while (InterfaceController.Instance == null)
+        {
+            yield return null; // Espera 1 frame
+        }
+        ui = InterfaceController.Instance;
+        
+        // Usa o novo Gestor de Slots
+        playerSlot = ui.GetOrAssignUISlot(OwnerClientId, IsOwner);
+
+        // Se o valor do CharacterIndex já chegou, atualiza a UI
+        if (CharacterIndex.Value != -1)
+        {
+            UpdatePlayerSlotUI();
+        }
+    
+        // Subscreve ao evento de mudança de vida
+        target.health.OnValueChanged += OnHealthChanged;
+
+        if (IsOwner)
+        {
+            ui.SetLocalPlayer(this.gameObject); 
+            networkWeapon.SetInterface(ui); 
+        }
+    }
+    
+    // Função chamada quando o nome muda
+    private void OnCharacterIndexChanged(int previousValue, int newValue)
+    {
+        // Se a UI já estiver pronta, atualiza
+        if (ui != null && playerSlot != -1)
+        {
+            UpdatePlayerSlotUI();
+        }
+    }
+    
+    // Nova função para atualizar o slot
+    private void UpdatePlayerSlotUI()
+    {
+        if (ui == null || playerSlot == -1) return;
+        
+        int charIndex = CharacterIndex.Value;
+        
+        ui.UpdatePlayer(true, playerSlot, charIndex, (int)target.health.Value, null);
     }
 
     public override void OnNetworkDespawn()
     {
-        if (IsOwner)
-        {
-            SceneManager.sceneLoaded -= OnSceneWasLoaded;
-        }
         base.OnNetworkDespawn();
-    }
-
-    // Esta função é chamada sempre que uma nova cena é carregada
-    private void OnSceneWasLoaded(Scene scene, LoadSceneMode mode)
-    {
-        HandleSceneChange(scene);
-    }
-
-    // A nossa função "cérebro"
-    private void HandleSceneChange(Scene scene)
-    {
-        if (scene.name == "Level") // O nome da tua cena de jogo
+        if (ui != null)
         {
-            isGameScene = true;
+            // Desativa e liberta o slot
+            ui.UpdatePlayer(false, playerSlot, 0, 0, null);
+            ui.FreePlayerSlot(OwnerClientId);
             
-            // Ativa os componentes do jogador
-            playerCamera.enabled = true;
-            if (playerAudioListener != null) playerAudioListener.enabled = true;
-            if (networkWeapon != null) networkWeapon.enabled = true; 
-
-            // Tranca o rato
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            
-            // Pede o teletransporte (agora local)
-            if (!teleportedOnce)
-            {
-                // --- MUDANÇA AQUI ---
-                // Já não pedimos ao servidor. Como somos o "Owner",
-                // teletransportamo-nos a nós mesmos e o NetworkTransform
-                // encarrega-se de sincronizar.
-                TeleportPlayer(new Vector3(-215, 1, -19));
-                // --- FIM DA MUDANÇA ---
-                
-                teleportedOnce = true;
-            }
-        }
-        else // Se for a LobbyScene
-        {
-            isGameScene = false;
-            
-            playerCamera.enabled = false;
-            if (playerAudioListener != null) playerAudioListener.enabled = false;
-            if (networkWeapon != null) networkWeapon.enabled = false; 
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            target.health.OnValueChanged -= OnHealthChanged;
+            CharacterIndex.OnValueChanged -= OnCharacterIndexChanged;
         }
     }
-
-    // --- MUDANÇA AQUI ---
-    // Removemos o [ServerRpc] e esta é agora uma função local
-    private void TeleportPlayer(Vector3 position)
+    
+    private void OnHealthChanged(float previousValue, float newValue)
     {
-        // Desativa o Rigidbody temporariamente para o teletransporte
-        if (rb != null)
+        if (ui != null)
         {
-            rb.isKinematic = true; 
-        }
-
-        // Teletransporta o jogador
-        transform.position = position;
-        
-        // Reativa o Rigidbody
-        if (rb != null)
-        {
-            rb.isKinematic = false; 
-            rb.linearVelocity = Vector3.zero; // Limpa qualquer velocidade antiga
+            ui.UpdatePlayerHealth(playerSlot, (int)newValue);
         }
     }
-    // --- FIM DA MUDANÇA ---
-
-    // --- LÓGICA DE INPUT (SÓ CORRE NA CENA DO JOGO) ---
+    
     void Update()
     {
-        if (!IsOwner || !isGameScene) return;
-
         // Input da Câmara
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -152,12 +152,8 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    // --- LÓGICA DE FÍSICA (SÓ CORRE NA CENA DO JOGO) ---
     void FixedUpdate()
     {
-        if (!IsOwner || !isGameScene) return;
-
-        // Ground Check
         if (groundCheckTimer > 0)
         {
             groundCheckTimer -= Time.fixedDeltaTime;
@@ -168,11 +164,9 @@ public class PlayerController : NetworkBehaviour
             isGrounded = false;
         }
         
-        // Movimento
         Vector3 move = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized;
         rb.MovePosition(rb.position + move * speed * Time.fixedDeltaTime);
         
-        // Pulo
         if (jumpInput && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);

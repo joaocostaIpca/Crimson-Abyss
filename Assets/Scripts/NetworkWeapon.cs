@@ -17,11 +17,21 @@ public class NetworkWeapon : NetworkBehaviour
 
     [Header("Effects")]
     public GameObject hitEffect;
-    public TextMeshProUGUI ammoText; // Arrastar o teu UI Text aqui
+    
+    // --- MUDANÇA 1: Referência da UI ---
+    private InterfaceController ui;
 
     private float nextFireTime = 0f;
     private float nextReloadTime = 0f;
     private Camera cam;
+    
+    // --- MUDANÇA 2: Nova função para o PlayerController chamar ---
+    public void SetInterface(InterfaceController interfaceController)
+    {
+        ui = interfaceController;
+        // Atualiza a UI com a munição inicial
+        UpdateAmmoUI(); 
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -54,7 +64,7 @@ public class NetworkWeapon : NetworkBehaviour
 
     void Update()
     {
-        if (!IsOwner) return; // Segurança
+        if (!IsOwner) return; 
 
         if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime && currentAmmo.Value > 0)
         {
@@ -81,8 +91,9 @@ public class NetworkWeapon : NetworkBehaviour
     {
         if (currentAmmo.Value <= 0) return;
         currentAmmo.Value--;
-
+        
         Debug.DrawRay(rayOrigin, rayDirection * range, Color.red, 2.0f);
+
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, range))
         {
@@ -132,16 +143,19 @@ public class NetworkWeapon : NetworkBehaviour
 
     void OnAmmoChanged(int previousValue, int newValue)
     {
-        UpdateAmmoUI();
+        // Atualiza a UI se formos o dono
+        if(IsOwner)
+        {
+            UpdateAmmoUI();
+        }
     }
-
+    
     public void UpdateAmmoUI()
     {
-        if (ammoText != null && IsOwner)
+        // --- MUDANÇA 3: Usar a referência 'ui' ---
+        if (ui != null)
         {
-            ammoText.text = $"{currentAmmo.Value} / {maxAmmo.Value}";
-            // Se tiveres o teu sistema GameData, chama-o aqui
-            // GameData.InterfaceController.UpdateAmmo(currentAmmo.Value, maxMagAmmo, maxAmmo.Value);
+            ui.UpdateAmmo(currentAmmo.Value, maxMagAmmo, maxAmmo.Value);
         }
     }
 }
