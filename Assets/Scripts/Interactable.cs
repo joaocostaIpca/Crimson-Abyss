@@ -1,61 +1,138 @@
 using UnityEngine;
+using Unity.Netcode;
+using System.Collections.Generic;
 
-public class Interactable : MonoBehaviour
+// --- MUDANÇA 1: Adicionar a Ordem de Execução ---
+// (Isto força o script a esperar pelo NetworkManager)
+[DefaultExecutionOrder(100)]
+public class Interactable : NetworkBehaviour
 {
     [Header("Configuração")]
-    public KeyCode interactKey = KeyCode.E; // tecla para interagir
-    public bool destroyParent = true;        // se deve apagar o pai
+    public KeyCode interactKey = KeyCode.E;
+    
+    [Header("UI")]
+    [SerializeField] private GameObject pressE_Prompt_UI; 
 
-    private bool playerInRange = false;      // se o jogador está dentro da área
-    private Transform player;
+    private NetworkVariable<bool> isLocked = new NetworkVariable<bool>(true);
+    private NetworkVariable<bool> canInteract = new NetworkVariable<bool>(false);
 
-    void Start()
+    private bool localPlayerIsInside = false;
+    private List<ulong> playersInTrigger = new List<ulong>();
+
+    public override void OnNetworkSpawn()
     {
-        // procura automaticamente o jogador (tem de ter tag "Player")
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-            player = playerObj.transform;
+        base.OnNetworkSpawn();
+        
+        if (pressE_Prompt_UI != null)
+            pressE_Prompt_UI.SetActive(false);
+            
+        if (!IsClient) return; 
+        
+        canInteract.OnValueChanged += OnCanInteractChanged;
+        OnCanInteractChanged(false, canInteract.Value);
     }
 
+    public override void OnNetworkDespawn()
+    {
+        if (IsClient)
+        {
+            canInteract.OnValueChanged -= OnCanInteractChanged;
+        }
+        base.OnNetworkDespawn();
+    }
+    
+    private void OnCanInteractChanged(bool previousValue, bool newValue)
+    {
+        if (pressE_Prompt_UI != null)
+        {
+            pressE_Prompt_UI.SetActive(newValue && localPlayerIsInside);
+        }
+    }
+
+    // (Corre SÓ no Cliente Local)
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(interactKey))
+      
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsClient) 
         {
-            Interact();
+            return;
+        }
+
+        if (localPlayerIsInside && canInteract.Value && Input.GetKeyDown(interactKey))
+        {
+            TryInteractServerRpc();
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    // --- Funções Públicas (chamadas pelo InteractableTrigger) ---
+    public void OnPlayerEntered(GameObject playerObject)
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-            Debug.Log("Jogador entrou na área de interação.");
-            // aqui podes chamar um UI de "Pressiona E"
-        }
+        localPlayerIsInside = true;
+        PlayerChangedTriggerStateServerRpc(true);
+            
+        if (pressE_Prompt_UI != null)
+            pressE_Prompt_UI.SetActive(canInteract.Value);
     }
 
-    void OnTriggerExit(Collider other)
+    public void OnPlayerExited()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-            Debug.Log("Jogador saiu da área de interação.");
-            // aqui podes esconder o UI de "Pressiona E"
-        }
+        localPlayerIsInside = false;
+        PlayerChangedTriggerStateServerRpc(false);
+
+        if (pressE_Prompt_UI != null)
+            pressE_Prompt_UI.SetActive(false);
     }
 
-    void Interact()
-    {
-        Debug.Log("Interagiu com " + gameObject.name);
 
-        if (destroyParent && transform.parent != null)
+    // --- FUNÇÕES DO SERVIDOR ---
+    public void Unlock()
+    {
+        if (!IsServer) return; 
+
+        Debug.Log($"[Interactable {gameObject.name}] FUI DESTRANCADO!");
+        
+        isLocked.Value = false;
+        CheckInteractionState(); 
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void PlayerChangedTriggerStateServerRpc(bool entered, ServerRpcParams rpcParams = default)
+    {
+        ulong clientId = rpcParams.Receive.SenderClientId;
+        
+        if (entered)
         {
-            Destroy(transform.parent.gameObject);
+            if (!playersInTrigger.Contains(clientId))
+                playersInTrigger.Add(clientId);
         }
         else
         {
-            Destroy(gameObject);
+            playersInTrigger.Remove(clientId);
         }
+        
+        CheckInteractionState(); 
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    private void TryInteractServerRpc()
+    {
+
+        Debug.Log($"[Interactable {gameObject.name}] Servidor recebeu pedido de interação. Verificando... (canInteract.Value = {canInteract.Value})");
+        if (canInteract.Value)
+        {
+            Debug.Log("...Interação APROVADA. A DESTRUIR.");
+            NetworkObject.Despawn(true); 
+        }
+    }
+
+    private void CheckInteractionState()
+    {
+        if (!IsServer) return;
+
+        int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
+        bool allInside = playersInTrigger.Count == totalPlayers;
+
+        canInteract.Value = (!isLocked.Value && allInside);
+        Debug.Log($"[Interactable {gameObject.name}] CheckState: Trancado={isLocked.Value}, JogadoresDentro={playersInTrigger.Count}, TodosDentro={allInside}. => Posso Interagir? {canInteract.Value}");
     }
 }

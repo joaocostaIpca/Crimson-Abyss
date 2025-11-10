@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using Unity.Collections; // Continua a precisar disto!
 
 [DefaultExecutionOrder(100)] 
 public class LobbyManager : NetworkBehaviour 
@@ -43,7 +44,12 @@ public class LobbyManager : NetworkBehaviour
     
     [SerializeField] private List<GameObject> characterPrefabs; 
 
-    public NetworkList<ulong> characterLocks;
+    public static List<Sprite> CharacterPreviews { get; private set; }
+
+    public NetworkList<ulong> characterLocks = new NetworkList<ulong>();
+    
+    // --- MUDANÇA AQUI: Trocado NetworkString por FixedString ---
+    public NetworkList<FixedString64Bytes> PlayerNames = new NetworkList<FixedString64Bytes>();
     
     public static LobbyManager Instance;
 
@@ -56,8 +62,9 @@ public class LobbyManager : NetworkBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject); 
-
-        characterLocks = new NetworkList<ulong>();
+        
+        // PlayerNames já é criado na definição
+        CharacterPreviews = characterPreviews; 
         
         buttonShowCreate.onClick.AddListener(OnShowCreatePanel);
         buttonShowJoin.onClick.AddListener(OnShowJoinPanel);
@@ -74,12 +81,15 @@ public class LobbyManager : NetworkBehaviour
             characterLocks.Clear();
             for (int i = 0; i < maxPlayers; i++)
             {
-                characterLocks.Add(99); // 99 = ID "Livre"
+                characterLocks.Add(99); 
             }
         }
         
         characterLocks.OnListChanged += OnCharacterLocksChanged;
+        PlayerNames.OnListChanged += OnPlayerListChanged; 
+        
         UpdateCharacterSelectionUI();
+        UpdatePlayerListUI();
     }
     
     private void Start()
@@ -96,7 +106,9 @@ public class LobbyManager : NetworkBehaviour
 
     public override void OnDestroy()
     {
-        if (Instance == this && NetworkManager.Singleton != null)
+        if (Instance == this) Instance = null;
+
+        if (NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
@@ -109,11 +121,15 @@ public class LobbyManager : NetworkBehaviour
             characterLocks.OnListChanged -= OnCharacterLocksChanged;
             characterLocks.Dispose();
         }
+        if(PlayerNames != null)
+        {
+            PlayerNames.OnListChanged -= OnPlayerListChanged;
+            PlayerNames.Dispose();
+        }
         
-        base.OnDestroy(); // Chama o OnDestroy original
+        base.OnDestroy(); 
     }
 
-    // --- Gestão da UI ---
     private void ShowPanel(GameObject panelToShow)
     {
         panelMainMenu.SetActive(panelToShow == panelMainMenu);
@@ -121,7 +137,6 @@ public class LobbyManager : NetworkBehaviour
         panelWaiting.SetActive(panelToShow == panelWaiting);
     }
     
-    // --- Lógica de Rede ---
     private void OnShowCreatePanel()
     {
         ShowPanel(panelWaiting);
@@ -131,7 +146,10 @@ public class LobbyManager : NetworkBehaviour
         Cursor.visible = true;
         NetworkManager.Singleton.StartHost();
         
-        GetComponent<NetworkObject>().Spawn(); 
+        if (!GetComponent<NetworkObject>().IsSpawned)
+        {
+            GetComponent<NetworkObject>().Spawn(); 
+        }
     }
 
     private void OnShowJoinPanel()
@@ -168,39 +186,24 @@ public class LobbyManager : NetworkBehaviour
         return true;
     }
 
-    // --- MUDANÇA AQUI: ESTA FUNÇÃO AGORA ATUALIZA A IMAGEM ---
     private void OnCharacterLocksChanged(NetworkListEvent<ulong> changeEvent)
     {
-        // changeEvent.Value é o ID do cliente. 99 significa "Livre".
-        // Se a mudança foi alguém a "pegar" uma personagem (e não a "largar")
-        if (changeEvent.Value != 99) 
-        {
-            // changeEvent.Index é o índice da personagem (0=Freira, 1=Comandante, etc.)
-            int charIndex = changeEvent.Index;
-
-            // Garante que a Imagem e a lista de Previews existem
-            if (previewImage != null && characterPreviews != null && charIndex < characterPreviews.Count)
-            {
-                // Mostra o sprite correspondente
-                previewImage.sprite = characterPreviews[charIndex];
-                
-                // Garante que a imagem está visível (se estivesse escondida)
-                previewImage.enabled = true; 
-            }
-        }
-        
-        // Esta função atualiza os textos ("Livre", "Pego por...", etc.)
         UpdateCharacterSelectionUI();
     }
+    
+    // --- MUDANÇA AQUI: O evento agora é para FixedString ---
+    private void OnPlayerListChanged(NetworkListEvent<FixedString64Bytes> changeEvent)
+    {
+        UpdatePlayerListUI();
+    }
+
 
     private void UpdateCharacterSelectionUI()
     {
         if (characterStatusTexts == null || characterStatusTexts.Count == 0) return;
-
         for (int i = 0; i < characterStatusTexts.Count; i++)
         {
             if (i >= characterLocks.Count) break; 
-
             if (characterLocks[i] == 99)
             {
                 characterStatusTexts[i].text = "Livre";
@@ -235,14 +238,17 @@ public class LobbyManager : NetworkBehaviour
         else
         {
             response.Approved = true;
-            response.CreatePlayerObject = true; // SIM, criar o PlayerLobbyShell
+            response.CreatePlayerObject = true; 
         }
         response.Pending = false;
     }
 
     private void OnClientConnected(ulong clientId)
     {
-        if (NetworkManager.Singleton.IsServer) UpdatePlayerListUI();
+        if (NetworkManager.Singleton.IsServer)
+        {
+            UpdateServerPlayerNameList();
+        }
         if (NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost)
         {
             textHostIP.text = "Ligado! A aguardar que o Host comece...";
@@ -253,6 +259,7 @@ public class LobbyManager : NetworkBehaviour
     {
         if (NetworkManager.Singleton.IsServer)
         {
+            UpdateServerPlayerNameList();
             for (int i = 0; i < characterLocks.Count; i++)
             {
                 if (characterLocks[i] == clientId)
@@ -261,7 +268,6 @@ public class LobbyManager : NetworkBehaviour
                     break;
                 }
             }
-            UpdatePlayerListUI();
         }
     }
     
@@ -277,28 +283,20 @@ public class LobbyManager : NetworkBehaviour
                 ulong clientId = client.ClientId;
                 PlayerLobbyShell shell = client.PlayerObject.GetComponent<PlayerLobbyShell>();
                 int charIndex = shell.SelectedCharacterIndex.Value;
-
                 if (charIndex == -1)
                 {
                     charIndex = FindFirstFreeCharacter();
                     if (charIndex != -1) TryLockCharacter(charIndex, clientId);
                     else charIndex = 0; 
                 }
-
                 GameObject prefabToSpawn = characterPrefabs[charIndex];
                 GameObject playerInstance = Instantiate(prefabToSpawn, spawnPos, spawnRot);
-                
-                spawnPos.x += 2.0f; // Offset para o próximo jogador
-                
-                // "Carimba" o jogador com o índice da sua personagem
-                playerInstance.GetComponent<PlayerController>().CharacterIndex.Value = charIndex;
-                
+                spawnPos.x += 2.0f; 
                 playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+                playerInstance.GetComponent<PlayerController>().CharacterIndex.Value = charIndex;
                 shell.NetworkObject.Despawn(true);
             }
-            
-            // Auto-destruição
-            Destroy(gameObject);
+            NetworkObject.Despawn(true);
         }
     }
 
@@ -310,20 +308,33 @@ public class LobbyManager : NetworkBehaviour
         }
         return -1; 
     }
-
+    
     private void UpdatePlayerListUI()
     {
         string playerList = "Jogadores Ligados:\n";
-        int playerCount = 0;
-        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        // Ler a lista é igual, a conversão para string é automática
+        foreach (var name in PlayerNames)
         {
-            playerCount++;
-            string playerLabel = $" - Jogador {client.ClientId}";
-            if (client.ClientId == NetworkManager.Singleton.LocalClientId) playerLabel += " (Host)";
-            playerList += playerLabel + "\n";
+            playerList += $"- {name}\n";
         }
         textPlayerList.text = playerList;
-        buttonStartGame.interactable = (playerCount >= 1 && playerCount <= maxPlayers);
+        
+        if (IsServer)
+        {
+            buttonStartGame.interactable = (PlayerNames.Count >= 1 && PlayerNames.Count <= maxPlayers);
+        }
+    }
+    
+    private void UpdateServerPlayerNameList()
+    {
+        PlayerNames.Clear();
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            string name = "Jogador " + client.ClientId;
+            if (client.ClientId == 0) name += " (Host)";
+            // A conversão de string para FixedString é automática
+            PlayerNames.Add(name);
+        }
     }
     
     private string GetLocalIPv4()

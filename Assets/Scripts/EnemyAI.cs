@@ -1,97 +1,246 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Unity.Netcode;
+using UnityEngine.AI; 
 
-public class EnemyAI : MonoBehaviour
+[RequireComponent(typeof(TargetMultiplayer))] 
+[RequireComponent(typeof(Rigidbody))] 
+[RequireComponent(typeof(NavMeshAgent))]
+public class EnemyAI : NetworkBehaviour
 {
-
+    [Header("IA Settings")]
     [SerializeField] int reactionDelay = 500;
-    [SerializeField] float minimumDistance = 30f;
-    [SerializeField] float attackDistance = 2f;
-    [SerializeField] float rotationSpeed = 1f;
-    [SerializeField] float moveSpeed = 1f;
+    [SerializeField] float minimumDistance = 30f; 
+    
+    [Header("Patrol Settings")]
+    [SerializeField] private float patrolSpeedMultiplier = 0.5f; 
+    [SerializeField] private float patrolWaitTime = 3f; 
 
+    private NavMeshAgent agent;
+    private float defaultAgentSpeed; 
+    
     private Coroutine reactionCoroutine;
-
-    private List<string> states = new List<string>() { "Idle", "Walking", "Attack" };
-
     private string currentState = "Idle";
+    private Transform targetPlayer;
 
-    private GameObject targetPlayer;
+    private Vector3 lastKnownPosition;
+    private bool hasLastKnownPosition = false; 
 
-    private void Start() 
+    private Vector3 startPosition;
+    private float patrolRadius;
+    private Vector3 currentPatrolTarget;
+    private bool isPatrolling = false;
+    private bool isWaitingAtPatrolPoint = false;
+    
+    private void Awake()
     {
-            
+        agent = GetComponent<NavMeshAgent>();
+        defaultAgentSpeed = agent.speed; 
+    }
+    
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsServer)
+        {
+            this.enabled = false;
+            agent.enabled = false; 
+        }
+    }
+
+    public void SetPatrolMode(Vector3 startPos, float radius)
+    {
+        startPosition = startPos;
+        patrolRadius = radius;
+        isPatrolling = true;
+        currentState = "Patrol";
+        FindNewPatrolPoint(); 
     }
 
     private void Update()
     {
+        if (!IsServer) return; 
+
         if (reactionCoroutine == null)
         {
             reactionCoroutine = StartCoroutine(CheckPlayers());
         }
 
-        // if state is walking move towards the player
-        if (currentState == "Walking")
+        DecideState();
+        ExecuteCurrentState();
+    }
+    
+    private void DecideState()
+    {
+        if (targetPlayer != null)
         {
-            // Walking logic here
-               //Debug.Log($"Enemy {gameObject.name} is walking!");
-            // Rotate towards the player over time
-            Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-            // Move towards the player over time
-            transform.position += transform.forward * Time.deltaTime * moveSpeed;
+            hasLastKnownPosition = true;
+            lastKnownPosition = targetPlayer.position;
 
+            float distance = Vector3.Distance(transform.position, targetPlayer.position);
+            if (distance <= agent.stoppingDistance) 
+            {
+                currentState = "Attack";
+            }
+            else
+            {
+                currentState = "Walking"; // Perseguir
+            }
+        }
+        else
+        {
+            if (hasLastKnownPosition)
+            {
+                if (currentState != "Searching")
+                {
+                    currentState = "Searching";
+                }
+                else if (currentState == "Searching")
+                {
+                    if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                    {
+                        hasLastKnownPosition = false; 
+                        if(isPatrolling)
+                        {
+                            FindNewPatrolPoint();
+                        }
+                    }
+                }
+            }
+            
+            if (!hasLastKnownPosition)
+            {
+                if (isPatrolling)
+                    currentState = "Patrol";
+                else
+                    currentState = "Idle";
+            }
+        }
+    }
+
+
+    private void ExecuteCurrentState()
+    {
+        if (currentState == "Walking" && targetPlayer != null)
+        {
+            agent.speed = defaultAgentSpeed;
+            agent.SetDestination(targetPlayer.position);
         }
         else if (currentState == "Attack")
         {
-            // Attack logic here
-            Debug.Log($"Enemy {gameObject.name} is attacking!");
+            agent.SetDestination(transform.position); 
+            // (Lógica de ataque...)
+        }
+        else if (currentState == "Searching")
+        {
+            agent.speed = defaultAgentSpeed;
+            agent.SetDestination(lastKnownPosition);
+        }
+        else if (currentState == "Patrol" && !isWaitingAtPatrolPoint)
+        {
+            agent.speed = defaultAgentSpeed * patrolSpeedMultiplier; 
+            agent.SetDestination(currentPatrolTarget);
+            
+            // --- MUDANÇA 1: Lógica para "des-prender" ---
+            // Se chegámos
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                StartCoroutine(WaitAtPatrolPoint());
+            }
+            // Se o caminho for inválido (ex: o ponto está numa parede)
+            else if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.pathStatus == NavMeshPathStatus.PathPartial)
+            {
+                // Esquece este ponto, encontra um novo.
+                Debug.LogWarning($"[EnemyAI] Não consigo chegar a {currentPatrolTarget}. A encontrar novo ponto.");
+                FindNewPatrolPoint(); 
+            }
+        }
+        else if (currentState == "Idle")
+        {
+            agent.SetDestination(transform.position); 
+        }
+    }
+    
+    // --- MUDANÇA 2: Função de patrulha muito mais robusta ---
+    private void FindNewPatrolPoint()
+    {
+        bool foundPoint = false;
+        
+        // Tenta 30 vezes encontrar um ponto VÁLIDO
+        for (int i = 0; i < 30; i++)
+        {
+            // 1. Gera um ponto aleatório
+            Vector2 randomCircle = Random.insideUnitCircle * patrolRadius;
+            Vector3 randomPos = startPosition + new Vector3(randomCircle.x, 0, randomCircle.y);
+            
+            NavMeshHit hit;
+            // 2. Tenta "snapar" esse ponto ao NavMesh (com uma tolerância pequena de 1.0f)
+            if (NavMesh.SamplePosition(randomPos, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                // 3. SUCESSO! Encontrámos um ponto que está NO NavMesh.
+                currentPatrolTarget = hit.position;
+                foundPoint = true;
+                break; // Sai do loop 'for'
+            }
         }
 
+        // Se, depois de 30 tentativas, não encontrámos um ponto bom...
+        if (!foundPoint)
+        {
+            // ...desiste e volta para o início (startPosition)
+            Debug.LogWarning($"[EnemyAI] Não conseguiu encontrar um ponto de patrulha aleatório. A voltar ao início.");
+            
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(startPosition, out hit, patrolRadius, NavMesh.AllAreas))
+            {
+                currentPatrolTarget = hit.position;
+            }
+            else
+            {
+                // Falha total, fica parado
+                currentPatrolTarget = transform.position;
+                isPatrolling = false;
+            }
+        }
+    }
+    
+    private IEnumerator WaitAtPatrolPoint()
+    {
+        isWaitingAtPatrolPoint = true;
+        yield return new WaitForSeconds(patrolWaitTime);
+        FindNewPatrolPoint(); 
+        isWaitingAtPatrolPoint = false;
     }
 
     private IEnumerator CheckPlayers()
     {
         yield return new WaitForSeconds(reactionDelay / 1000f);
 
-        currentState = "Idle";
+        targetPlayer = null; 
+        float closestDistance = minimumDistance;
 
-        foreach (var player in GameData.Players)
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
-            if (player != null)
+            if (client.PlayerObject != null)
             {
-                float distance = Vector3.Distance(transform.position, player.transform.position);
-                if (distance < minimumDistance)
+                Transform player = client.PlayerObject.transform;
+                float distance = Vector3.Distance(transform.position, player.position);
+
+                if (distance < closestDistance)
                 {
-                       //Debug.Log($"Enemy {gameObject.name} detected Player {player.name} within range!");
-                    // Use ray casting to know if there is an object between the player and the enemy
-                    if (Physics.Raycast(transform.position, (player.transform.position - transform.position).normalized, out RaycastHit hit, minimumDistance))
+                    if (Physics.Raycast(transform.position, (player.position - transform.position).normalized, out RaycastHit hit, minimumDistance))
                     {
-                        if (hit.collider.gameObject != player)
+                        if (hit.collider.transform == player)
                         {
-                               //Debug.Log($"Enemy {gameObject.name} cannot see Player {player.name} due to an obstacle: {hit.collider.gameObject.name}");
-                            continue; // Skip to the next player if there's an obstacle
-                        }
-                        else
-                        {
-                               //Debug.Log($"Enemy {gameObject.name} has a clear line of sight to Player {player.name}");
-                            currentState = "Walking";
+                            closestDistance = distance;
                             targetPlayer = player;
-                            if (distance < attackDistance)
-                            {
-                                currentState = "Attack";
-                            }
-                            
-                            break; // React to the first player detected
                         }
                     }
                 }
             }
         }
-           //Debug.Log($"Enemy {gameObject.name} is now in state: {currentState}");
+        
         reactionCoroutine = null;
     }
 }

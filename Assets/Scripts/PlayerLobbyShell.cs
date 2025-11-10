@@ -1,77 +1,95 @@
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.UI; // Para os botões
-using TMPro; // Para o texto
+using UnityEngine.UI; 
+using TMPro; 
 
-// Este script vai no teu PREFAB de "Player" do lobby (o manequim)
 public class PlayerLobbyShell : NetworkBehaviour
 {
-    // Variável de rede que guarda a escolha (-1 = Nenhuma)
     public NetworkVariable<int> SelectedCharacterIndex = new NetworkVariable<int>(-1);
 
-    // Variáveis que só o dono vai ligar
     private Button btnFreira, btnComandante, btnTemplario, btnFuzileiro;
+    
+    // --- MUDANÇA 1: Referência para a Imagem ---
+    private Image previewImage;
     
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
 
-        // Se este objeto for o "nosso", encontramos os botões da UI
         if (IsOwner)
         {
+            // Se formos o dono, encontramos a UI
             FindAndLinkUI();
+            
+            // E atualizamos a imagem para a nossa seleção (ou nenhuma)
+            UpdatePreviewImage(SelectedCharacterIndex.Value);
         }
 
-        // Todos (incluindo o host) subscrevem à mudança
-        // para atualizar a sua própria "NetworkVariable" (embora não a usem)
+        // --- MUDANÇA 2: Subscrever à nossa própria seleção ---
         SelectedCharacterIndex.OnValueChanged += (int oldVal, int newVal) =>
         {
-            // Poderíamos pôr lógica de UI aqui, mas o LobbyManager vai tratar disso
+            // Se formos o dono, atualiza a imagem
+            if (IsOwner)
+            {
+                UpdatePreviewImage(newVal);
+            }
         };
     }
 
-    // (Dentro do script PlayerLobbyShell.cs)
-
     private void FindAndLinkUI()
     {
-        // Encontra os botões no Canvas do LobbyManager (que é DontDestroyOnLoad)
         try
         {
-            // --- MUDANÇA AQUI: Adicionámos os 2 que faltavam ---
+            // --- Botões ---
             btnFreira = GameObject.Find("Button_Pick_Freira").GetComponent<Button>();
             btnComandante = GameObject.Find("Button_Pick_Comandante").GetComponent<Button>();
             btnTemplario = GameObject.Find("Button_Pick_Templario").GetComponent<Button>();
             btnFuzileiro = GameObject.Find("Button_Pick_Fuzileiro").GetComponent<Button>();
 
-            // Liga os botões às funções
-            // --- MUDANÇA AQUI: Adicionámos os 2 que faltavam ---
             btnFreira.onClick.AddListener(() => RequestCharacterLockServerRpc(0));
             btnComandante.onClick.AddListener(() => RequestCharacterLockServerRpc(1));
             btnTemplario.onClick.AddListener(() => RequestCharacterLockServerRpc(2));
             btnFuzileiro.onClick.AddListener(() => RequestCharacterLockServerRpc(3));
+            
+            // --- MUDANÇA 3: Encontrar a Imagem ---
+            previewImage = GameObject.Find("Image_Preview").GetComponent<Image>();
+            
+            // Esconde a imagem (até escolhermos um)
+            if (SelectedCharacterIndex.Value == -1)
+            {
+                previewImage.enabled = false;
+            }
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"[PlayerLobbyShell] Não consegui encontrar os botões da UI. " +
-                           "Garante que os nomes na Hierarquia estão EXATOS (ex: 'Button_Pick_Freira'). " +
-                           $"{e.Message}");
+            Debug.LogError($"[PlayerLobbyShell] Não consegui encontrar os botões/imagem da UI. {e.Message}");
+        }
+    }
+    
+    // --- MUDANÇA 4: Nova função para atualizar a imagem local ---
+    private void UpdatePreviewImage(int charIndex)
+    {
+        if (previewImage == null) return; 
+
+        if (charIndex >= 0 && charIndex < LobbyManager.CharacterPreviews.Count)
+        {
+            previewImage.sprite = LobbyManager.CharacterPreviews[charIndex];
+            previewImage.enabled = true;
+        }
+        else
+        {
+            previewImage.enabled = false; // Esconde se não tivermos seleção
         }
     }
 
-    // O Cliente (dono) chama esta função, que corre no Servidor
     [ServerRpc]
     public void RequestCharacterLockServerRpc(int charIndex)
     {
-        // Pede ao LobbyManager (que é o "cérebro") para tentar "trancar" esta personagem
         bool success = LobbyManager.Instance.TryLockCharacter(charIndex, OwnerClientId);
 
         if (success)
         {
-            // Se conseguimos, atualizamos a nossa própria variável
             SelectedCharacterIndex.Value = charIndex;
         }
-        
-        // Se falhou (porque alguém já pegou), não fazemos nada.
-        // O LobbyManager vai atualizar a UI de todos.
     }
 }
