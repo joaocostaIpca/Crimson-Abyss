@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SupplyBox : MonoBehaviour
 {
-    [Header("Configurações")]
+    [Header("Configuraï¿½ï¿½es")]
     public string playerTag = "Player";
     public KeyCode useKey = KeyCode.F;
     public float interactionDistance = 3f;
@@ -14,7 +14,7 @@ public class SupplyBox : MonoBehaviour
 
     private Transform player;
     private bool isNear = false;
-    private Weapon playerWeapon;
+    private NetworkWeapon playerWeapon;
 
     void Start()
     {
@@ -54,7 +54,7 @@ public class SupplyBox : MonoBehaviour
         if (other.CompareTag(playerTag))
         {
             player = other.transform;
-            playerWeapon = player.GetComponentInChildren<Weapon>(); // pega a arma do jogador
+            playerWeapon = player.GetComponentInChildren<NetworkWeapon>(); // pega a arma do jogador
         }
     }
 
@@ -74,11 +74,11 @@ public class SupplyBox : MonoBehaviour
     {
         if (playerWeapon != null)
         {
-            // Recarrega a munição máxima da arma
-            playerWeapon.maxAmmo = playerWeapon.maxMagAmmo * 4; // exemplo: 4 carregadores extras
-            playerWeapon.UpdateAmmoUI();
+            // Recarrega a muniï¿½ï¿½o mï¿½xima da arma
+          //  playerWeapon.maxAmmo = playerWeapon.maxMagAmmo * 4; // exemplo: 4 carregadores extras
+           // playerWeapon.UpdateAmmoUI();
 
-            Debug.Log("Munição total restaurada!");
+           // Debug.Log("Muniï¿½ï¿½o total restaurada!");
         }
     }
 }

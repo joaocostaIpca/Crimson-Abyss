@@ -32,7 +32,7 @@ public class InterfaceController : MonoBehaviour
     
     // Gestor de Slots de UI
     private Dictionary<ulong, int> clientSlotMap = new Dictionary<ulong, int>();
-    private List<int> freeSlots = new List<int> { 2, 3, 4 }; // Slots para os "outros"
+    private List<int> freeSlots = new List<int> { 2, 3, 4 }; 
 
     private void Awake()
     {
@@ -69,7 +69,6 @@ public class InterfaceController : MonoBehaviour
         }
     }
     
-    // Esta função atribui um slot de UI a um jogador
     public int GetOrAssignUISlot(ulong clientId, bool isLocalPlayer)
     {
         if (clientSlotMap.ContainsKey(clientId))
@@ -93,12 +92,11 @@ public class InterfaceController : MonoBehaviour
             }
             else
             {
-                return -1; // Sem slot
+                return -1; 
             }
         }
     }
 
-    // Esta função é chamada quando um jogador sai
     public void FreePlayerSlot(ulong clientId)
     {
         if (clientSlotMap.ContainsKey(clientId))
@@ -135,8 +133,11 @@ public class InterfaceController : MonoBehaviour
                 if (child.name == "MinimapEnemy") Destroy(child.gameObject);
             }
 
-            // (Lógica dos inimigos)
-            foreach (GameObject enemy in GameData.Enemies) 
+            // --- ESTA É A MUDANÇA (Linha 140) ---
+            // Em vez de FindObjectsOfType, usamos a nova função
+            EnemyAI[] allEnemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
+            
+            foreach (EnemyAI enemy in allEnemies) 
             {
                 if (enemy != null)
                 {
@@ -184,20 +185,18 @@ public class InterfaceController : MonoBehaviour
         }
     }
 
-    // UpdatePlayer agora recebe o 'charIndex'
     public void UpdatePlayer(bool isActive, int playerSlot, int charIndex, int playerHealth, Sprite playerPicture)
     {
         if (playerSlot < 1 || playerSlot > 4 || playerDisplay[0] == null) 
             return;
             
-        int index = playerSlot - 1; // Converte (1-4) para (0-3)
+        int index = playerSlot - 1; 
         playerDisplay[index].SetActive(isActive);
         
         if(!isActive)
             return;
             
-        // Usa o charIndex para buscar o nome
-        if (charIndex < 0 || charIndex >= characterNames.Length) charIndex = characterNames.Length - 1; // Fallback
+        if (charIndex < 0 || charIndex >= characterNames.Length) charIndex = characterNames.Length - 1; 
         playerNames[index].text = characterNames[charIndex];
         
         this.playerHealth[index].value = playerHealth;
