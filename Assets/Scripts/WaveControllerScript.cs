@@ -1,18 +1,22 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class WavControllerScript : MonoBehaviour
+public class WavControllerScript : NetworkBehaviour
 {
     [Header("Enemy Settings")]
-    public GameObject enemyPrefab;       // Enemy prefab to spawn
-    public Transform[] spawnPoints;      // Set spawn points in inspector
-    public int totalEnemiesToSpawn = 5;  // Total amount to eventually release
-    public int releasePerWave = 2;       // How many to release per wave (1 or 2)
+    public GameObject enemyPrefab;
+    public Transform[] spawnPoints;
+    public int totalEnemiesToSpawn = 5;
+    public int releasePerWave = 2;
     public float spawnRadius = 2f;
 
     [Header("Wave Settings")]
     public bool unlimitedWaves = false;
     public float waveDelay = 5f;
+    
+    [SerializeField] private List<Interactable> objectsToUnlock = new List<Interactable>();
 
     private int enemiesSpawned = 0;
     private bool hasTriggered = false;
@@ -20,28 +24,46 @@ public class WavControllerScript : MonoBehaviour
 
     private MeshRenderer meshRenderer;
     private Collider[] allColliders;
+    
+    private List<ulong> playersWhoExited = new List<ulong>();
 
     private void Awake()
     {
-        // Automatically get components from THIS object
         meshRenderer = GetComponent<MeshRenderer>();
         allColliders = GetComponents<Collider>();
     }
 
-    private void OnTriggerExit(Collider other)
+    public override void OnNetworkSpawn()
+    {
+        if (!IsServer)
+        {
+            this.enabled = false;
+        }
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void PlayerExitedTriggerServerRpc(ulong clientId)
+    {
+        if (!IsServer) return;
+        
+        if (!playersWhoExited.Contains(clientId))
+        {
+            playersWhoExited.Add(clientId);
+        }
+
+        int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
+        if (playersWhoExited.Count >= totalPlayers && !hasTriggered)
+        {
+            StartWave();
+        }
+    }
+
+    private void StartWave()
     {
         if (hasTriggered) return;
         hasTriggered = true;
 
-        //  Reactivate mesh
-        if (meshRenderer != null)
-            meshRenderer.enabled = true;
-
-        //  Reactivate all colliders (solid wall/gate again)
-        foreach (Collider col in allColliders)
-            col.enabled = true;
-
-        //  Spawn first enemy wave
+        CloseGateClientRpc();
         StartCoroutine(SpawnWaveRoutine());
     }
 
@@ -49,7 +71,6 @@ public class WavControllerScript : MonoBehaviour
     {
         if (unlimitedWaves)
         {
-            
             while (true)
             {
                 SpawnWave();
@@ -58,20 +79,31 @@ public class WavControllerScript : MonoBehaviour
         }
         else
         {
-            
             while (enemiesSpawned < totalEnemiesToSpawn)
             {
                 SpawnWave();
                 yield return new WaitForSeconds(waveDelay);
             }
 
-            // Wait until all enemies are dead before reopening
             while (enemiesAlive > 0)
                 yield return null;
-
-            OpenGate();
+            Debug.Log($"[WavController] Wave terminada! A tentar destrancar {objectsToUnlock.Count} objeto(s).");
+       
+            // Verifica se a lista não é nula E se tem pelo menos 1 item
+            if (objectsToUnlock != null && objectsToUnlock.Count > 0)
+            {
+          
+                foreach (Interactable obj in objectsToUnlock)
+                {
+                    if (obj != null)
+                    {
+                        obj.Unlock();
+                    }
+                }
+            }
+            
+            OpenGateClientRpc();
         }
-
     }
 
     private void SpawnWave()
@@ -79,13 +111,12 @@ public class WavControllerScript : MonoBehaviour
         int toSpawn = unlimitedWaves
             ? releasePerWave
             : Mathf.Min(releasePerWave, totalEnemiesToSpawn - enemiesSpawned);
+        
         for (int i = 0; i < toSpawn; i++)
         {
             if (!unlimitedWaves && enemiesSpawned >= totalEnemiesToSpawn) break;
 
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-
-            // Random circle on ground (X/Z)
             Vector2 circleOffset = Random.insideUnitCircle * spawnRadius;
             Vector3 spawnPos = new Vector3(
                 spawnPoint.position.x + circleOffset.x,
@@ -94,23 +125,35 @@ public class WavControllerScript : MonoBehaviour
             );
 
             GameObject enemy = Instantiate(enemyPrefab, spawnPos, spawnPoint.rotation);
-
-            // Register enemy death callback
-            EnemyDeathNotifier notifier = enemy.AddComponent<EnemyDeathNotifier>();
-            notifier.spawner = this;
+            
+            TargetMultiplayer enemyHealth = enemy.GetComponent<TargetMultiplayer>();
+            enemyHealth.OnHealthZero += OnEnemyDied; 
+            
+            enemy.GetComponent<NetworkObject>().Spawn(true); 
 
             enemiesSpawned++;
             enemiesAlive++;
         }
     }
-
-    public void EnemyDied()
+    
+    private void OnEnemyDied(TargetMultiplayer deadEnemy)
     {
-        Debug.Log("enemy died");
+        deadEnemy.OnHealthZero -= OnEnemyDied; 
         enemiesAlive--;
     }
 
-    private void OpenGate()
+    [ClientRpc]
+    private void CloseGateClientRpc()
+    {
+        if (meshRenderer != null)
+            meshRenderer.enabled = true;
+
+        foreach (Collider col in allColliders)
+            col.enabled = true;
+    }
+
+    [ClientRpc]
+    private void OpenGateClientRpc()
     {
         if (meshRenderer != null)
             meshRenderer.enabled = false;
@@ -118,6 +161,4 @@ public class WavControllerScript : MonoBehaviour
         foreach (Collider col in allColliders)
             col.enabled = false;
     }
-
-
 }
