@@ -20,14 +20,27 @@ public class Interactable : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (pressE_Prompt_UI != null) pressE_Prompt_UI.SetActive(false);
+        
+        if (pressE_Prompt_UI != null)
+            pressE_Prompt_UI.SetActive(false);
+            
         if (!IsClient) return; 
+        
         canInteract.OnValueChanged += OnCanInteractChanged;
         OnCanInteractChanged(false, canInteract.Value);
     }
 
     public override void OnNetworkDespawn()
     {
+        // --- A CORREÇÃO ESTÁ AQUI ---
+        // Quando este objeto é destruído (Despawned),
+        // garante que a UI "Pressiona E" se esconde.
+        if (pressE_Prompt_UI != null)
+        {
+            pressE_Prompt_UI.SetActive(false);
+        }
+        // --- FIM DA CORREÇÃO ---
+
         if (IsClient)
         {
             canInteract.OnValueChanged -= OnCanInteractChanged;
@@ -39,6 +52,7 @@ public class Interactable : NetworkBehaviour
     {
         if (pressE_Prompt_UI != null)
         {
+            // (A lógica de mostrar continua igual)
             pressE_Prompt_UI.SetActive(newValue && localPlayerIsInside);
         }
     }
@@ -49,32 +63,41 @@ public class Interactable : NetworkBehaviour
         {
             return;
         }
+
         if (localPlayerIsInside && canInteract.Value && Input.GetKeyDown(interactKey))
         {
             TryInteractServerRpc();
         }
     }
 
+    // --- Funções Públicas (chamadas pelo InteractableTrigger) ---
+
     public void OnPlayerEntered(GameObject playerObject)
     {
         localPlayerIsInside = true;
         PlayerChangedTriggerStateServerRpc(true);
-        if (pressE_Prompt_UI != null) pressE_Prompt_UI.SetActive(canInteract.Value);
+            
+        if (pressE_Prompt_UI != null)
+            pressE_Prompt_UI.SetActive(canInteract.Value);
     }
 
     public void OnPlayerExited()
     {
         localPlayerIsInside = false;
         PlayerChangedTriggerStateServerRpc(false);
-        if (pressE_Prompt_UI != null) pressE_Prompt_UI.SetActive(false);
+
+        if (pressE_Prompt_UI != null)
+            pressE_Prompt_UI.SetActive(false);
     }
+
 
     // --- FUNÇÕES DO SERVIDOR ---
     public void Unlock()
     {
         if (!IsServer) return; 
+        
         isLocked.Value = false;
-        ServerCheckInteractionState(); // Usa a nova função
+        ServerCheckInteractionState(); 
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -98,7 +121,7 @@ public class Interactable : NetworkBehaviour
             playersInTrigger.Remove(clientId);
         }
         
-        ServerCheckInteractionState(); // Usa a nova função
+        ServerCheckInteractionState(); 
     }
     
     [ServerRpc(RequireOwnership = false)]
@@ -109,8 +132,8 @@ public class Interactable : NetworkBehaviour
             NetworkObject.Despawn(true); 
         }
     }
-
-    // --- MUDANÇA: Esta função agora é pública ---
+    
+    // (Esta função é pública para o GameManagerHelper a poder chamar)
     public void ServerCheckInteractionState()
     {
         if (!IsServer) return;
