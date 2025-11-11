@@ -13,9 +13,16 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] int reactionDelay = 500;
     [SerializeField] float minimumDistance = 30f; 
     
+    // --- MUDANÇA 1: Variáveis de Ataque ---
+    [Header("Attack Settings")]
+    [SerializeField] private float enemyDamage = 10f;
+    [SerializeField] private float attackCooldown = 2f; // Só ataca a cada 2s
+    [SerializeField] private float attackAnimDelay = 0.5f; // Placeholder para a animação
+    private float lastAttackTime = 0f;
+    
     [Header("Patrol Settings")]
     [SerializeField] private float patrolSpeedMultiplier = 0.5f; 
-    [SerializeField] private float patrolWaitTime = 3f; 
+    [SerializeField] private float patrolWaitTime = 1f; 
 
     private NavMeshAgent agent;
     private float defaultAgentSpeed; 
@@ -78,6 +85,7 @@ public class EnemyAI : NetworkBehaviour
             hasLastKnownPosition = true;
             lastKnownPosition = targetPlayer.position;
 
+            // --- MUDANÇA 2: Usar 'stoppingDistance' do Agente ---
             float distance = Vector3.Distance(transform.position, targetPlayer.position);
             if (distance <= agent.stoppingDistance) 
             {
@@ -85,7 +93,7 @@ public class EnemyAI : NetworkBehaviour
             }
             else
             {
-                currentState = "Walking"; // Perseguir
+                currentState = "Walking";
             }
         }
         else
@@ -130,7 +138,14 @@ public class EnemyAI : NetworkBehaviour
         else if (currentState == "Attack")
         {
             agent.SetDestination(transform.position); 
-            // (Lógica de ataque...)
+            
+            // --- MUDANÇA 3: Lógica de Ataque ---
+            if (Time.time > lastAttackTime + attackCooldown && targetPlayer != null)
+            {
+                lastAttackTime = Time.time;
+                // Começa a sequência de ataque (pronta para animação)
+                StartCoroutine(AttackSequence());
+            }
         }
         else if (currentState == "Searching")
         {
@@ -142,17 +157,12 @@ public class EnemyAI : NetworkBehaviour
             agent.speed = defaultAgentSpeed * patrolSpeedMultiplier; 
             agent.SetDestination(currentPatrolTarget);
             
-            // --- MUDANÇA 1: Lógica para "des-prender" ---
-            // Se chegámos
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
                 StartCoroutine(WaitAtPatrolPoint());
             }
-            // Se o caminho for inválido (ex: o ponto está numa parede)
             else if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.pathStatus == NavMeshPathStatus.PathPartial)
             {
-                // Esquece este ponto, encontra um novo.
-                Debug.LogWarning($"[EnemyAI] Não consigo chegar a {currentPatrolTarget}. A encontrar novo ponto.");
                 FindNewPatrolPoint(); 
             }
         }
@@ -162,35 +172,44 @@ public class EnemyAI : NetworkBehaviour
         }
     }
     
-    // --- MUDANÇA 2: Função de patrulha muito mais robusta ---
+    // --- MUDANÇA 4: Nova Co-rotina de Ataque ---
+    private IEnumerator AttackSequence()
+    {
+        // 1. (Aqui chamarias a animação)
+        // animator.SetTrigger("Attack"); 
+        
+        // 2. Espera pelo "ponto de dano" da animação
+        yield return new WaitForSeconds(attackAnimDelay);
+        
+        // 3. Verifica se o jogador ainda está ao alcance
+        if (targetPlayer != null && Vector3.Distance(transform.position, targetPlayer.position) <= agent.stoppingDistance + 0.5f)
+        {
+            // 4. Aplica o dano (o TargetMultiplayer no jogador vai tratar da rede)
+            TargetMultiplayer playerHealth = targetPlayer.GetComponent<TargetMultiplayer>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamageServerRpc(enemyDamage);
+            }
+        }
+    }
+
     private void FindNewPatrolPoint()
     {
         bool foundPoint = false;
-        
-        // Tenta 30 vezes encontrar um ponto VÁLIDO
         for (int i = 0; i < 30; i++)
         {
-            // 1. Gera um ponto aleatório
             Vector2 randomCircle = Random.insideUnitCircle * patrolRadius;
             Vector3 randomPos = startPosition + new Vector3(randomCircle.x, 0, randomCircle.y);
-            
             NavMeshHit hit;
-            // 2. Tenta "snapar" esse ponto ao NavMesh (com uma tolerância pequena de 1.0f)
             if (NavMesh.SamplePosition(randomPos, out hit, 1.0f, NavMesh.AllAreas))
             {
-                // 3. SUCESSO! Encontrámos um ponto que está NO NavMesh.
                 currentPatrolTarget = hit.position;
                 foundPoint = true;
-                break; // Sai do loop 'for'
+                break; 
             }
         }
-
-        // Se, depois de 30 tentativas, não encontrámos um ponto bom...
         if (!foundPoint)
         {
-            // ...desiste e volta para o início (startPosition)
-            Debug.LogWarning($"[EnemyAI] Não conseguiu encontrar um ponto de patrulha aleatório. A voltar ao início.");
-            
             NavMeshHit hit;
             if (NavMesh.SamplePosition(startPosition, out hit, patrolRadius, NavMesh.AllAreas))
             {
@@ -198,7 +217,6 @@ public class EnemyAI : NetworkBehaviour
             }
             else
             {
-                // Falha total, fica parado
                 currentPatrolTarget = transform.position;
                 isPatrolling = false;
             }
@@ -222,8 +240,16 @@ public class EnemyAI : NetworkBehaviour
 
         foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
+            // --- MUDANÇA 5: Só ataca jogadores VIVOS ---
             if (client.PlayerObject != null)
             {
+                // Verifica se o jogador está morto
+                TargetMultiplayer playerHealth = client.PlayerObject.GetComponent<TargetMultiplayer>();
+                if (playerHealth != null && playerHealth.IsDead.Value)
+                {
+                    continue; // Ignora este jogador
+                }
+
                 Transform player = client.PlayerObject.transform;
                 float distance = Vector3.Distance(transform.position, player.position);
 

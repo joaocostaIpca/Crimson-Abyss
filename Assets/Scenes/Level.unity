@@ -340,6 +340,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
   patrolRadius: 4
+  spawnDelay: 2
 --- !u!114 &88664532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1328,6 +1329,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
   patrolRadius: 4
+  spawnDelay: 2
 --- !u!4 &519660797
 Transform:
   m_ObjectHideFlags: 0
@@ -1449,6 +1451,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
   patrolRadius: 4
+  spawnDelay: 2
 --- !u!114 &536862444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1731,6 +1734,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
   patrolRadius: 4
+  spawnDelay: 2
 --- !u!114 &683833951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2271,12 +2275,11 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 776737775}
   - {fileID: 759736671}
-  - {fileID: 1191507795}
-  totalEnemiesToSpawn: 15
-  releasePerWave: 5
+  totalEnemiesToSpawn: 12
+  releasePerWave: 4
   spawnRadius: 3
   unlimitedWaves: 0
-  waveDelay: 30
+  waveDelay: 10
   objectsToUnlock: []
 --- !u!65 &866607508
 BoxCollider:
@@ -3079,37 +3082,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1851928, y: 0.16424856, z: 0.08387784}
   m_Center: {x: 0.20824482, y: -0.6347153, z: -0.042733345}
---- !u!1 &1191507794
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1191507795}
-  m_Layer: 0
-  m_Name: Spawn test (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1191507795
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191507794}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 176.63942, y: -2.36842, z: -40.8908}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1935736937}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1192675717
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3464,6 +3436,30 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: buttonQuit
+      value: 
+      objectReference: {fileID: 1365507427}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: buttonResume
+      value: 
+      objectReference: {fileID: 1365507429}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: gameUIParent
+      value: 
+      objectReference: {fileID: 1365507431}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: buttonMainMenu
+      value: 
+      objectReference: {fileID: 1365507428}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: pauseMenuPanel
+      value: 
+      objectReference: {fileID: 1365507430}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: characterNames.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2630782631641274532, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -3696,6 +3692,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8855822358792612315, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8756479334610289024, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
     m_RemovedGameObjects:
@@ -3712,6 +3712,49 @@ PrefabInstance:
 --- !u!224 &1365507426 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7832949666168396026, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+  m_PrefabInstance: {fileID: 1365507425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1365507427 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3477995900018538727, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+  m_PrefabInstance: {fileID: 1365507425}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &1365507428 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2278357810499825025, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+  m_PrefabInstance: {fileID: 1365507425}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &1365507429 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7456792197753484916, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+  m_PrefabInstance: {fileID: 1365507425}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!1 &1365507430 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8855822358792612315, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+  m_PrefabInstance: {fileID: 1365507425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1365507431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 423746823530789530, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
   m_PrefabInstance: {fileID: 1365507425}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1366004757
@@ -4545,6 +4588,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
   patrolRadius: 4
+  spawnDelay: 2
 --- !u!114 &1604272418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4618,6 +4662,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
   patrolRadius: 4
+  spawnDelay: 2
 --- !u!114 &1611421038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4824,6 +4869,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
   patrolRadius: 4
+  spawnDelay: 2
 --- !u!114 &1698614872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5574,7 +5620,6 @@ Transform:
   - {fileID: 541692376}
   - {fileID: 776737775}
   - {fileID: 759736671}
-  - {fileID: 1191507795}
   - {fileID: 1328000207}
   - {fileID: 302129330}
   - {fileID: 1512443933}
