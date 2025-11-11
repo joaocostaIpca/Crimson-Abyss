@@ -97,11 +97,17 @@ public class NetworkWeapon : NetworkBehaviour
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, range))
         {
-            TargetMultiplayer target = hit.transform.GetComponent<TargetMultiplayer>();
-            if (target != null)
+           
+            if (!hit.transform.CompareTag("Player"))
             {
-                target.TakeDamageServerRpc(damage);
+                
+                TargetMultiplayer target = hit.transform.GetComponent<TargetMultiplayer>();
+                if (target != null)
+                {
+                    target.TakeDamageServerRpc(damage);
+                }
             }
+            
 
             if (hitEffect != null)
             {
@@ -109,7 +115,6 @@ public class NetworkWeapon : NetworkBehaviour
             }
         }
     }
-
     [ClientRpc]
     void ShowHitEffectClientRpc(Vector3 point, Vector3 normal)
     {

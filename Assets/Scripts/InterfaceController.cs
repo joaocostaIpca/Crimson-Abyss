@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode; // Precisamos disto
 
 public class InterfaceController : MonoBehaviour
 {
     public static InterfaceController Instance { get; private set; }
+    
+    // --- LÓGICA DE PAUSA REMOVIDA ---
 
+    [Header("Configurações")]
     [SerializeField] float minimapUpdateDelay = 50f;
     [SerializeField] float minimapRange = 50f;
-
-    // A ordem TEM de ser a mesma dos teus prefabs no LobbyManager
-    // (0=Freira, 1=Comandante, 2=Templario, 3=Fuzileiro)
     public string[] characterNames = new string[] { "Freira", "Comandante", "Templario", "Fuzileiro", "Desconhecido" };
 
     private TextMeshProUGUI ammoText;
@@ -30,7 +31,6 @@ public class InterfaceController : MonoBehaviour
     private List<string> weaponImageNames = new List<string>();
     private List<Sprite> weaponImages = new List<Sprite>();
     
-    // Gestor de Slots de UI
     private Dictionary<ulong, int> clientSlotMap = new Dictionary<ulong, int>();
     private List<int> freeSlots = new List<int> { 2, 3, 4 }; 
 
@@ -43,10 +43,11 @@ public class InterfaceController : MonoBehaviour
         }
         Instance = this;
         
+        // --- LÓGICA DE PAUSA REMOVIDA ---
+        
         minimapUpdateDelaySeconds = minimapUpdateDelay / 1000f;
         clientSlotMap = new Dictionary<ulong, int>();
         freeSlots = new List<int> { 2, 3, 4 };
-
         ammoText = GameObject.Find("Canvas/Ammo/AmmoCounter").GetComponent<TextMeshProUGUI>();
         weaponPicture = GameObject.Find("Canvas/Ammo/WeaponPicture").GetComponent<Image>();
         minimapCompass = GameObject.Find("Canvas/Minimap/MinimapImage");
@@ -69,13 +70,16 @@ public class InterfaceController : MonoBehaviour
         }
     }
     
+    // --- FUNÇÕES DE PAUSA REMOVIDAS ---
+    
+    // --- O resto do script (Gestão de Slots, Minimapa, UI) ---
+    
     public int GetOrAssignUISlot(ulong clientId, bool isLocalPlayer)
     {
         if (clientSlotMap.ContainsKey(clientId))
         {
             return clientSlotMap[clientId];
         }
-
         if (isLocalPlayer)
         {
             clientSlotMap[clientId] = 1;
@@ -103,7 +107,6 @@ public class InterfaceController : MonoBehaviour
         {
             int slot = clientSlotMap[clientId];
             clientSlotMap.Remove(clientId);
-            
             if (slot > 1)
             {
                 freeSlots.Add(slot);
@@ -132,11 +135,8 @@ public class InterfaceController : MonoBehaviour
             {
                 if (child.name == "MinimapEnemy") Destroy(child.gameObject);
             }
-
-            // --- ESTA É A MUDANÇA (Linha 140) ---
-            // Em vez de FindObjectsOfType, usamos a nova função
-            EnemyAI[] allEnemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
             
+            EnemyAI[] allEnemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
             foreach (EnemyAI enemy in allEnemies) 
             {
                 if (enemy != null)
@@ -146,7 +146,6 @@ public class InterfaceController : MonoBehaviour
                     {
                         float xPercent = (relativePosition.x / (minimapRange * 2)) + 0.5f;
                         float yPercent = (relativePosition.z / (minimapRange * 2)) + 0.5f;
-                        
                         GameObject enemyIcon = new GameObject("MinimapEnemy");
                         enemyIcon.transform.SetParent(minimapCompass.transform);
                         Image image = enemyIcon.AddComponent<Image>();
@@ -173,7 +172,6 @@ public class InterfaceController : MonoBehaviour
     public void UpdateWeapon(string weaponName)
     {
         if (weaponPicture == null) return;
-        
         int index = weaponImageNames.IndexOf(weaponName);
         if (index >= 0)
         {
@@ -189,16 +187,12 @@ public class InterfaceController : MonoBehaviour
     {
         if (playerSlot < 1 || playerSlot > 4 || playerDisplay[0] == null) 
             return;
-            
         int index = playerSlot - 1; 
         playerDisplay[index].SetActive(isActive);
-        
         if(!isActive)
             return;
-            
         if (charIndex < 0 || charIndex >= characterNames.Length) charIndex = characterNames.Length - 1; 
         playerNames[index].text = characterNames[charIndex];
-        
         this.playerHealth[index].value = playerHealth;
         this.playerPictures[index].sprite = playerPicture;
     }
@@ -207,7 +201,6 @@ public class InterfaceController : MonoBehaviour
     {
         if (playerSlot < 1 || playerSlot > 4 || playerHealth[0] == null)
             return;
-            
         int index = playerSlot - 1;
         playerHealth[index].value = healthValue;
     }

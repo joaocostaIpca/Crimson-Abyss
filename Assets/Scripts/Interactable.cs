@@ -2,8 +2,6 @@ using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
 
-// --- MUDANÇA 1: Adicionar a Ordem de Execução ---
-// (Isto força o script a esperar pelo NetworkManager)
 [DefaultExecutionOrder(100)]
 public class Interactable : NetworkBehaviour
 {
@@ -22,12 +20,8 @@ public class Interactable : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        
-        if (pressE_Prompt_UI != null)
-            pressE_Prompt_UI.SetActive(false);
-            
+        if (pressE_Prompt_UI != null) pressE_Prompt_UI.SetActive(false);
         if (!IsClient) return; 
-        
         canInteract.OnValueChanged += OnCanInteractChanged;
         OnCanInteractChanged(false, canInteract.Value);
     }
@@ -49,56 +43,50 @@ public class Interactable : NetworkBehaviour
         }
     }
 
-    // (Corre SÓ no Cliente Local)
     void Update()
     {
-      
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsClient) 
         {
             return;
         }
-
         if (localPlayerIsInside && canInteract.Value && Input.GetKeyDown(interactKey))
         {
             TryInteractServerRpc();
         }
     }
 
-    // --- Funções Públicas (chamadas pelo InteractableTrigger) ---
     public void OnPlayerEntered(GameObject playerObject)
     {
         localPlayerIsInside = true;
         PlayerChangedTriggerStateServerRpc(true);
-            
-        if (pressE_Prompt_UI != null)
-            pressE_Prompt_UI.SetActive(canInteract.Value);
+        if (pressE_Prompt_UI != null) pressE_Prompt_UI.SetActive(canInteract.Value);
     }
 
     public void OnPlayerExited()
     {
         localPlayerIsInside = false;
         PlayerChangedTriggerStateServerRpc(false);
-
-        if (pressE_Prompt_UI != null)
-            pressE_Prompt_UI.SetActive(false);
+        if (pressE_Prompt_UI != null) pressE_Prompt_UI.SetActive(false);
     }
-
 
     // --- FUNÇÕES DO SERVIDOR ---
     public void Unlock()
     {
         if (!IsServer) return; 
-
-        Debug.Log($"[Interactable {gameObject.name}] FUI DESTRANCADO!");
-        
         isLocked.Value = false;
-        CheckInteractionState(); 
+        ServerCheckInteractionState(); // Usa a nova função
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void PlayerChangedTriggerStateServerRpc(bool entered, ServerRpcParams rpcParams = default)
     {
         ulong clientId = rpcParams.Receive.SenderClientId;
+        
+        TargetMultiplayer target = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<TargetMultiplayer>();
+        if (target != null && target.IsDead.Value)
+        {
+            return; 
+        }
         
         if (entered)
         {
@@ -110,29 +98,32 @@ public class Interactable : NetworkBehaviour
             playersInTrigger.Remove(clientId);
         }
         
-        CheckInteractionState(); 
+        ServerCheckInteractionState(); // Usa a nova função
     }
     
     [ServerRpc(RequireOwnership = false)]
     private void TryInteractServerRpc()
     {
-
-        Debug.Log($"[Interactable {gameObject.name}] Servidor recebeu pedido de interação. Verificando... (canInteract.Value = {canInteract.Value})");
         if (canInteract.Value)
         {
-            Debug.Log("...Interação APROVADA. A DESTRUIR.");
             NetworkObject.Despawn(true); 
         }
     }
 
-    private void CheckInteractionState()
+    // --- MUDANÇA: Esta função agora é pública ---
+    public void ServerCheckInteractionState()
     {
         if (!IsServer) return;
 
-        int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
-        bool allInside = playersInTrigger.Count == totalPlayers;
+        int totalLivingPlayers = GameManagerHelper.GetLivingPlayerCount();
+        
+        if (totalLivingPlayers == 0)
+        {
+            canInteract.Value = false;
+            return;
+        }
 
+        bool allInside = playersInTrigger.Count == totalLivingPlayers;
         canInteract.Value = (!isLocked.Value && allInside);
-        Debug.Log($"[Interactable {gameObject.name}] CheckState: Trancado={isLocked.Value}, JogadoresDentro={playersInTrigger.Count}, TodosDentro={allInside}. => Posso Interagir? {canInteract.Value}");
     }
 }

@@ -15,7 +15,6 @@ public class WavControllerScript : NetworkBehaviour
     [Header("Wave Settings")]
     public bool unlimitedWaves = false;
     public float waveDelay = 5f;
-    
     [SerializeField] private List<Interactable> objectsToUnlock = new List<Interactable>();
 
     private int enemiesSpawned = 0;
@@ -41,18 +40,43 @@ public class WavControllerScript : NetworkBehaviour
         }
     }
     
+    // --- MUDANÇA: Esta função agora é pública ---
+    public void CheckTriggerStateAfterPlayerDeath()
+    {
+        if (!IsServer || hasTriggered) return;
+        
+        // "Limpa" a lista de jogadores mortos
+        playersWhoExited.RemoveAll(id => 
+            NetworkManager.Singleton.ConnectedClients.ContainsKey(id) == false || 
+            NetworkManager.Singleton.ConnectedClients[id].PlayerObject.GetComponent<TargetMultiplayer>().IsDead.Value
+        );
+
+        // Re-verifica se todos os VIVOS já saíram
+        int totalLivingPlayers = GameManagerHelper.GetLivingPlayerCount();
+        if (playersWhoExited.Count >= totalLivingPlayers && totalLivingPlayers > 0)
+        {
+            StartWave();
+        }
+    }
+
     [ServerRpc(RequireOwnership = false)]
     public void PlayerExitedTriggerServerRpc(ulong clientId)
     {
         if (!IsServer) return;
+        
+        TargetMultiplayer target = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<TargetMultiplayer>();
+        if (target != null && target.IsDead.Value)
+        {
+            return; 
+        }
         
         if (!playersWhoExited.Contains(clientId))
         {
             playersWhoExited.Add(clientId);
         }
 
-        int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
-        if (playersWhoExited.Count >= totalPlayers && !hasTriggered)
+        int totalLivingPlayers = GameManagerHelper.GetLivingPlayerCount();
+        if (playersWhoExited.Count >= totalLivingPlayers && !hasTriggered && totalLivingPlayers > 0)
         {
             StartWave();
         }
@@ -62,7 +86,6 @@ public class WavControllerScript : NetworkBehaviour
     {
         if (hasTriggered) return;
         hasTriggered = true;
-
         CloseGateClientRpc();
         StartCoroutine(SpawnWaveRoutine());
     }
@@ -87,12 +110,9 @@ public class WavControllerScript : NetworkBehaviour
 
             while (enemiesAlive > 0)
                 yield return null;
-            Debug.Log($"[WavController] Wave terminada! A tentar destrancar {objectsToUnlock.Count} objeto(s).");
-       
-            // Verifica se a lista não é nula E se tem pelo menos 1 item
+
             if (objectsToUnlock != null && objectsToUnlock.Count > 0)
             {
-          
                 foreach (Interactable obj in objectsToUnlock)
                 {
                     if (obj != null)
@@ -101,7 +121,6 @@ public class WavControllerScript : NetworkBehaviour
                     }
                 }
             }
-            
             OpenGateClientRpc();
         }
     }
@@ -123,14 +142,10 @@ public class WavControllerScript : NetworkBehaviour
                 spawnPoint.position.y,
                 spawnPoint.position.z + circleOffset.y
             );
-
             GameObject enemy = Instantiate(enemyPrefab, spawnPos, spawnPoint.rotation);
-            
             TargetMultiplayer enemyHealth = enemy.GetComponent<TargetMultiplayer>();
             enemyHealth.OnHealthZero += OnEnemyDied; 
-            
             enemy.GetComponent<NetworkObject>().Spawn(true); 
-
             enemiesSpawned++;
             enemiesAlive++;
         }
@@ -147,7 +162,6 @@ public class WavControllerScript : NetworkBehaviour
     {
         if (meshRenderer != null)
             meshRenderer.enabled = true;
-
         foreach (Collider col in allColliders)
             col.enabled = true;
     }
@@ -157,7 +171,6 @@ public class WavControllerScript : NetworkBehaviour
     {
         if (meshRenderer != null)
             meshRenderer.enabled = false;
-
         foreach (Collider col in allColliders)
             col.enabled = false;
     }
