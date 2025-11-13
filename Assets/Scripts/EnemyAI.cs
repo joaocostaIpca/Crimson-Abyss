@@ -9,10 +9,13 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : NetworkBehaviour
 {
+    #region variables
+
     [Header("IA Settings")]
     [SerializeField] int reactionDelay = 500;
-    [SerializeField] float minimumDistance = 30f; 
-    
+    [SerializeField] float minimumDistance = 30f;
+    [SerializeField] private string enemyType = "Diabrete"; // Diabrete, Lancador, Bruto
+
     // --- MUDANÇA 1: Variáveis de Ataque ---
     [Header("Attack Settings")]
     [SerializeField] private float enemyDamage = 10f;
@@ -39,10 +42,15 @@ public class EnemyAI : NetworkBehaviour
     private Vector3 currentPatrolTarget;
     private bool isPatrolling = false;
     private bool isWaitingAtPatrolPoint = false;
-    
+
+    private Animator animator;
+
+    #endregion
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         defaultAgentSpeed = agent.speed; 
     }
     
@@ -90,10 +98,12 @@ public class EnemyAI : NetworkBehaviour
             if (distance <= agent.stoppingDistance) 
             {
                 currentState = "Attack";
+                animator?.SetTrigger("Attack");
             }
             else
             {
                 currentState = "Walking";
+                animator?.SetTrigger("Walk");
             }
         }
         else
@@ -103,6 +113,7 @@ public class EnemyAI : NetworkBehaviour
                 if (currentState != "Searching")
                 {
                     currentState = "Searching";
+                    animator?.SetTrigger("Walk");
                 }
                 else if (currentState == "Searching")
                 {
@@ -120,9 +131,15 @@ public class EnemyAI : NetworkBehaviour
             if (!hasLastKnownPosition)
             {
                 if (isPatrolling)
+                {
                     currentState = "Patrol";
+                    animator?.SetTrigger("Walk");
+                }
                 else
+                {
                     currentState = "Idle";
+                    animator?.SetTrigger("Idle");
+                }
             }
         }
     }
@@ -175,16 +192,13 @@ public class EnemyAI : NetworkBehaviour
     // --- MUDANÇA 4: Nova Co-rotina de Ataque ---
     private IEnumerator AttackSequence()
     {
-        // 1. (Aqui chamarias a animação)
-        // animator.SetTrigger("Attack"); 
-        
-        // 2. Espera pelo "ponto de dano" da animação
+        // 1. Espera pelo "ponto de dano" da animação
         yield return new WaitForSeconds(attackAnimDelay);
         
-        // 3. Verifica se o jogador ainda está ao alcance
+        // 2. Verifica se o jogador ainda está ao alcance
         if (targetPlayer != null && Vector3.Distance(transform.position, targetPlayer.position) <= agent.stoppingDistance + 0.5f)
         {
-            // 4. Aplica o dano (o TargetMultiplayer no jogador vai tratar da rede)
+            // 3. Aplica o dano (o TargetMultiplayer no jogador vai tratar da rede)
             TargetMultiplayer playerHealth = targetPlayer.GetComponent<TargetMultiplayer>();
             if (playerHealth != null)
             {
