@@ -1,0 +1,11 @@
+{
+    "asset": "395e8890e9861f246b96faab5d8e121a",
+    "fileName": "019a8e39-e85a-7147-aa91-b296a0096576.pose.json",
+    "prompt": "i want a jump fast but a litle high\nwith a gun in hand\n",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1054251188,
+    "w3CTraceId": "9679a2ef9ac387d2d5e1d64a134ca843",
+    "isTrimmed": false
+}
