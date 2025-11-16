@@ -338,9 +338,9 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
-  SyncRotAngleZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
   SyncScaleX: 1
   SyncScaleY: 1
   SyncScaleZ: 1
@@ -437,7 +437,7 @@ MonoBehaviour:
   rb: {fileID: 1863416820771645691}
   playerCamera: {fileID: 8380606075279741747}
   playerAudioListener: {fileID: 4500466885706346210}
-  networkWeapon: {fileID: 0}
+  networkWeapon: {fileID: 4009265886482677841}
   spectatorCamera: {fileID: 5432166609749963058}
   playerRenderers:
   - {fileID: 7845071663164191041}

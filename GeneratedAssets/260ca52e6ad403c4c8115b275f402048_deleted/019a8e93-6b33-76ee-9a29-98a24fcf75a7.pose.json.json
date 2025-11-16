@@ -1,0 +1,11 @@
+{
+    "asset": "260ca52e6ad403c4c8115b275f402048",
+    "fileName": "019a8e93-6b33-76ee-9a29-98a24fcf75a7.pose.json",
+    "prompt": "i want a walk animation in place with a gun in hand pointed\n",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 113656933,
+    "w3CTraceId": "03a6d1ff0b3e512c0beb726104cbd0d7",
+    "isTrimmed": false
+}
