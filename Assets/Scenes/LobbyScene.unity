@@ -1238,10 +1238,10 @@ MonoBehaviour:
   maxPlayers: 4
   gameSceneName: Level
   characterPrefabs:
-  - {fileID: 3912800180322352391, guid: 66ae01c685e84a645b1792d6561774d9, type: 3}
-  - {fileID: 1852405574603973326, guid: 42b7c2cdf284346469ec880ed270865c, type: 3}
-  - {fileID: 1302071111815882218, guid: 91afd897f6e80f3458314fffca2802bd, type: 3}
-  - {fileID: 214863249251265568, guid: ea1a2053713acea4c959e6af5c249397, type: 3}
+  - {fileID: 6198453585050572558, guid: 21c7a192c30af3e4d97b4c2767d11643, type: 3}
+  - {fileID: 2918693539602973759, guid: 394eb1bdecb2fa54eafd9daa5d8e5eb0, type: 3}
+  - {fileID: 2660316431195945682, guid: 049ec44fb556a3b4a843db067806c141, type: 3}
+  - {fileID: 7877392380050207773, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
 --- !u!4 &416426387
 Transform:
   m_ObjectHideFlags: 0

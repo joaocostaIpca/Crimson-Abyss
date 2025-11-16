@@ -1,0 +1,11 @@
+{
+    "asset": "ff0bf9c39ea3dea499c2be0aee727652",
+    "fileName": "019a8d76-4954-7f95-910d-31b8c151e5af.pose.json",
+    "prompt": "i want a walking animation with a gun in the hand the charachers have kinda chunky arms",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 879330447,
+    "w3CTraceId": "05c8adf372411f6465d6c7197efbcd9e",
+    "isTrimmed": false
+}

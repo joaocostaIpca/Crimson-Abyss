@@ -13,9 +13,12 @@ public class PlayerController : NetworkBehaviour
     public AudioListener playerAudioListener;
     public NetworkWeapon networkWeapon; 
     
+    // --- MUDANÇA 1: Adicionar referência ao Animator ---
+    private Animator animator;
+    
     [Header("Modo Espectador")]
     [SerializeField] private Camera spectatorCamera;
-    [SerializeField] private MeshRenderer[] playerMeshes; 
+    [SerializeField] private Renderer[] playerRenderers; 
     [SerializeField] private Collider playerCollider;
     
     [Header("Definições de Espectador")]
@@ -51,9 +54,12 @@ public class PlayerController : NetworkBehaviour
         target = GetComponent<TargetMultiplayer>();
         if (playerCollider == null) playerCollider = GetComponent<Collider>();
         
-        if (playerMeshes == null || playerMeshes.Length == 0)
+        // --- MUDANÇA 2: Ligar o Animator ---
+        animator = GetComponent<Animator>();
+
+        if (playerRenderers == null || playerRenderers.Length == 0)
         {
-            playerMeshes = GetComponentsInChildren<MeshRenderer>();
+            playerRenderers = GetComponentsInChildren<Renderer>();
         }
         
         if (spectatorCamera == null)
@@ -62,15 +68,6 @@ public class PlayerController : NetworkBehaviour
             if (specCamTransform != null)
             {
                 spectatorCamera = specCamTransform.GetComponent<Camera>();
-            }
-            if (spectatorCamera == null)
-            {
-                 Debug.LogError("[PlayerController] FALHA AO ENCONTRAR 'SpectatorCamera'!");
-            }
-            else if (spectatorCamera == playerCamera)
-            {
-                Debug.LogError("[PlayerController] ERRO! A 'spectatorCamera' é a mesma que a 'playerCamera'!");
-                spectatorCamera = null; 
             }
         }
     }
@@ -171,9 +168,9 @@ public class PlayerController : NetworkBehaviour
     
     public void EnableSpectatorMode()
     {
-        foreach(var mesh in playerMeshes)
+        foreach(var renderer in playerRenderers)
         {
-            if (mesh != null) mesh.enabled = false;
+            if (renderer != null) renderer.enabled = false;
         }
         if (playerCollider != null) playerCollider.enabled = false;
         if (rb != null) rb.isKinematic = true; 
@@ -246,7 +243,6 @@ public class PlayerController : NetworkBehaviour
         }
     }
     
-    // --- LÓGICA DE PAUSA REMOVIDA ---
     void Update()
     {
         // Input da Câmara
@@ -264,9 +260,17 @@ public class PlayerController : NetworkBehaviour
         {
             jumpInput = true;
         }
+
+        // --- MUDANÇA 3: Atualizar o Animator ---
+        if (animator != null)
+        {
+            // Verifica se o input (horizontal ou vertical) é maior que 0.1
+            bool isCurrentlyMoving = moveInput.magnitude > 0.1f;
+            // Define o parâmetro no "cérebro"
+            animator.SetBool("isMoving", isCurrentlyMoving);
+        }
     }
     
-    // --- LÓGICA DE PAUSA REMOVIDA ---
     void FixedUpdate()
     {
         if (groundCheckTimer > 0)
@@ -279,15 +283,20 @@ public class PlayerController : NetworkBehaviour
             isGrounded = false;
         }
         
-        // Movimento com 'rb.velocity' (corrige o "deslize")
         Vector3 targetVelocity = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized * speed;
         targetVelocity.y = rb.linearVelocity.y;
         rb.linearVelocity = targetVelocity;
         
-        // Pulo
         if (jumpInput && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            
+            // --- MUDANÇA 4: Disparar o Trigger de Pulo ---
+            if (animator != null)
+            {
+                animator.SetTrigger("doJump");
+            }
+            
             jumpInput = false; 
             groundCheckTimer = 0; 
         }

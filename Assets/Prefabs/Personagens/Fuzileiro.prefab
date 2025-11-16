@@ -449,6 +449,9 @@ MonoBehaviour:
   playerMeshes:
   - {fileID: 1743501223150230044}
   playerCollider: {fileID: 8127063727521684492}
+  spectatorDistance: 5
+  spectatorMinPitch: -30
+  spectatorMaxPitch: 80
   speed: 10
   jumpForce: 7
   mouseSensitivity: 100
