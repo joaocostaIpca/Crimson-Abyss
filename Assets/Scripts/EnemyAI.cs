@@ -1,20 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.AI; 
+using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(TargetMultiplayer))] 
-[RequireComponent(typeof(Rigidbody))] 
+[RequireComponent(typeof(TargetMultiplayer))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : NetworkBehaviour
 {
+    public enum EnemyType { Diabrete, Lancador, Bruto }
+
     #region variables
 
     [Header("IA Settings")]
     [SerializeField] int reactionDelay = 500;
     [SerializeField] float minimumDistance = 30f;
-    [SerializeField] private string enemyType = "Diabrete"; // Diabrete, Lancador, Bruto
+    [SerializeField] private float flightHeight = 0f;
+    [SerializeField] private EnemyType enemyType = EnemyType.Diabrete; // Diabrete, Lancador, Bruto
 
     // --- MUDANÇA 1: Variáveis de Ataque ---
     [Header("Attack Settings")]
@@ -22,23 +24,29 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] private float attackCooldown = 2f; // Só ataca a cada 2s
     [SerializeField] private float attackAnimDelay = 0.5f; // Placeholder para a animação
     private float lastAttackTime = 0f;
-    
+
     [Header("Patrol Settings")]
-    [SerializeField] private float patrolSpeedMultiplier = 0.5f; 
-    [SerializeField] private float patrolWaitTime = 1f; 
+    [SerializeField] private float patrolSpeedMultiplier = 0.5f;
+    [SerializeField] private float patrolWaitTime = 2f;
+    [SerializeField] private float patrolRadius = 15f;
+
+    [Header("Flight Settings (Lancador)")]
+    [SerializeField] private float flightSpeed = 4f;
+    [SerializeField] private float flightRotateSpeed = 5f;
+    [SerializeField] private float flightArrivalDistance = 0.5f;
 
     private NavMeshAgent agent;
-    private float defaultAgentSpeed; 
-    
+    private Rigidbody rb;
+    private float defaultAgentSpeed;
+
     private Coroutine reactionCoroutine;
     private string currentState = "Idle";
     private Transform targetPlayer;
 
     private Vector3 lastKnownPosition;
-    private bool hasLastKnownPosition = false; 
+    private bool hasLastKnownPosition = false;
 
     private Vector3 startPosition;
-    private float patrolRadius;
     private Vector3 currentPatrolTarget;
     private bool isPatrolling = false;
     private bool isWaitingAtPatrolPoint = false;
@@ -50,32 +58,143 @@ public class EnemyAI : NetworkBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-        defaultAgentSpeed = agent.speed; 
+
+        if (agent == null)
+        {
+            Debug.LogError($"{name}: NavMeshAgent missing — disabling EnemyAI.");
+            enabled = false;
+            return;
+        }
+
+        defaultAgentSpeed = agent.speed;
+
+        // For flying enemies we will drive transform manually (disable agent's transform updates).
+        if (enemyType == EnemyType.Lancador)
+        {
+            agent.updatePosition = false;
+            agent.updateRotation = false;
+            if (flightHeight != 0f)
+                agent.baseOffset = flightHeight;
+        }
+        else
+        {
+            agent.updatePosition = true;
+            agent.updateRotation = true;
+        }
+
+        // If there's no NetworkManager or Netcode isn't listening, treat as test mode and start patrol directly.
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+        {
+            // Only warp to NavMesh for ground agents
+            if (enemyType != EnemyType.Lancador && !agent.isOnNavMesh)
+            {
+                if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+                {
+                    agent.Warp(hit.position);
+                    Debug.Log($"{name}: warped to NavMesh at {hit.position} (Awake test-mode).");
+                }
+                else
+                {
+                    Debug.LogWarning($"{name}: no NavMesh near spawn position (Awake test-mode). Patrol may not start.");
+                }
+            }
+
+            // Ensure agent and this script are enabled for local testing.
+            this.enabled = true;
+            if (agent != null) agent.enabled = true;
+            SetPatrolMode(transform.position, patrolRadius);
+        }
     }
-    
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (!IsServer)
+
+        Debug.Log($"{name}: agent.isOnNavMesh={agent.isOnNavMesh} enabled={agent.enabled} speed={agent.speed} updatePosition={agent.updatePosition} baseOffset={agent.baseOffset}");
+
+        // If we're running under Netcode the server is authoritative for AI movement.
+        if (IsServer)
         {
-            this.enabled = false;
-            agent.enabled = false; 
+            if (agent != null) agent.enabled = true;
+
+            // Skip NavMesh placement for flying enemies (they don't need to sit on the NavMesh).
+            if (enemyType != EnemyType.Lancador)
+            {
+                if (!agent.isOnNavMesh)
+                {
+                    if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+                    {
+                        agent.Warp(hit.position);
+                        Debug.Log($"{name}: warped to NavMesh at {hit.position} (OnNetworkSpawn server).");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{name}: no NavMesh under spawn position (OnNetworkSpawn). Agent disabled.");
+                        agent.enabled = false;
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                // Keep baseOffset for visual height if specified
+                if (flightHeight != 0f) agent.baseOffset = flightHeight;
+            }
+
+            // start patrol on the server
+            SetPatrolMode(transform.position, patrolRadius);
+            return;
         }
+
+        // For clients disable server-only logic
+        this.enabled = false;
+        if (agent != null) agent.enabled = false;
     }
 
     public void SetPatrolMode(Vector3 startPos, float radius)
     {
-        startPosition = startPos;
+        Debug.Log($"Setting patrol mode for {name}.");
+
+        // For flying enemies use the provided startPos directly (no NavMesh sampling)
+        if (enemyType == EnemyType.Lancador)
+        {
+            startPosition = startPos;
+        }
+        else
+        {
+            // Make sure we are on the NavMesh and use the sampled nav position as start
+            Vector3 navStart = startPos;
+            if (agent != null && !agent.isOnNavMesh)
+            {
+                if (NavMesh.SamplePosition(startPos, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+                {
+                    navStart = hit.position;
+                    agent.Warp(hit.position);
+                    Debug.Log($"{name}: warped to NavMesh at {hit.position} (SetPatrolMode).");
+                }
+                else
+                {
+                    Debug.LogWarning($"{name}: cannot set patrol mode, no NavMesh near startPos.");
+                    return;
+                }
+            }
+
+            startPosition = navStart;
+        }
+
         patrolRadius = radius;
         isPatrolling = true;
         currentState = "Patrol";
-        FindNewPatrolPoint(); 
+        FindNewPatrolPoint();
     }
 
     private void Update()
     {
-        if (!IsServer) return; 
+        // If Netcode is present, only the server should run AI.
+        // If Netcode is NOT present (single‑player / test mode), allow Update to run.
+        if (NetworkManager.Singleton != null && !IsServer) return;
 
         if (reactionCoroutine == null)
         {
@@ -85,7 +204,7 @@ public class EnemyAI : NetworkBehaviour
         DecideState();
         ExecuteCurrentState();
     }
-    
+
     private void DecideState()
     {
         if (targetPlayer != null)
@@ -93,9 +212,9 @@ public class EnemyAI : NetworkBehaviour
             hasLastKnownPosition = true;
             lastKnownPosition = targetPlayer.position;
 
-            // --- MUDANÇA 2: Usar 'stoppingDistance' do Agente ---
+            // Attack/walking decision uses direct distance (works for flying too)
             float distance = Vector3.Distance(transform.position, targetPlayer.position);
-            if (distance <= agent.stoppingDistance) 
+            if (distance <= agent.stoppingDistance)
             {
                 currentState = "Attack";
                 animator?.SetTrigger("Attack");
@@ -117,17 +236,27 @@ public class EnemyAI : NetworkBehaviour
                 }
                 else if (currentState == "Searching")
                 {
-                    if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                    // Arrival check: use agent.remainingDistance for ground agents, distance check for flying
+                    if (enemyType == EnemyType.Lancador)
                     {
-                        hasLastKnownPosition = false; 
-                        if(isPatrolling)
+                        Vector3 searchTarget = new Vector3(lastKnownPosition.x, (flightHeight != 0f ? flightHeight : startPosition.y), lastKnownPosition.z);
+                        if (Vector3.Distance(transform.position, searchTarget) < 0.5f)
                         {
-                            FindNewPatrolPoint();
+                            hasLastKnownPosition = false;
+                            if (isPatrolling) FindNewPatrolPoint();
+                        }
+                    }
+                    else
+                    {
+                        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                        {
+                            hasLastKnownPosition = false;
+                            if (isPatrolling) FindNewPatrolPoint();
                         }
                     }
                 }
             }
-            
+
             if (!hasLastKnownPosition)
             {
                 if (isPatrolling)
@@ -149,52 +278,84 @@ public class EnemyAI : NetworkBehaviour
     {
         if (currentState == "Walking" && targetPlayer != null)
         {
-            agent.speed = defaultAgentSpeed;
-            agent.SetDestination(targetPlayer.position);
+            // move toward the player
+            if (enemyType == EnemyType.Lancador)
+            {
+                Vector3 flyTarget = new Vector3(targetPlayer.position.x, (flightHeight != 0f ? flightHeight : startPosition.y), targetPlayer.position.z);
+                float speed = flightSpeed > 0f ? flightSpeed : defaultAgentSpeed;
+                MoveLancadorTowards(flyTarget, speed);
+            }
+            else
+            {
+                agent.speed = defaultAgentSpeed;
+                agent.SetDestination(targetPlayer.position);
+            }
         }
         else if (currentState == "Attack")
         {
-            agent.SetDestination(transform.position); 
-            
-            // --- MUDANÇA 3: Lógica de Ataque ---
+            if (enemyType != EnemyType.Lancador)
+                agent.SetDestination(transform.position);
+            // --- Attack timing logic unchanged ---
             if (Time.time > lastAttackTime + attackCooldown && targetPlayer != null)
             {
                 lastAttackTime = Time.time;
-                // Começa a sequência de ataque (pronta para animação)
                 StartCoroutine(AttackSequence());
             }
         }
         else if (currentState == "Searching")
         {
-            agent.speed = defaultAgentSpeed;
-            agent.SetDestination(lastKnownPosition);
+            if (enemyType == EnemyType.Lancador)
+            {
+                Vector3 searchTarget = new Vector3(lastKnownPosition.x, (flightHeight != 0f ? flightHeight : startPosition.y), lastKnownPosition.z);
+                float speed = flightSpeed > 0f ? flightSpeed : defaultAgentSpeed;
+                MoveLancadorTowards(searchTarget, speed);
+            }
+            else
+            {
+                agent.speed = defaultAgentSpeed;
+                agent.SetDestination(lastKnownPosition);
+            }
         }
         else if (currentState == "Patrol" && !isWaitingAtPatrolPoint)
         {
-            agent.speed = defaultAgentSpeed * patrolSpeedMultiplier; 
-            agent.SetDestination(currentPatrolTarget);
-            
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            if (enemyType == EnemyType.Lancador)
             {
-                StartCoroutine(WaitAtPatrolPoint());
+                // Flying movement ignores NavMesh topology — simple direct movement in 3D
+                float speed = flightSpeed > 0f ? flightSpeed : defaultAgentSpeed * patrolSpeedMultiplier;
+                MoveLancadorTowards(currentPatrolTarget, speed);
+
+                if (Vector3.Distance(transform.position, currentPatrolTarget) <= flightArrivalDistance)
+                {
+                    StartCoroutine(WaitAtPatrolPoint());
+                }
             }
-            else if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.pathStatus == NavMeshPathStatus.PathPartial)
+            else
             {
-                FindNewPatrolPoint(); 
+                agent.speed = defaultAgentSpeed * patrolSpeedMultiplier;
+                if (!agent.isOnNavMesh)
+                    Debug.LogWarning($"{name}: agent not on NavMesh when trying to patrol.");
+                else
+                    agent.SetDestination(currentPatrolTarget);
+
+                if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+                    StartCoroutine(WaitAtPatrolPoint());
+                else if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.pathStatus == NavMeshPathStatus.PathPartial)
+                    FindNewPatrolPoint();
             }
         }
         else if (currentState == "Idle")
         {
-            agent.SetDestination(transform.position); 
+            if (enemyType != EnemyType.Lancador)
+                agent.SetDestination(transform.position);
         }
     }
-    
+
     // --- MUDANÇA 4: Nova Co-rotina de Ataque ---
     private IEnumerator AttackSequence()
     {
         // 1. Espera pelo "ponto de dano" da animação
         yield return new WaitForSeconds(attackAnimDelay);
-        
+
         // 2. Verifica se o jogador ainda está ao alcance
         if (targetPlayer != null && Vector3.Distance(transform.position, targetPlayer.position) <= agent.stoppingDistance + 0.5f)
         {
@@ -209,39 +370,63 @@ public class EnemyAI : NetworkBehaviour
 
     private void FindNewPatrolPoint()
     {
-        bool foundPoint = false;
-        for (int i = 0; i < 30; i++)
+        if (agent == null) return;
+
+        // Flying enemy: pick a random world-space point inside the circle and set Y to flightHeight
+        if (enemyType == EnemyType.Lancador)
         {
-            Vector2 randomCircle = Random.insideUnitCircle * patrolRadius;
-            Vector3 randomPos = startPosition + new Vector3(randomCircle.x, 0, randomCircle.y);
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPos, out hit, 1.0f, NavMesh.AllAreas))
+            Vector2 randomCirclePoint = Random.insideUnitCircle * patrolRadius;
+            Vector3 randomPos = startPosition + new Vector3(randomCirclePoint.x, 0, randomCirclePoint.y);
+            float targetY = (flightHeight != 0f) ? flightHeight : startPosition.y;
+            randomPos.y = targetY;
+            currentPatrolTarget = randomPos;
+            return;
+        }
+
+        // Ground agents: pathfind on NavMesh as before
+        bool foundPoint = false;
+        NavMeshPath path = new NavMeshPath();
+
+        // Try a few random samples to find a valid path
+        for (int attempts = 0; attempts < 8 && !foundPoint; attempts++)
+        {
+            Vector2 randomCirclePoint = Random.insideUnitCircle * patrolRadius;
+            Vector3 randomPos = startPosition + new Vector3(randomCirclePoint.x, 0, randomCirclePoint.y);
+
+            if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
             {
-                currentPatrolTarget = hit.position;
-                foundPoint = true;
-                break; 
+                if (agent.CalculatePath(hit.position, path) && path.status == NavMeshPathStatus.PathComplete)
+                {
+                    currentPatrolTarget = hit.position;
+                    foundPoint = true;
+                    break;
+                }
             }
         }
+
         if (!foundPoint)
         {
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(startPosition, out hit, patrolRadius, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(startPosition, out NavMeshHit hit2, patrolRadius, NavMesh.AllAreas) &&
+               agent.CalculatePath(hit2.position, path) && path.status == NavMeshPathStatus.PathComplete)
             {
-                currentPatrolTarget = hit.position;
-            }
-            else
-            {
-                currentPatrolTarget = transform.position;
-                isPatrolling = false;
+                currentPatrolTarget = hit2.position;
+                foundPoint = true;
             }
         }
+
+        if (!foundPoint)
+        {
+            currentPatrolTarget = transform.position;
+            isPatrolling = false;
+            Debug.Log($"No Path found for {name}. Stop patrolling.");
+        }
     }
-    
+
     private IEnumerator WaitAtPatrolPoint()
     {
         isWaitingAtPatrolPoint = true;
         yield return new WaitForSeconds(patrolWaitTime);
-        FindNewPatrolPoint(); 
+        FindNewPatrolPoint();
         isWaitingAtPatrolPoint = false;
     }
 
@@ -249,15 +434,14 @@ public class EnemyAI : NetworkBehaviour
     {
         yield return new WaitForSeconds(reactionDelay / 1000f);
 
-        targetPlayer = null; 
+        targetPlayer = null;
         float closestDistance = minimumDistance;
 
         foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
-            // --- MUDANÇA 5: Só ataca jogadores VIVOS ---
+            // --- Só ataca jogadores VIVOS ---
             if (client.PlayerObject != null)
             {
-                // Verifica se o jogador está morto
                 TargetMultiplayer playerHealth = client.PlayerObject.GetComponent<TargetMultiplayer>();
                 if (playerHealth != null && playerHealth.IsDead.Value)
                 {
@@ -280,7 +464,23 @@ public class EnemyAI : NetworkBehaviour
                 }
             }
         }
-        
+
         reactionCoroutine = null;
+    }
+
+    // ----- New helper for flying movement -----
+    private void MoveLancadorTowards(Vector3 target, float speed)
+    {
+        Vector3 dir = target - transform.position;
+        if (dir.sqrMagnitude <= 0.000001f) return;
+
+        // Move
+        Vector3 move = dir.normalized * speed * Time.deltaTime;
+        if (move.sqrMagnitude > dir.sqrMagnitude) move = dir;
+        transform.position += move;
+
+        // Rotate smoothly towards movement direction
+        Quaternion desired = Quaternion.LookRotation(dir.normalized);
+        transform.rotation = Quaternion.Slerp(transform.rotation, desired, Time.deltaTime * flightRotateSpeed);
     }
 }

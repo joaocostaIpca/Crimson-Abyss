@@ -265,6 +265,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1112035012311365507}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6898509122318712269}
   m_SourcePrefab: {fileID: 100100000, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
 --- !u!23 &3207828382789061435 stripped
 MeshRenderer:
@@ -412,6 +415,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   IsDead:
     m_InternalValue: 0
+  maxHealth: 100
   health:
     m_InternalValue: 100
 --- !u!114 &8388277136871182560
@@ -435,6 +439,9 @@ MonoBehaviour:
   playerMeshes:
   - {fileID: 3207828382789061435}
   playerCollider: {fileID: 7809670839955066439}
+  spectatorDistance: 5
+  spectatorMinPitch: -30
+  spectatorMaxPitch: 80
   speed: 10
   jumpForce: 7
   mouseSensitivity: 100
@@ -459,6 +466,10 @@ MonoBehaviour:
   reloadCooldown: 5
   maxMagAmmo: 30
   hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
+  bulletTrailVFX: {fileID: 2700744275236868420, guid: 5c6ded302e168874ba665c09fbe04478, type: 3}
+  trailSpeed: 300
+  muzzleTransform: {fileID: 0}
+  NumberOfBullets: 1
 --- !u!114 &1112035012311365507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,6 +483,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTriggerCheck
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &6898509122318712269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3912800180322352391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b419ff030e7abd547a782f977b7f2739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponManager
+  ShowTopMostFoldoutHeaderGroup: 1
+  weaponPrefabs:
+  - {fileID: 919132149155446097, guid: 1671a65b855603648aed0f2712e06092, type: 3}
+  CurrentWeaponIndex:
+    m_InternalValue: 0
 --- !u!4 &4397447985458505661 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}

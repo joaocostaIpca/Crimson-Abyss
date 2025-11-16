@@ -265,6 +265,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50006a8dab9338d4f901d103f90da095, type: 3}
       insertIndex: -1
       addedObject: {fileID: 282109462315351576}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50006a8dab9338d4f901d103f90da095, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2678008562804961503}
   m_SourcePrefab: {fileID: 100100000, guid: 50006a8dab9338d4f901d103f90da095, type: 3}
 --- !u!1 &214863249251265568 stripped
 GameObject:
@@ -411,6 +414,10 @@ MonoBehaviour:
   reloadCooldown: 5
   maxMagAmmo: 30
   hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
+  bulletTrailVFX: {fileID: 2700744275236868420, guid: dd3fe4bddf0684b4082cb63601cf06e4, type: 3}
+  trailSpeed: 300
+  muzzleTransform: {fileID: 0}
+  NumberOfBullets: 8
 --- !u!114 &8511550061866925916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,6 +433,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   IsDead:
     m_InternalValue: 0
+  maxHealth: 100
   health:
     m_InternalValue: 100
 --- !u!114 &3630474831800435076
@@ -449,6 +457,9 @@ MonoBehaviour:
   playerMeshes:
   - {fileID: 1743501223150230044}
   playerCollider: {fileID: 8127063727521684492}
+  spectatorDistance: 5
+  spectatorMinPitch: -30
+  spectatorMaxPitch: 80
   speed: 10
   jumpForce: 7
   mouseSensitivity: 100
@@ -467,6 +478,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTriggerCheck
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &-2678008562804961503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214863249251265568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b419ff030e7abd547a782f977b7f2739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponManager
+  ShowTopMostFoldoutHeaderGroup: 1
+  weaponPrefabs:
+  - {fileID: 919132149155446097, guid: 1671a65b855603648aed0f2712e06092, type: 3}
+  - {fileID: 919132149155446097, guid: fd4f106c0788f6046a18b27989a3b6d4, type: 3}
+  CurrentWeaponIndex:
+    m_InternalValue: 0
 --- !u!4 &698207819494078106 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 50006a8dab9338d4f901d103f90da095, type: 3}

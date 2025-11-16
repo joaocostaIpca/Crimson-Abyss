@@ -1,0 +1,14 @@
+// Generated using SketchfabRipper v1.17.3 by revetix#9971
+
+Mesh "mastodont_mastodont_0" uses material "mastodont" and has UniqueID "344"
+
+Material "mastodont" has ID a6457bee-943c-489f-9163-491b89b5c27c.
+	Emission (UV0) (Factor=8.2488567073): mastodont_il.tga.png
+	Normal (Flipped Y) (UV0): mastodont_n.png
+	Diffuse (UV0): mastodont_d.jpg
+	SpecularPBR (UV0): mastodont_s.jpg
+	Diffuse colour (UV0): mastodont_d.jpg
+	Glossiness (UV0): mastodont_s.jpg
+	Specular colour (UV0): mastodont_s.jpg
+	Diffuse intensity: 1|1|1
+	Specular hardness: 1|1|1
