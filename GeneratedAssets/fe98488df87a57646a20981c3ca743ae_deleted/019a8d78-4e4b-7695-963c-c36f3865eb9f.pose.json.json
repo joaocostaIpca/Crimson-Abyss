@@ -1,0 +1,11 @@
+{
+    "asset": "fe98488df87a57646a20981c3ca743ae",
+    "fileName": "019a8d78-4e4b-7695-963c-c36f3865eb9f.pose.json",
+    "prompt": "iddle animation with gun in hand",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1606066132,
+    "w3CTraceId": "2fd837e0deec084833e2949d71079f74",
+    "isTrimmed": false
+}
