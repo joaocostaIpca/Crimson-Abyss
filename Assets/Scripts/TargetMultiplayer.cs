@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
-using System; 
+using System;
 
 public class TargetMultiplayer : NetworkBehaviour
 {
@@ -10,13 +10,17 @@ public class TargetMultiplayer : NetworkBehaviour
     // --- MUDANÇA 1: Estado de Morte ---
     // (true=Morto, false=Vivo)
     public NetworkVariable<bool> IsDead = new NetworkVariable<bool>(
-        false, 
+        false,
         NetworkVariableReadPermission.Everyone, // Todos podem ler
         NetworkVariableWritePermission.Server   // Só o servidor pode mudar
     );
 
+    // Maximum health (editable in inspector). Server-authoritative.
+    [SerializeField] private float maxHealth = 100f;
+    public float MaxHealth => maxHealth;
+
     public NetworkVariable<float> health = new NetworkVariable<float>(
-        100f, 
+        100f,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server
     );
@@ -28,6 +32,12 @@ public class TargetMultiplayer : NetworkBehaviour
     {
         playerController = GetComponent<PlayerController>();
         IsDead.OnValueChanged += OnDeathStateChanged; // Subscreve à mudança de estado
+
+        // Ensure the server initializes health to the configured max
+        if (IsServer)
+        {
+            health.Value = maxHealth;
+        }
     }
 
     public override void OnNetworkDespawn()
@@ -38,7 +48,7 @@ public class TargetMultiplayer : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(float amount)
     {
-        if (!IsServer) return; 
+        if (!IsServer) return;
 
         // Se já estiver morto, não pode levar mais dano
         if (IsDead.Value) return;
@@ -49,25 +59,34 @@ public class TargetMultiplayer : NetworkBehaviour
         if (health.Value <= 0)
         {
             health.Value = 0;
-            
+
             // --- MUDANÇA 2: Lógica de Morte ---
-            
+
             // 1. Dispara o evento (para o WavController, se for um inimigo)
-            OnHealthZero?.Invoke(this); 
-            
+            OnHealthZero?.Invoke(this);
+
             // 2. Se for um inimigo, "despawna"
-            if (GetComponent<EnemyAI>() != null) 
+            if (GetComponent<EnemyAI>() != null)
             {
-                NetworkObject.Despawn(true); 
+                NetworkObject.Despawn(true);
             }
             // 3. Se for um JOGADOR
             else if (GetComponent<PlayerController>() != null)
             {
                 // Define o estado como Morto
-                IsDead.Value = true; 
+                IsDead.Value = true;
                 // (O OnValueChanged vai tratar de chamar o ClientRpc)
             }
         }
+    }
+
+    // Server-only helper to heal (call from server code)
+    public void Heal(float amount)
+    {
+        if (!IsServer) return;
+        if (IsDead.Value) return;
+
+        health.Value = Mathf.Min(health.Value + amount, maxHealth);
     }
 
     // --- MUDANÇA 3: Esta função corre em TODOS os clientes quando 'IsDead' muda ---
