@@ -269,15 +269,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8956662722773064640}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 138656908413108205}
   m_SourcePrefab: {fileID: 100100000, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
---- !u!95 &841795764867962830 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
-  m_PrefabInstance: {fileID: 6540420042341919327}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6198453585050572558 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
@@ -419,6 +411,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   IsDead:
     m_InternalValue: 0
+  maxHealth: 100
   health:
     m_InternalValue: 100
 --- !u!114 &6778105462798755211
@@ -469,6 +462,10 @@ MonoBehaviour:
   reloadCooldown: 5
   maxMagAmmo: 30
   hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
+  bulletTrailVFX: {fileID: 2700744275236868420, guid: 5c6ded302e168874ba665c09fbe04478, type: 3}
+  trailSpeed: 300
+  muzzleTransform: {fileID: 0}
+  NumberOfBullets: 1
 --- !u!114 &8956662722773064640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,21 +479,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTriggerCheck
   ShowTopMostFoldoutHeaderGroup: 1
---- !u!114 &138656908413108205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6198453585050572558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
-  ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 841795764867962830}
 --- !u!4 &6723456554992913844 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}

@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 9181288666360390522}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.06, y: 1.619, z: 0.118}
+  m_LocalPosition: {x: -0.02, y: 1.619, z: 0.118}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -250,9 +250,6 @@ PrefabInstance:
       addedObject: {fileID: 3141065761687611116}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e7a9dad42b46934183e16b796c151e9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3946661181691354763}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e7a9dad42b46934183e16b796c151e9, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 7009882699052956934}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e7a9dad42b46934183e16b796c151e9, type: 3}
       insertIndex: -1
@@ -300,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4030980363
+  GlobalObjectIdHash: 1656089645
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -313,21 +310,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &3946661181691354763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2918693539602973759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
-  ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 8442758601580135679}
 --- !u!114 &7009882699052956934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +450,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   IsDead:
     m_InternalValue: 0
+  maxHealth: 100
   health:
     m_InternalValue: 100
 --- !u!114 &202962049165298577
@@ -489,6 +472,10 @@ MonoBehaviour:
   reloadCooldown: 5
   maxMagAmmo: 30
   hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
+  bulletTrailVFX: {fileID: 2700744275236868420, guid: 5c6ded302e168874ba665c09fbe04478, type: 3}
+  trailSpeed: 300
+  muzzleTransform: {fileID: 0}
+  NumberOfBullets: 1
 --- !u!114 &1167226126286700809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,8 +489,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTriggerCheck
   ShowTopMostFoldoutHeaderGroup: 1
---- !u!95 &8442758601580135679 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 0e7a9dad42b46934183e16b796c151e9, type: 3}
-  m_PrefabInstance: {fileID: 2612124748784499054}
-  m_PrefabAsset: {fileID: 0}
