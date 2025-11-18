@@ -1,0 +1,11 @@
+{
+    "asset": "ff0bf9c39ea3dea499c2be0aee727652",
+    "fileName": "019a8da9-3352-7221-a8c1-433493e59019.pose.json",
+    "prompt": "i want a walking cycle but without moving the charather so he will be in the same spot just walking and with a gun in the arms\n",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1376972151,
+    "w3CTraceId": "db210f0b1460d0b2c2a9a833d5be946d",
+    "isTrimmed": false
+}

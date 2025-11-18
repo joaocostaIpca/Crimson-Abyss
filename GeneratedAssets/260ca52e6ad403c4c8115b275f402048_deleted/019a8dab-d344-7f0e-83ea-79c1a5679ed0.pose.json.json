@@ -1,0 +1,11 @@
+{
+    "asset": "260ca52e6ad403c4c8115b275f402048",
+    "fileName": "019a8dab-d344-7f0e-83ea-79c1a5679ed0.pose.json",
+    "prompt": "walk animation with gun in hand",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 442626122,
+    "w3CTraceId": "aeee12a3625b644f473884db85290d5f",
+    "isTrimmed": false
+}

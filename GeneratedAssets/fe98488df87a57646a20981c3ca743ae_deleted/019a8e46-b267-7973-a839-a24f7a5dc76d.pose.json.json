@@ -1,0 +1,11 @@
+{
+    "asset": "fe98488df87a57646a20981c3ca743ae",
+    "fileName": "019a8e46-b267-7973-a839-a24f7a5dc76d.pose.json",
+    "prompt": "idle character with arms extended for gun postiion",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1967558595,
+    "w3CTraceId": "40abfe1bbca57c747c88dfa6ff840b6b",
+    "isTrimmed": false
+}

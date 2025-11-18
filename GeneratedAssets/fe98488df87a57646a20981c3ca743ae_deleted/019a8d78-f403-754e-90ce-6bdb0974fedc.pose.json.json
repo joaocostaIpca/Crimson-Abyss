@@ -1,0 +1,11 @@
+{
+    "asset": "fe98488df87a57646a20981c3ca743ae",
+    "fileName": "019a8d78-f403-754e-90ce-6bdb0974fedc.pose.json",
+    "prompt": "idle animation while stoped just natural movment with gun in hand\n",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 486659612,
+    "w3CTraceId": "8b0eb48db8a6231e821bf31794938870",
+    "isTrimmed": false
+}

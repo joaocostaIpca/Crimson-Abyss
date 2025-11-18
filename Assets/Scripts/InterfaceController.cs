@@ -22,6 +22,8 @@ public class InterfaceController : MonoBehaviour
     private Slider[] playerHealth = new Slider[4];
     private GameObject[] playerDisplay = new GameObject[4];
     private Image weaponPicture;
+    private Image weaponPicture2;
+    private Image weaponPicture3;
     private GameObject minimapCompass;
     private Sprite minimapEnemy;
     private GameObject localPlayer;
@@ -48,8 +50,10 @@ public class InterfaceController : MonoBehaviour
         minimapUpdateDelaySeconds = minimapUpdateDelay / 1000f;
         clientSlotMap = new Dictionary<ulong, int>();
         freeSlots = new List<int> { 2, 3, 4 };
-        ammoText = GameObject.Find("Canvas/Ammo/AmmoCounter").GetComponent<TextMeshProUGUI>();
-        weaponPicture = GameObject.Find("Canvas/Ammo/WeaponPicture").GetComponent<Image>();
+        ammoText = GameObject.Find("Canvas/WeaponSystem/Ammo/AmmoCounter").GetComponent<TextMeshProUGUI>();
+        weaponPicture = GameObject.Find("Canvas/WeaponSystem/Ammo/WeaponPicture").GetComponent<Image>();
+        weaponPicture2 = GameObject.Find("Canvas/WeaponSystem/WeaponPicture2").GetComponent<Image>();
+        weaponPicture3 = GameObject.Find("Canvas/WeaponSystem/WeaponPicture3").GetComponent<Image>();
         minimapCompass = GameObject.Find("Canvas/Minimap/MinimapImage");
         
         minimapEnemy = Resources.Load<Sprite>("Images/MinimapEnemy");
@@ -62,7 +66,7 @@ public class InterfaceController : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            playerDisplay[i] = GameObject.Find($"Canvas/Health/Health{i + 1}");
+            playerDisplay[i] = GameObject.Find($"Canvas/Health/PlayerInfo{i + 1}");
             playerNames[i] = playerDisplay[i].transform.Find("PlayerName").GetComponent<TextMeshProUGUI>();
             playerPictures[i] = playerDisplay[i].transform.Find("PlayerPicture").GetComponent<Image>();
             playerHealth[i] = playerDisplay[i].transform.Find("PlayerHealth").GetComponent<Slider>();
@@ -171,16 +175,45 @@ public class InterfaceController : MonoBehaviour
 
     public void UpdateWeapon(string weaponName)
     {
+        Debug.Log("Updating weapon to: " + weaponName);
+
         if (weaponPicture == null) return;
         int index = weaponImageNames.IndexOf(weaponName);
         if (index >= 0)
-        {
             weaponPicture.sprite = weaponImages[index];
-        }
         else
-        {
             weaponPicture.sprite = null;
-        }
+        Debug.Log("Weapon index 1: " + index);
+        Debug.Log("Weapon name: " + weaponImages[index].name);
+
+        PlayerWeaponManager weaponManager = localPlayer.GetComponent<PlayerWeaponManager>();
+
+        int nextIndex = weaponManager.CurrentWeaponIndex.Value + 1;        
+        if (nextIndex >= weaponManager.weaponPrefabs.Count)
+            nextIndex = 0;
+        string name = weaponManager.weaponPrefabs[nextIndex].name;
+        nextIndex = weaponImageNames.IndexOf(name);
+        if (nextIndex != index)
+            weaponPicture2.sprite = weaponImages[nextIndex];
+        else
+            weaponPicture2.sprite = null;
+        Debug.Log("Weapon 2 index: " + nextIndex);
+        Debug.Log("Weapon 2 name: " + weaponImages[nextIndex].name);
+
+        int nextIndex2 = weaponManager.CurrentWeaponIndex.Value + 1;
+        if (nextIndex2 >= weaponManager.weaponPrefabs.Count)
+            nextIndex2 = 0;
+        nextIndex2++;
+        if (nextIndex2 >= weaponManager.weaponPrefabs.Count)
+            nextIndex2 = 0;
+        name = weaponManager.weaponPrefabs[nextIndex2].name;
+        nextIndex2 = weaponImageNames.IndexOf(name);
+        if (nextIndex2 != index && nextIndex2 != nextIndex)
+            weaponPicture3.sprite = weaponImages[nextIndex2];
+        else
+            weaponPicture3.sprite = null;
+        Debug.Log("Weapon 3 index: " + nextIndex2);
+        Debug.Log("Weapon 3 name: " + weaponImages[nextIndex2].name);
     }
 
     public void UpdatePlayer(bool isActive, int playerSlot, int charIndex, int playerHealth, Sprite playerPicture)
@@ -203,5 +236,11 @@ public class InterfaceController : MonoBehaviour
             return;
         int index = playerSlot - 1;
         playerHealth[index].value = healthValue;
+    }
+
+    public void SwitchToNextWeapon()
+    {
+        PlayerWeaponManager weaponManager = localPlayer.GetComponent<PlayerWeaponManager>();
+        weaponManager.CycleWeaponLocal();
     }
 }

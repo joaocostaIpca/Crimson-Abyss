@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   patrolRadius: 4
   spawnDelay: 2
 --- !u!114 &88664532
@@ -615,7 +615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   spawnPoints:
   - {fileID: 1328000207}
   - {fileID: 302129330}
@@ -1327,7 +1327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   patrolRadius: 4
   spawnDelay: 2
 --- !u!4 &519660797
@@ -1449,7 +1449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   patrolRadius: 4
   spawnDelay: 2
 --- !u!114 &536862444
@@ -1732,7 +1732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   patrolRadius: 4
   spawnDelay: 2
 --- !u!114 &683833951
@@ -2272,7 +2272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   spawnPoints:
   - {fileID: 776737775}
   - {fileID: 759736671}
@@ -3357,6 +3357,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 69666507331897238, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 69666507331897238, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 728746862027621386, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3396,6 +3404,18 @@ PrefabInstance:
     - target: {fileID: 1051578786215215980, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912469334969813490, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912469334969813490, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912469334969813490, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2043620787785032002, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_fontSize
@@ -3437,6 +3457,14 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
+    - target: {fileID: 2239431371939692444, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239431371939692444, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: buttonQuit
       value: 
@@ -3465,6 +3493,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2642190089838094694, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3077599741423422283, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -194
@@ -3489,6 +3521,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 0d0e158248cfaff4986dc5bf8a45202a, type: 3}
+    - target: {fileID: 3388431677050512994, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388431677050512994, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3393901651604162945, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3541,6 +3581,22 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5121409075150263886, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5273566131186025853, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5273566131186025853, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5273566131186025853, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5512378769305701215, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_fontSize
       value: 47.85
@@ -3561,6 +3617,14 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
+    - target: {fileID: 5526200662288724755, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526200662288724755, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5637452940284019028, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3575,6 +3639,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5933852552848176469, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5933852552848176469, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5933852552848176469, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
@@ -3593,6 +3661,18 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6254646466741665143, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254646466741665143, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254646466741665143, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6422366584142012538, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3603,6 +3683,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6422366584142012538, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838462163509069523, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6992691767403706615, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
@@ -3691,6 +3775,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7832949666168396026, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736233596123978883, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736233596123978883, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736233596123978883, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8855822358792612315, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
@@ -3937,7 +4033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   spawnPoints:
   - {fileID: 254754445}
   - {fileID: 2027218841}
@@ -4159,7 +4255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   spawnPoints:
   - {fileID: 533744946}
   totalEnemiesToSpawn: 2
@@ -4544,7 +4640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   patrolRadius: 4
   spawnDelay: 2
 --- !u!114 &1604272418
@@ -4618,7 +4714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   patrolRadius: 4
   spawnDelay: 2
 --- !u!114 &1611421038
@@ -4825,7 +4921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 1655145c443bf22408f8ca6752703abf, type: 3}
+  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
   patrolRadius: 4
   spawnDelay: 2
 --- !u!114 &1698614872
