@@ -1,0 +1,11 @@
+{
+    "asset": "395e8890e9861f246b96faab5d8e121a",
+    "fileName": "019a8d77-add1-7975-a9fa-4cc11d470d04.pose.json",
+    "prompt": "jumping animation for charater",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 449383031,
+    "w3CTraceId": "d5e424dbe69c4aec3f21d5dd3e62b667",
+    "isTrimmed": false
+}

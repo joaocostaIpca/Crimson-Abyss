@@ -1957,6 +1957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneTransitioner
   interactKey: 101
   holdTime: 2
+  gameSceneName: SubLevel
   progressIcon: {fileID: 0}
   promptText: {fileID: 881498939}
 --- !u!65 &746081513
@@ -6466,6 +6467,10 @@ PrefabInstance:
       value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 3629849012368413211, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952404687200813600, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
       propertyPath: m_TagString
       value: Ground
       objectReference: {fileID: 0}

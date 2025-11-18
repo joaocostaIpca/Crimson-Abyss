@@ -1,0 +1,11 @@
+{
+    "asset": "395e8890e9861f246b96faab5d8e121a",
+    "fileName": "019a8e3a-ce2f-7f80-a2b4-26bf452d3dac.pose.json",
+    "prompt": "i want a jump animation like cs:go fast without windup and with a gun in the h\nand like pose",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1101086603,
+    "w3CTraceId": "19f441d88642d55157ffe3bea8d61d56",
+    "isTrimmed": false
+}

@@ -1,0 +1,11 @@
+{
+    "asset": "fe98488df87a57646a20981c3ca743ae",
+    "fileName": "019a8e46-59df-7304-b4eb-13350491b280.pose.json",
+    "prompt": "idle character with gun poiting",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1493017879,
+    "w3CTraceId": "3d250edba4a85018656e610ade675eac",
+    "isTrimmed": false
+}

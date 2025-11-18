@@ -1,13 +1,16 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneTransitioner : MonoBehaviour
 {
     [Header("Settings")]
     public KeyCode interactKey = KeyCode.E;
     public float holdTime = 2f;
+    [SerializeField] private string gameSceneName = "SubLevel";
 
     [Header("UI")]
     public Image progressIcon;      // UI Image (set Fill Method to Radial or Horizontal)
@@ -27,21 +30,29 @@ public class SceneTransitioner : MonoBehaviour
 
     void Update()
     {
-        if (!playerInTrigger) return;
-
-        if (Input.GetKey(interactKey))
+        if (NetworkManager.Singleton.IsServer)
         {
-            holdTimer += Time.deltaTime;
+            if (!playerInTrigger) return;
 
-            if (progressIcon != null)
-                progressIcon.fillAmount = holdTimer / holdTime;
+            if (Input.GetKey(interactKey))
+            {
+                holdTimer += Time.deltaTime;
 
-            if (holdTimer >= holdTime)
-                LoadNextScene();
-        }
-        else if (Input.GetKeyUp(interactKey))
-        {
-            ResetProgress();
+                if (progressIcon != null)
+                    progressIcon.fillAmount = holdTimer / holdTime;
+
+                if (holdTimer >= holdTime)
+                {
+                    MoveAllPlayers(2,-9,8,1);
+                    NetworkManager.Singleton.SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
+
+                }
+
+            }
+            else if (Input.GetKeyUp(interactKey))
+            {
+                ResetProgress();
+            }
         }
     }
 
@@ -86,5 +97,55 @@ public class SceneTransitioner : MonoBehaviour
             nextIndex = 0;
 
         SceneManager.LoadScene(nextIndex);
+    }
+
+    public void MoveAllPlayers(float targetY, float minX, float maxX, float minSpacing)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        // Track used X positions to avoid overlap
+        List<float> usedXPositions = new List<float>();
+
+        foreach (GameObject p in players)
+        {
+            float randomX = 0f;
+            bool valid = false;
+
+            // Try up to 50 times to find a non-overlapping X
+            for (int tries = 0; tries < 50; tries++)
+            {
+                float candidate = Random.Range(minX, maxX);
+                bool tooClose = false;
+
+                // Check spacing against all used positions
+                foreach (float used in usedXPositions)
+                {
+                    if (Mathf.Abs(candidate - used) < minSpacing)
+                    {
+                        tooClose = true;
+                        break;
+                    }
+                }
+
+                if (!tooClose)
+                {
+                    randomX = candidate;
+                    valid = true;
+                    usedXPositions.Add(candidate);
+                    break;
+                }
+            }
+
+            // If no valid position found after many tries, just push outward
+            if (!valid)
+            {
+                randomX = usedXPositions.Count * minSpacing + minX;
+                usedXPositions.Add(randomX);
+            }
+
+            // Move the player
+            Vector3 pos = p.transform.position;
+            p.transform.position = new Vector3(randomX, targetY, 0);
+        }
     }
 }

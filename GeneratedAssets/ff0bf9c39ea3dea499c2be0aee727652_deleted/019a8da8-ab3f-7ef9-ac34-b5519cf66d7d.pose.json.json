@@ -1,0 +1,11 @@
+{
+    "asset": "ff0bf9c39ea3dea499c2be0aee727652",
+    "fileName": "019a8da8-ab3f-7ef9-ac34-b5519cf66d7d.pose.json",
+    "prompt": "i want a walking animation but without moving the charather and with a gun in the arms\n",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1847707933,
+    "w3CTraceId": "0715bc2e858ef36a27f83fb972d769c3",
+    "isTrimmed": false
+}

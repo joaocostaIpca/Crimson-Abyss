@@ -1,0 +1,11 @@
+{
+    "asset": "5869ed65264e3104a9e55d787d620c78",
+    "fileName": "019a8e4a-7617-7e00-9cf9-feb4bb212a94.pose.json",
+    "prompt": "idle loop with gun resting on arms",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1916994081,
+    "w3CTraceId": "f52db0237d6e940a868b6bf711cdf09b",
+    "isTrimmed": false
+}
