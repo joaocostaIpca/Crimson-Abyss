@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1774964545097227526}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.73299986, y: 1.586, z: 0.03}
+  m_LocalPosition: {x: 0.003, y: 1.586, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -185,15 +185,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.738
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.018
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.316284
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -269,15 +269,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7507278222133400908}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5349987036370853069}
   m_SourcePrefab: {fileID: 100100000, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
---- !u!95 &3529101209867613405 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
-  m_PrefabInstance: {fileID: 7031094782504978764}
-  m_PrefabAsset: {fileID: 0}
 --- !u!137 &6307292442816090706 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -5324531855699944674, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
@@ -433,6 +425,10 @@ MonoBehaviour:
   reloadCooldown: 5
   maxMagAmmo: 30
   hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
+  bulletTrailVFX: {fileID: 2700744275236868420, guid: dd3fe4bddf0684b4082cb63601cf06e4, type: 3}
+  trailSpeed: 300
+  muzzleTransform: {fileID: 0}
+  NumberOfBullets: 7
 --- !u!114 &2224079178038388226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,6 +444,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   IsDead:
     m_InternalValue: 0
+  maxHealth: 100
   health:
     m_InternalValue: 100
 --- !u!114 &5477710777403595157
@@ -463,6 +460,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   ShowTopMostFoldoutHeaderGroup: 1
+  CharacterIndex:
+    m_InternalValue: -1
   rb: {fileID: 1210291166014748438}
   playerCamera: {fileID: 2513472350722020523}
   playerAudioListener: {fileID: 8607758629713376164}
@@ -477,8 +476,8 @@ MonoBehaviour:
   speed: 10
   jumpForce: 7
   mouseSensitivity: 100
-  CharacterIndex:
-    m_InternalValue: -1
+  characterType: 2
+  hasMedikit: 0
 --- !u!114 &7507278222133400908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,18 +491,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTriggerCheck
   ShowTopMostFoldoutHeaderGroup: 1
---- !u!114 &5349987036370853069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7877392380050207773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
-  ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 3529101209867613405}
