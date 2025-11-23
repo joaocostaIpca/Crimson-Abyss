@@ -4040,8 +4040,8 @@ MonoBehaviour:
   - {fileID: 761092210}
   - {fileID: 541064939}
   - {fileID: 541692376}
-  totalEnemiesToSpawn: 1
-  releasePerWave: 1
+  totalEnemiesToSpawn: 20
+  releasePerWave: 5
   spawnRadius: 3
   unlimitedWaves: 0
   waveDelay: 5

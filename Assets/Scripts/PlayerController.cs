@@ -384,6 +384,19 @@ public class PlayerController : NetworkBehaviour
                 lastIsMovingState = isCurrentlyMoving;
             }
         }
+
+        // --- Animation Sync ---
+        if (animator != null)
+        {
+            bool isCurrentlyMoving = moveInput.magnitude > 0.1f;
+            animator.SetBool("isMoving", isCurrentlyMoving);
+
+            if (isCurrentlyMoving != lastIsMovingState)
+            {
+                UpdateMovingStateServerRpc(isCurrentlyMoving);
+                lastIsMovingState = isCurrentlyMoving;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -708,7 +721,7 @@ public class PlayerController : NetworkBehaviour
     private void ApplyFreiraTick()
     {
         float radius = 10f;
-        float healPercentPerSecond = 0.10f; // 10% per second
+        float healPercentPerSecond = 0.10f; 
 
         Collider[] hits = Physics.OverlapSphere(transform.position, radius);
         foreach (var col in hits)
