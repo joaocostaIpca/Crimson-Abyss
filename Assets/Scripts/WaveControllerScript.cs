@@ -5,25 +5,39 @@ using Unity.Netcode;
 
 public class WavControllerScript : NetworkBehaviour
 {
-    [Header("Enemy Settings")]
-    public GameObject enemyPrefab;
-    public Transform[] spawnPoints;
-    public int totalEnemiesToSpawn = 5;
-    public int releasePerWave = 2;
-    public float spawnRadius = 2f;
+    // Classe para configurar um tipo de inimigo dentro de uma wave
+    [System.Serializable]
+    public class EnemyWaveConfig
+    {
+        public string enemyName;        // Ex: "Diabrete" (só para organização)
+        public GameObject prefab;       // O prefab do inimigo
+        public Transform[] spawnPoints; // Onde este tipo nasce
+        public int count;               // Quantos nascem
+        public float patrolRadius = 10f; // Raio de patrulha para este tipo
+    }
 
-    [Header("Wave Settings")]
-    public bool unlimitedWaves = false;
-    public float waveDelay = 5f;
+    // Classe para configurar uma Wave completa
+    [System.Serializable]
+    public class Wave
+    {
+        public string waveName; // Ex: "Wave 1"
+        public List<EnemyWaveConfig> enemies; // Lista de inimigos nesta wave
+        public float timeBetweenSpawns = 1f;  // Tempo entre spawns nesta wave
+    }
+
+    [Header("Configuração das Waves")]
+    public List<Wave> waves = new List<Wave>(); // A tua lista de waves
+    
+    [Header("Definições Gerais")]
+    public float timeBetweenWaves = 5f;
     [SerializeField] private List<Interactable> objectsToUnlock = new List<Interactable>();
 
-    private int enemiesSpawned = 0;
+    private int currentWaveIndex = 0;
     private bool hasTriggered = false;
     private int enemiesAlive = 0;
 
     private MeshRenderer meshRenderer;
     private Collider[] allColliders;
-    
     private List<ulong> playersWhoExited = new List<ulong>();
 
     private void Awake()
@@ -34,28 +48,22 @@ public class WavControllerScript : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsServer)
-        {
-            this.enabled = false;
-        }
+        if (!IsServer) this.enabled = false;
     }
     
-    // --- MUDANÇA: Esta função agora é pública ---
     public void CheckTriggerStateAfterPlayerDeath()
     {
         if (!IsServer || hasTriggered) return;
         
-        // "Limpa" a lista de jogadores mortos
         playersWhoExited.RemoveAll(id => 
-            NetworkManager.Singleton.ConnectedClients.ContainsKey(id) == false || 
+            !NetworkManager.Singleton.ConnectedClients.ContainsKey(id) || 
             NetworkManager.Singleton.ConnectedClients[id].PlayerObject.GetComponent<TargetMultiplayer>().IsDead.Value
         );
 
-        // Re-verifica se todos os VIVOS já saíram
         int totalLivingPlayers = GameManagerHelper.GetLivingPlayerCount();
         if (playersWhoExited.Count >= totalLivingPlayers && totalLivingPlayers > 0)
         {
-            StartWave();
+            StartWaves();
         }
     }
 
@@ -64,11 +72,8 @@ public class WavControllerScript : NetworkBehaviour
     {
         if (!IsServer) return;
         
-        TargetMultiplayer target = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<TargetMultiplayer>();
-        if (target != null && target.IsDead.Value)
-        {
-            return; 
-        }
+        var target = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<TargetMultiplayer>();
+        if (target != null && target.IsDead.Value) return; 
         
         if (!playersWhoExited.Contains(clientId))
         {
@@ -78,77 +83,83 @@ public class WavControllerScript : NetworkBehaviour
         int totalLivingPlayers = GameManagerHelper.GetLivingPlayerCount();
         if (playersWhoExited.Count >= totalLivingPlayers && !hasTriggered && totalLivingPlayers > 0)
         {
-            StartWave();
+            StartWaves();
         }
     }
 
-    private void StartWave()
+    private void StartWaves()
     {
         if (hasTriggered) return;
         hasTriggered = true;
         CloseGateClientRpc();
-        StartCoroutine(SpawnWaveRoutine());
+        StartCoroutine(WaveRoutine());
     }
 
-    private IEnumerator SpawnWaveRoutine()
+    private IEnumerator WaveRoutine()
     {
-        if (unlimitedWaves)
-        {
-            while (true)
-            {
-                SpawnWave();
-                yield return new WaitForSeconds(waveDelay);
-            }
-        }
-        else
-        {
-            while (enemiesSpawned < totalEnemiesToSpawn)
-            {
-                SpawnWave();
-                yield return new WaitForSeconds(waveDelay);
-            }
+        currentWaveIndex = 0;
 
-            while (enemiesAlive > 0)
-                yield return null;
-
-            if (objectsToUnlock != null && objectsToUnlock.Count > 0)
+        // Loop por todas as waves configuradas
+        while (currentWaveIndex < waves.Count)
+        {
+            Wave currentWave = waves[currentWaveIndex];
+            
+            // Spawnar todos os grupos desta wave
+            foreach (var enemyGroup in currentWave.enemies)
             {
-                foreach (Interactable obj in objectsToUnlock)
+                if (enemyGroup.prefab == null || enemyGroup.spawnPoints.Length == 0) continue;
+
+                for (int i = 0; i < enemyGroup.count; i++)
                 {
-                    if (obj != null)
-                    {
-                        obj.Unlock();
-                    }
+                    SpawnEnemy(enemyGroup);
+                    yield return new WaitForSeconds(currentWave.timeBetweenSpawns); // Pequeno delay entre monstros
                 }
             }
-            OpenGateClientRpc();
+
+            // Espera que todos morram antes de passar à próxima wave
+            while (enemiesAlive > 0)
+            {
+                yield return null;
+            }
+
+            // Intervalo entre waves
+            yield return new WaitForSeconds(timeBetweenWaves);
+            currentWaveIndex++;
         }
+
+        // Acabaram todas as waves
+        if (objectsToUnlock != null && objectsToUnlock.Count > 0)
+        {
+            foreach (Interactable obj in objectsToUnlock)
+            {
+                if (obj != null) obj.Unlock();
+            }
+        }
+        OpenGateClientRpc();
     }
 
-    private void SpawnWave()
+    private void SpawnEnemy(EnemyWaveConfig config)
     {
-        int toSpawn = unlimitedWaves
-            ? releasePerWave
-            : Mathf.Min(releasePerWave, totalEnemiesToSpawn - enemiesSpawned);
-        
-        for (int i = 0; i < toSpawn; i++)
-        {
-            if (!unlimitedWaves && enemiesSpawned >= totalEnemiesToSpawn) break;
+        Transform spawnPoint = config.spawnPoints[Random.Range(0, config.spawnPoints.Length)];
+        Vector3 spawnPos = spawnPoint.position;
 
-            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            Vector2 circleOffset = Random.insideUnitCircle * spawnRadius;
-            Vector3 spawnPos = new Vector3(
-                spawnPoint.position.x + circleOffset.x,
-                spawnPoint.position.y,
-                spawnPoint.position.z + circleOffset.y
-            );
-            GameObject enemy = Instantiate(enemyPrefab, spawnPos, spawnPoint.rotation);
-            TargetMultiplayer enemyHealth = enemy.GetComponent<TargetMultiplayer>();
-            enemyHealth.OnHealthZero += OnEnemyDied; 
-            enemy.GetComponent<NetworkObject>().Spawn(true); 
-            enemiesSpawned++;
-            enemiesAlive++;
+        // Pequena variação aleatória para não nascerem todos no mesmo pixel
+        Vector2 randomCircle = Random.insideUnitCircle * 1f; 
+        spawnPos += new Vector3(randomCircle.x, 0, randomCircle.y);
+
+        GameObject enemy = Instantiate(config.prefab, spawnPos, spawnPoint.rotation);
+        
+        TargetMultiplayer enemyHealth = enemy.GetComponent<TargetMultiplayer>();
+        if (enemyHealth != null) enemyHealth.OnHealthZero += OnEnemyDied; 
+        
+        EnemyAI ai = enemy.GetComponent<EnemyAI>();
+        if (ai != null)
+        {
+            ai.SetPatrolMode(spawnPos, config.patrolRadius);
         }
+        
+        enemy.GetComponent<NetworkObject>().Spawn(true); 
+        enemiesAlive++;
     }
     
     private void OnEnemyDied(TargetMultiplayer deadEnemy)
@@ -160,18 +171,14 @@ public class WavControllerScript : NetworkBehaviour
     [ClientRpc]
     private void CloseGateClientRpc()
     {
-        if (meshRenderer != null)
-            meshRenderer.enabled = true;
-        foreach (Collider col in allColliders)
-            col.enabled = true;
+        if (meshRenderer != null) meshRenderer.enabled = true;
+        foreach (Collider col in allColliders) col.enabled = true;
     }
 
     [ClientRpc]
     private void OpenGateClientRpc()
     {
-        if (meshRenderer != null)
-            meshRenderer.enabled = false;
-        foreach (Collider col in allColliders)
-            col.enabled = false;
+        if (meshRenderer != null) meshRenderer.enabled = false;
+        foreach (Collider col in allColliders) col.enabled = false;
     }
 }

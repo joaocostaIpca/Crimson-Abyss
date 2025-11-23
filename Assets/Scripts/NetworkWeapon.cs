@@ -261,4 +261,22 @@ public class NetworkWeapon : NetworkBehaviour
         }
     }
 
+    public void RefillAmmo()
+    {
+        // Só o dono pode pedir para recarregar
+        if (IsOwner)
+        {
+            RefillAmmoServerRpc();
+        }
+    }
+
+    [ServerRpc]
+    private void RefillAmmoServerRpc()
+    {
+        // Enche a munição total (ex: dá 4 pentes extra)
+        maxAmmo.Value = 120; 
+        // Opcional: Enche também o pente atual
+        currentAmmo.Value = maxMagAmmo;
+    }
+
 }
