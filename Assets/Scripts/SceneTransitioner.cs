@@ -14,11 +14,14 @@ public class SceneTransitioner : NetworkBehaviour
     public KeyCode interactKey = KeyCode.E;
     [SerializeField] private string nextSceneName = "SubLevel";
 
+    [Header("Spawn na Próxima Cena")]
+    // As coordenadas que pediste (baseadas na tua imagem)
+    [SerializeField] private Vector3 targetSpawnPosition = new Vector3(-16.348f, 1.967f, -0.37f);
+
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI promptText; 
 
     private NetworkVariable<bool> allPlayersReady = new NetworkVariable<bool>(false);
-
     private bool isLocalPlayerInZone = false;
     private float currentHoldTimer = 0f;
     private List<ulong> playersInZone = new List<ulong>();
@@ -34,16 +37,8 @@ public class SceneTransitioner : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        // Subscrever à mudança de estado
         allPlayersReady.OnValueChanged += OnReadyStateChanged;
-        
-        // Se formos o servidor, verificar estado inicial
-        if (IsServer)
-        {
-            CheckIfAllReady();
-        }
-        
-        // Atualizar UI inicial
+        if (IsServer) CheckIfAllReady();
         UpdateUI();
     }
 
@@ -61,6 +56,8 @@ public class SceneTransitioner : NetworkBehaviour
     {
         if (isLocalPlayerInZone)
         {
+            UpdateUI(); // Garante que a UI está atualizada
+
             if (allPlayersReady.Value)
             {
                 if (Input.GetKey(interactKey))
@@ -93,14 +90,12 @@ public class SceneTransitioner : NetworkBehaviour
         }
     }
 
-    // --- FÍSICA (Deteta quem entra) ---
+    // --- FÍSICA ---
 
     void OnTriggerEnter(Collider other)
     {
-        // Log local para debug
-        Debug.Log($"[Zona] Entrou: {other.name}");
+        // Debug.Log($"[Zona] Entrou: {other.name}");
 
-        // 1. Lógica Local (Para a UI do próprio jogador)
         if (other.CompareTag("Player"))
         {
             var netObj = other.GetComponentInParent<NetworkObject>();
@@ -110,7 +105,6 @@ public class SceneTransitioner : NetworkBehaviour
                 if (promptText != null) promptText.gameObject.SetActive(true);
                 UpdateUI();
                 
-                // Avisa o servidor
                 SetPlayerInZoneServerRpc(true);
             }
         }
@@ -127,7 +121,6 @@ public class SceneTransitioner : NetworkBehaviour
                 currentHoldTimer = 0f;
                 if (promptText != null) promptText.gameObject.SetActive(false);
                 
-                // Avisa o servidor
                 SetPlayerInZoneServerRpc(false);
             }
         }
@@ -148,7 +141,7 @@ public class SceneTransitioner : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SetPlayerInZoneServerRpc(bool entered, ServerRpcParams rpcParams = default)
     {
-        if (!IsSpawned) return; // Previne o erro RpcException
+        if (!IsSpawned) return;
 
         ulong clientId = rpcParams.Receive.SenderClientId;
 
@@ -170,7 +163,7 @@ public class SceneTransitioner : NetworkBehaviour
         if (!IsServer) return;
 
         int totalLiving = GameManagerHelper.GetLivingPlayerCount();
-        Debug.Log($"[Zona] Jogadores na Zona: {playersInZone.Count} / Vivos: {totalLiving}");
+        // Debug.Log($"[Zona CHECK] Na Zona: {playersInZone.Count} | Vivos: {totalLiving}");
 
         if (totalLiving == 0)
         {
@@ -178,7 +171,6 @@ public class SceneTransitioner : NetworkBehaviour
             return;
         }
 
-        // Se o número na zona for igual ou maior que o total de vivos, estamos prontos
         bool ready = playersInZone.Count >= totalLiving;
         allPlayersReady.Value = ready;
     }
@@ -190,8 +182,39 @@ public class SceneTransitioner : NetworkBehaviour
 
         if (allPlayersReady.Value)
         {
+            // 1. Teletransporta os jogadores para a coordenada fixa
+            TeleportPlayersToTarget();
+
             Debug.Log($"[Zona] A mudar para cena: {nextSceneName}");
             NetworkManager.Singleton.SceneManager.LoadScene(nextSceneName, LoadSceneMode.Single);
+        }
+    }
+
+    // --- MUDANÇA: Teletransporte para ponto fixo com Z correto ---
+    private void TeleportPlayersToTarget()
+    {
+        int index = 0;
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            if (client.PlayerObject == null) continue;
+
+            // Desliga NavMeshAgent se existir para evitar conflitos
+            var agent = client.PlayerObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            if (agent != null) agent.enabled = false;
+
+            // Define a posição base
+            Vector3 finalPos = targetSpawnPosition;
+
+            // Adiciona um pequeno "offset" (desvio) no X para eles não ficarem
+            // exatamente uns dentro dos outros (ex: -16, -14, -12...)
+            finalPos.x += (index * 1.5f); 
+
+            client.PlayerObject.transform.position = finalPos;
+            
+            // Reativa agente se necessário (normalmente na nova cena ele 'aterra' no NavMesh)
+            if (agent != null) agent.enabled = true;
+
+            index++;
         }
     }
 }
