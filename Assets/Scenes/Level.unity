@@ -615,16 +615,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
-  spawnPoints:
-  - {fileID: 1328000207}
-  - {fileID: 302129330}
-  - {fileID: 1512443933}
-  totalEnemiesToSpawn: 0
-  releasePerWave: 4
-  spawnRadius: 2
-  unlimitedWaves: 1
-  waveDelay: 10
+  waves: []
+  timeBetweenWaves: 5
   objectsToUnlock: []
 --- !u!65 &201997900
 BoxCollider:
@@ -770,6 +762,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.09222137, y: 0.0042672446, z: 0.0028040218}
   m_Center: {x: 0.0695377, y: -0.46937945, z: -0.059666734}
+--- !u!114 &218410150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103366804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 214726740
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!4 &252472430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2577548232221058511, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
@@ -1955,10 +1972,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d741062f108df4a95aa9b0eac21e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneTransitioner
+  ShowTopMostFoldoutHeaderGroup: 1
+  holdDuration: 3
   interactKey: 101
-  holdTime: 2
-  gameSceneName: SubLevel
-  progressIcon: {fileID: 0}
+  nextSceneName: SubLevel
   promptText: {fileID: 881498939}
 --- !u!65 &746081513
 BoxCollider:
@@ -2272,15 +2289,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
-  spawnPoints:
-  - {fileID: 776737775}
-  - {fileID: 759736671}
-  totalEnemiesToSpawn: 12
-  releasePerWave: 4
-  spawnRadius: 3
-  unlimitedWaves: 0
-  waveDelay: 10
+  waves: []
+  timeBetweenWaves: 5
   objectsToUnlock: []
 --- !u!65 &866607508
 BoxCollider:
@@ -3482,9 +3492,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: minimapBoxIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: bcfe1eca71d0fe9488b82cb3d9ada347, type: 3}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: pauseMenuPanel
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: minimapOtherPlayerIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: bcfe1eca71d0fe9488b82cb3d9ada347, type: 3}
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: characterNames.Array.size
       value: 4
@@ -4033,18 +4051,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
-  spawnPoints:
-  - {fileID: 254754445}
-  - {fileID: 2027218841}
-  - {fileID: 761092210}
-  - {fileID: 541064939}
-  - {fileID: 541692376}
-  totalEnemiesToSpawn: 20
-  releasePerWave: 5
-  spawnRadius: 3
-  unlimitedWaves: 0
-  waveDelay: 5
+  waves: []
+  timeBetweenWaves: 5
   objectsToUnlock:
   - {fileID: 1682751169}
 --- !u!65 &1464630516
@@ -4255,14 +4263,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
-  spawnPoints:
-  - {fileID: 533744946}
-  totalEnemiesToSpawn: 2
-  releasePerWave: 2
-  spawnRadius: 2
-  unlimitedWaves: 0
-  waveDelay: 5
+  waves: []
+  timeBetweenWaves: 5
   objectsToUnlock: []
 --- !u!65 &1530483804
 BoxCollider:
@@ -6929,6 +6931,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7285646090426459417, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 746081512}
+    - targetCorrespondingSourceObject: {fileID: -7285646090426459417, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 218410150}
     - targetCorrespondingSourceObject: {fileID: -5568371526223589888, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1734636358}
