@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
@@ -5,66 +6,112 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneTransitioner : MonoBehaviour
+[RequireComponent(typeof(NetworkObject))]
+public class SceneTransitioner : NetworkBehaviour
 {
-    [Header("Settings")]
+    [Header("Definições")]
+    public float holdDuration = 3f;
     public KeyCode interactKey = KeyCode.E;
-    public float holdTime = 2f;
-    [SerializeField] private string gameSceneName = "SubLevel";
+    [SerializeField] private string nextSceneName = "SubLevel";
 
     [Header("UI")]
-    public Image progressIcon;      // UI Image (set Fill Method to Radial or Horizontal)
-    public TextMeshProUGUI promptText;         // UI Text element to show the "Hold [Key]" message
+    [SerializeField] private TextMeshProUGUI promptText; 
 
-    private float holdTimer = 0f;
-    private bool playerInTrigger = false;
+    private NetworkVariable<bool> allPlayersReady = new NetworkVariable<bool>(false);
 
-    void Start()
+    private bool isLocalPlayerInZone = false;
+    private float currentHoldTimer = 0f;
+    private List<ulong> playersInZone = new List<ulong>();
+
+    private void Start()
     {
-        if (progressIcon != null)
-            progressIcon.fillAmount = 0f;
-
         if (promptText != null)
+        {
             promptText.gameObject.SetActive(false);
+            promptText.text = "";
+        }
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        // Subscrever à mudança de estado
+        allPlayersReady.OnValueChanged += OnReadyStateChanged;
+        
+        // Se formos o servidor, verificar estado inicial
+        if (IsServer)
+        {
+            CheckIfAllReady();
+        }
+        
+        // Atualizar UI inicial
+        UpdateUI();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        allPlayersReady.OnValueChanged -= OnReadyStateChanged;
+    }
+
+    private void OnReadyStateChanged(bool oldVal, bool newVal)
+    {
+        UpdateUI();
     }
 
     void Update()
     {
-        if (NetworkManager.Singleton.IsServer)
+        if (isLocalPlayerInZone)
         {
-            if (!playerInTrigger) return;
-
-            if (Input.GetKey(interactKey))
+            if (allPlayersReady.Value)
             {
-                holdTimer += Time.deltaTime;
-
-                if (progressIcon != null)
-                    progressIcon.fillAmount = holdTimer / holdTime;
-
-                if (holdTimer >= holdTime)
+                if (Input.GetKey(interactKey))
                 {
-                    MoveAllPlayers(2,-9,8,1);
-                    NetworkManager.Singleton.SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
+                    currentHoldTimer += Time.deltaTime;
+                    float timeLeft = Mathf.Max(0, holdDuration - currentHoldTimer);
+                    
+                    if (promptText != null)
+                        promptText.text = $"A Viajar em {timeLeft:F1}s...";
 
+                    if (currentHoldTimer >= holdDuration)
+                    {
+                        RequestLevelChangeServerRpc();
+                        currentHoldTimer = 0f; 
+                    }
                 }
-
+                else
+                {
+                    currentHoldTimer = 0f;
+                    if (promptText != null)
+                        promptText.text = $"Segura [{interactKey}] para Viajar";
+                }
             }
-            else if (Input.GetKeyUp(interactKey))
+            else
             {
-                ResetProgress();
+                currentHoldTimer = 0f;
+                if (promptText != null)
+                    promptText.text = "À espera de outros jogadores...";
             }
         }
     }
 
+    // --- FÍSICA (Deteta quem entra) ---
+
     void OnTriggerEnter(Collider other)
     {
+        // Log local para debug
+        Debug.Log($"[Zona] Entrou: {other.name}");
+
+        // 1. Lógica Local (Para a UI do próprio jogador)
         if (other.CompareTag("Player"))
         {
-            playerInTrigger = true;
-            if (promptText != null)
+            var netObj = other.GetComponentInParent<NetworkObject>();
+            if (netObj != null && netObj.IsOwner)
             {
-                promptText.gameObject.SetActive(true);
-                promptText.text = $"Hold [{interactKey}] to continue";
+                isLocalPlayerInZone = true;
+                if (promptText != null) promptText.gameObject.SetActive(true);
+                UpdateUI();
+                
+                // Avisa o servidor
+                SetPlayerInZoneServerRpc(true);
             }
         }
     }
@@ -73,79 +120,78 @@ public class SceneTransitioner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerInTrigger = false;
-            ResetProgress();
-
-            if (promptText != null)
-                promptText.gameObject.SetActive(false);
+            var netObj = other.GetComponentInParent<NetworkObject>();
+            if (netObj != null && netObj.IsOwner)
+            {
+                isLocalPlayerInZone = false;
+                currentHoldTimer = 0f;
+                if (promptText != null) promptText.gameObject.SetActive(false);
+                
+                // Avisa o servidor
+                SetPlayerInZoneServerRpc(false);
+            }
         }
     }
 
-    void ResetProgress()
+    private void UpdateUI()
     {
-        holdTimer = 0f;
-        if (progressIcon != null)
-            progressIcon.fillAmount = 0f;
+        if (!isLocalPlayerInZone || promptText == null) return;
+
+        if (allPlayersReady.Value)
+            promptText.text = $"Segura [{interactKey}] para Viajar";
+        else
+            promptText.text = "À espera de outros jogadores...";
     }
 
-    void LoadNextScene()
+    // --- SERVIDOR ---
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerInZoneServerRpc(bool entered, ServerRpcParams rpcParams = default)
     {
-        int currentIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextIndex = currentIndex + 1;
+        if (!IsSpawned) return; // Previne o erro RpcException
 
-        if (nextIndex >= SceneManager.sceneCountInBuildSettings)
-            nextIndex = 0;
+        ulong clientId = rpcParams.Receive.SenderClientId;
 
-        SceneManager.LoadScene(nextIndex);
-    }
-
-    public void MoveAllPlayers(float targetY, float minX, float maxX, float minSpacing)
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        // Track used X positions to avoid overlap
-        List<float> usedXPositions = new List<float>();
-
-        foreach (GameObject p in players)
+        if (entered)
         {
-            float randomX = 0f;
-            bool valid = false;
+            if (!playersInZone.Contains(clientId))
+                playersInZone.Add(clientId);
+        }
+        else
+        {
+            playersInZone.Remove(clientId);
+        }
 
-            // Try up to 50 times to find a non-overlapping X
-            for (int tries = 0; tries < 50; tries++)
-            {
-                float candidate = Random.Range(minX, maxX);
-                bool tooClose = false;
+        CheckIfAllReady();
+    }
 
-                // Check spacing against all used positions
-                foreach (float used in usedXPositions)
-                {
-                    if (Mathf.Abs(candidate - used) < minSpacing)
-                    {
-                        tooClose = true;
-                        break;
-                    }
-                }
+    private void CheckIfAllReady()
+    {
+        if (!IsServer) return;
 
-                if (!tooClose)
-                {
-                    randomX = candidate;
-                    valid = true;
-                    usedXPositions.Add(candidate);
-                    break;
-                }
-            }
+        int totalLiving = GameManagerHelper.GetLivingPlayerCount();
+        Debug.Log($"[Zona] Jogadores na Zona: {playersInZone.Count} / Vivos: {totalLiving}");
 
-            // If no valid position found after many tries, just push outward
-            if (!valid)
-            {
-                randomX = usedXPositions.Count * minSpacing + minX;
-                usedXPositions.Add(randomX);
-            }
+        if (totalLiving == 0)
+        {
+            allPlayersReady.Value = false;
+            return;
+        }
 
-            // Move the player
-            Vector3 pos = p.transform.position;
-            p.transform.position = new Vector3(randomX, targetY, 0);
+        // Se o número na zona for igual ou maior que o total de vivos, estamos prontos
+        bool ready = playersInZone.Count >= totalLiving;
+        allPlayersReady.Value = ready;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void RequestLevelChangeServerRpc()
+    {
+        if (!IsServer) return;
+
+        if (allPlayersReady.Value)
+        {
+            Debug.Log($"[Zona] A mudar para cena: {nextSceneName}");
+            NetworkManager.Singleton.SceneManager.LoadScene(nextSceneName, LoadSceneMode.Single);
         }
     }
 }

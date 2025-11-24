@@ -185,15 +185,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.738
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.018
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.316284
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -464,6 +464,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   ShowTopMostFoldoutHeaderGroup: 1
+  CharacterIndex:
+    m_InternalValue: -1
   rb: {fileID: 1210291166014748438}
   playerCamera: {fileID: 2513472350722020523}
   playerAudioListener: {fileID: 8607758629713376164}
@@ -478,8 +480,8 @@ MonoBehaviour:
   speed: 10
   jumpForce: 7
   mouseSensitivity: 100
-  CharacterIndex:
-    m_InternalValue: -1
+  characterType: 2
+  hasMedikit: 0
 --- !u!114 &7507278222133400908
 MonoBehaviour:
   m_ObjectHideFlags: 0

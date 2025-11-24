@@ -13,15 +13,21 @@ public static class GameManagerHelper
         int count = 0;
         foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
-            if (client.PlayerObject != null)
+            // Verifica se o objeto do jogador existe E está spawnado
+            if (client.PlayerObject != null && client.PlayerObject.IsSpawned)
             {
                 TargetMultiplayer target = client.PlayerObject.GetComponent<TargetMultiplayer>();
+                
+                // Conta se tiver vida e não estiver morto
                 if (target != null && !target.IsDead.Value)
                 {
                     count++;
                 }
             }
         }
+        
+        // Debug para vermos o que se passa na consola
+        Debug.Log($"[GameManager] Jogadores Vivos Contados: {count}");
         return count;
     }
 

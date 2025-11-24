@@ -5162,9 +5162,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: minimapBoxIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: bcfe1eca71d0fe9488b82cb3d9ada347, type: 3}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: pauseMenuPanel
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
+      propertyPath: minimapOtherPlayerIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: bcfe1eca71d0fe9488b82cb3d9ada347, type: 3}
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: characterNames.Array.size
       value: 4
