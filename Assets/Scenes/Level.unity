@@ -762,6 +762,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.09222137, y: 0.0042672446, z: 0.0028040218}
   m_Center: {x: 0.0695377, y: -0.46937945, z: -0.059666734}
+--- !u!114 &218410150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103366804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 214726740
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!4 &252472430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2577548232221058511, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
@@ -1540,7 +1565,7 @@ Transform:
   m_GameObject: {fileID: 541692375}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 121.7, y: -1.93897, z: -82.8908}
+  m_LocalPosition: {x: 128.73941, y: -1.93897, z: -82.8908}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1947,10 +1972,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d741062f108df4a95aa9b0eac21e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneTransitioner
+  ShowTopMostFoldoutHeaderGroup: 1
+  holdDuration: 3
   interactKey: 101
-  holdTime: 2
-  gameSceneName: SubLevel
-  progressIcon: {fileID: 0}
+  nextSceneName: SubLevel
   promptText: {fileID: 881498939}
 --- !u!65 &746081513
 BoxCollider:
@@ -2264,52 +2289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  waves:
-  - waveName: scary wave
-    enemies:
-    - enemyName: Demonio
-      prefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
-      spawnPoints:
-      - {fileID: 776737775}
-      count: 3
-      patrolRadius: 5
-    - enemyName: Diabrete
-      prefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
-      spawnPoints:
-      - {fileID: 759736671}
-      count: 3
-      patrolRadius: 5
-    - enemyName: Bruto
-      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
-      spawnPoints:
-      - {fileID: 776737775}
-      count: 3
-      patrolRadius: 5
-    timeBetweenSpawns: 1
-  - waveName: teste
-    enemies:
-    - enemyName: Lancador
-      prefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
-      spawnPoints:
-      - {fileID: 776737775}
-      count: 1
-      patrolRadius: 10
-    timeBetweenSpawns: 0
-  - waveName: FInal
-    enemies:
-    - enemyName: Demon
-      prefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
-      spawnPoints:
-      - {fileID: 776737775}
-      count: 3
-      patrolRadius: 5
-    - enemyName: Diabrete
-      prefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
-      spawnPoints:
-      - {fileID: 0}
-      count: 3
-      patrolRadius: 3
-    timeBetweenSpawns: 1
+  waves: []
   timeBetweenWaves: 5
   objectsToUnlock: []
 --- !u!65 &866607508
@@ -3514,7 +3494,7 @@ PrefabInstance:
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: minimapBoxIcon
       value: 
-      objectReference: {fileID: 21300000, guid: 264c13dcc8d482444811b1161b479f9f, type: 3}
+      objectReference: {fileID: 21300000, guid: bcfe1eca71d0fe9488b82cb3d9ada347, type: 3}
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: pauseMenuPanel
       value: 
@@ -3522,7 +3502,7 @@ PrefabInstance:
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: minimapOtherPlayerIcon
       value: 
-      objectReference: {fileID: 21300000, guid: 8f3c80eb433a09d468f3e69c2907a926, type: 3}
+      objectReference: {fileID: 21300000, guid: bcfe1eca71d0fe9488b82cb3d9ada347, type: 3}
     - target: {fileID: 2548928479473477920, guid: f104c477adb5c2b4899bd8a178779bbf, type: 3}
       propertyPath: characterNames.Array.size
       value: 4
@@ -4071,25 +4051,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  waves:
-  - waveName: wave
-    enemies:
-    - enemyName: Demon
-      prefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
-      spawnPoints:
-      - {fileID: 254754445}
-      - {fileID: 761092210}
-      count: 3
-      patrolRadius: 5
-    - enemyName: Lancador
-      prefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
-      spawnPoints:
-      - {fileID: 2027218841}
-      - {fileID: 541064939}
-      - {fileID: 541692376}
-      count: 3
-      patrolRadius: 10
-    timeBetweenSpawns: 1
+  waves: []
   timeBetweenWaves: 5
   objectsToUnlock:
   - {fileID: 1682751169}
@@ -4301,16 +4263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  waves:
-  - waveName: Loja
-    enemies:
-    - enemyName: demonio
-      prefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
-      spawnPoints:
-      - {fileID: 533744946}
-      count: 3
-      patrolRadius: 3
-    timeBetweenSpawns: 1
+  waves: []
   timeBetweenWaves: 5
   objectsToUnlock: []
 --- !u!65 &1530483804
@@ -6978,6 +6931,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7285646090426459417, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 746081512}
+    - targetCorrespondingSourceObject: {fileID: -7285646090426459417, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 218410150}
     - targetCorrespondingSourceObject: {fileID: -5568371526223589888, guid: 08ff11b588bfef24a8107541a3f7b0e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1734636358}

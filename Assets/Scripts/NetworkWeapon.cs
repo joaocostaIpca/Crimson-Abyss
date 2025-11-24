@@ -261,6 +261,7 @@ public class NetworkWeapon : NetworkBehaviour
         }
     }
 
+    // --- NOVA FUNÇÃO: CHAMADA PELA SUPPLY BOX ---
     public void RefillAmmo()
     {
         // Só o dono pode pedir para recarregar

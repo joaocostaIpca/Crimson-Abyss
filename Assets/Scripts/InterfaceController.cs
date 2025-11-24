@@ -8,14 +8,16 @@ using Unity.Netcode;
 public class InterfaceController : MonoBehaviour
 {
     public static InterfaceController Instance { get; private set; }
-    
+
+    // --- PAUSE LOGIC REMOVED ---
+
     [Header("Configurações")]
     [SerializeField] float minimapUpdateDelay = 50f;
     [SerializeField] float minimapRange = 50f;
     public string[] characterNames = new string[] { "Freira", "Comandante", "Templario", "Fuzileiro", "Desconhecido" };
 
     [Header("Minimap Icons")]
-    // Arrastar os sprites no Inspector ou garantir que estão na pasta Resources/Images/
+    // You can drag these in the Inspector or rely on Resources.Load
     public Sprite minimapBoxIcon; 
     public Sprite minimapOtherPlayerIcon;
 
@@ -28,7 +30,6 @@ public class InterfaceController : MonoBehaviour
     private Image weaponPicture;
     private Image weaponPicture2;
     private Image weaponPicture3;
-    
     private GameObject minimapCompass;
     private Sprite minimapEnemy;
     private GameObject localPlayer;
@@ -41,6 +42,8 @@ public class InterfaceController : MonoBehaviour
     private Dictionary<ulong, int> clientSlotMap = new Dictionary<ulong, int>();
     private List<int> freeSlots = new List<int> { 2, 3, 4 }; 
 
+    private Image medikitImage;
+
     private void Awake()
     {
         if (Instance != null)
@@ -50,19 +53,23 @@ public class InterfaceController : MonoBehaviour
         }
         Instance = this;
         
+        // --- PAUSE LOGIC REMOVED ---
+        
         minimapUpdateDelaySeconds = minimapUpdateDelay / 1000f;
         clientSlotMap = new Dictionary<ulong, int>();
         freeSlots = new List<int> { 2, 3, 4 };
         
+        // Find UI Elements
         ammoText = GameObject.Find("Canvas/WeaponSystem/Ammo/AmmoCounter").GetComponent<TextMeshProUGUI>();
         weaponPicture = GameObject.Find("Canvas/WeaponSystem/Ammo/WeaponPicture").GetComponent<Image>();
         weaponPicture2 = GameObject.Find("Canvas/WeaponSystem/WeaponPicture2").GetComponent<Image>();
         weaponPicture3 = GameObject.Find("Canvas/WeaponSystem/WeaponPicture3").GetComponent<Image>();
-        
         minimapCompass = GameObject.Find("Canvas/Minimap/MinimapImage");
+        medikitImage = GameObject.Find("Canvas/WeaponSystem/Medikit").GetComponent<Image>();
         
-        // Carregar Ícones (Se não estiverem ligados no Inspector, tenta carregar da pasta Resources)
+        // Load Icons
         minimapEnemy = Resources.Load<Sprite>("Images/MinimapEnemy");
+        // Try to load if not assigned in inspector
         if (minimapBoxIcon == null) minimapBoxIcon = Resources.Load<Sprite>("Images/MinimapBox");
         if (minimapOtherPlayerIcon == null) minimapOtherPlayerIcon = Resources.Load<Sprite>("Images/MinimapPlayer");
 
@@ -81,8 +88,13 @@ public class InterfaceController : MonoBehaviour
             playerHealth[i] = playerDisplay[i].transform.Find("PlayerHealth").GetComponent<Slider>();
             playerDisplay[i].SetActive(false);
         }
+
         DontDestroyOnLoad(gameObject);
     }
+    
+    // --- PAUSE FUNCTIONS REMOVED ---
+    
+    // --- Slot Management & UI Updates ---
     
     public int GetOrAssignUISlot(ulong clientId, bool isLocalPlayer)
     {
@@ -132,54 +144,59 @@ public class InterfaceController : MonoBehaviour
             yield return new WaitForSeconds(minimapUpdateDelaySeconds);
             if (localPlayer == null) continue;
             
-            // Roda o mapa com o jogador
+            // Rotate minimap
             minimapCompass.transform.rotation = Quaternion.Euler(0, 0, localPlayer.transform.eulerAngles.y);
             
-            // Limpa ícones antigos
+            // Clear old icons (Enemy, Box, Player)
             foreach (Transform child in minimapCompass.transform)
             {
                 if (child.name == "MinimapEnemy" || child.name == "MinimapBox" || child.name == "MinimapPlayer") 
                     Destroy(child.gameObject);
             }
             
-            // 1. INIMIGOS
+            // 1. ENEMIES
             EnemyAI[] allEnemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
             foreach (EnemyAI enemy in allEnemies) 
             {
-                // Só mostra inimigos vivos
-                if (enemy != null && enemy.GetComponent<TargetMultiplayer>().health.Value > 0)
+                if (enemy != null)
                 {
-                    DrawMinimapIcon(enemy.transform.position, minimapEnemy, "MinimapEnemy", Color.red);
+                    // Check if alive
+                    var tm = enemy.GetComponent<TargetMultiplayer>();
+                    if (tm != null && tm.health.Value <= 0) continue;
+
+                    DrawIcon(enemy.transform.position, minimapEnemy, "MinimapEnemy", Color.red);
                 }
             }
 
-            // 2. SUPPLY BOXES (Stash)
-            // FindObjectsByType só encontra objetos ATIVOS. 
-            // Se a caixa estiver desligada (porque já a apanhaste), ela não aparece aqui. Perfeito!
+            // 2. SUPPLY BOXES (Stash) - NEW
             SupplyBox[] allBoxes = FindObjectsByType<SupplyBox>(FindObjectsSortMode.None);
             foreach (SupplyBox box in allBoxes)
             {
-                if (box != null)
+                if (box != null && box.gameObject.activeSelf) // Only show if active
                 {
-                    DrawMinimapIcon(box.transform.position, minimapBoxIcon, "MinimapBox", Color.green);
+                    DrawIcon(box.transform.position, minimapBoxIcon, "MinimapBox", Color.green);
                 }
             }
 
-            // 3. OUTROS JOGADORES
+            // 3. OTHER PLAYERS - NEW
             PlayerController[] allPlayers = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
             foreach (PlayerController p in allPlayers)
             {
-                // Não desenha o próprio jogador (já está no centro), nem jogadores mortos
-                if (p.gameObject != localPlayer && p.GetComponent<TargetMultiplayer>().health.Value > 0)
+                if (p.gameObject != localPlayer)
                 {
-                    DrawMinimapIcon(p.transform.position, minimapOtherPlayerIcon, "MinimapPlayer", Color.blue);
+                    var tm = p.GetComponent<TargetMultiplayer>();
+                    // Only show alive players
+                    if (tm != null && tm.health.Value > 0)
+                    {
+                        DrawIcon(p.transform.position, minimapOtherPlayerIcon, "MinimapPlayer", Color.blue);
+                    }
                 }
             }
         }
     }
 
-    // Função auxiliar para desenhar ícones (evita repetir código)
-    private void DrawMinimapIcon(Vector3 worldPos, Sprite icon, string iconName, Color color)
+    // Helper function to draw icons on the minimap
+    private void DrawIcon(Vector3 worldPos, Sprite icon, string iconName, Color color)
     {
         if (icon == null) return;
 
@@ -193,8 +210,8 @@ public class InterfaceController : MonoBehaviour
             iconObj.transform.SetParent(minimapCompass.transform);
             Image image = iconObj.AddComponent<Image>();
             image.sprite = icon;
-            image.color = color; // Define a cor (opcional)
-            image.rectTransform.sizeDelta = new Vector2(5, 5); // Tamanho do ícone
+            image.color = color;
+            image.rectTransform.sizeDelta = new Vector2(4, 4); 
             image.rectTransform.anchorMin = new Vector2(xPercent, yPercent);
             image.rectTransform.anchorMax = new Vector2(xPercent, yPercent);
             image.rectTransform.pivot = new Vector2(0.5f, 0.5f);
@@ -212,23 +229,27 @@ public class InterfaceController : MonoBehaviour
 
     public void UpdateWeapon(string weaponName)
     {
+        // Debug.Log("Updating weapon to: " + weaponName);
+
         if (weaponPicture == null) return;
         
         int index = weaponImageNames.IndexOf(weaponName);
+        int emptyIndex = weaponImageNames.IndexOf("Empty");
+        
         if (index >= 0) weaponPicture.sprite = weaponImages[index];
-        else weaponPicture.sprite = null;
+        else weaponPicture.sprite = (emptyIndex >= 0) ? weaponImages[emptyIndex] : null;
 
-        // Lógica de atualizar imagens das outras armas (Pictures 2 e 3)
+        // Logic for secondary/tertiary weapons
         PlayerWeaponManager weaponManager = localPlayer.GetComponent<PlayerWeaponManager>();
         if (weaponManager != null)
         {
-            UpdateWeaponSlot(weaponManager, 1, weaponPicture2);
-            UpdateWeaponSlot(weaponManager, 2, weaponPicture3);
+            UpdateWeaponSlot(weaponManager, 1, weaponPicture2, emptyIndex);
+            UpdateWeaponSlot(weaponManager, 2, weaponPicture3, emptyIndex);
         }
     }
 
-    // Helper para limpar o código do UpdateWeapon
-    private void UpdateWeaponSlot(PlayerWeaponManager mgr, int offset, Image imgSlot)
+    // Helper to clean up UpdateWeapon code
+    private void UpdateWeaponSlot(PlayerWeaponManager mgr, int offset, Image imgSlot, int emptyIndex)
     {
         if (imgSlot == null) return;
         int count = mgr.weaponPrefabs.Count;
@@ -239,13 +260,14 @@ public class InterfaceController : MonoBehaviour
         int imgIndex = weaponImageNames.IndexOf(name);
         
         if (imgIndex >= 0) imgSlot.sprite = weaponImages[imgIndex];
-        else imgSlot.sprite = null;
+        else imgSlot.sprite = (emptyIndex >= 0) ? weaponImages[emptyIndex] : null;
     }
 
     public void UpdatePlayer(bool isActive, int playerSlot, int charIndex, int playerHealth, Sprite playerPicture)
     {
         if (playerSlot < 1 || playerSlot > 4 || playerDisplay[0] == null) 
             return;
+            
         int index = playerSlot - 1; 
         playerDisplay[index].SetActive(isActive);
         if(!isActive)
@@ -262,6 +284,15 @@ public class InterfaceController : MonoBehaviour
             return;
         int index = playerSlot - 1;
         playerHealth[index].value = healthValue;
+    }
+
+    // --- Medikit ---
+    public void SetMedikitEnabled(bool enabled)
+    {
+        if (medikitImage == null) return;
+        Color c = medikitImage.color;
+        c.a = enabled ? 1f : (50f / 255f);
+        medikitImage.color = c;
     }
 
     public void SwitchToNextWeapon()

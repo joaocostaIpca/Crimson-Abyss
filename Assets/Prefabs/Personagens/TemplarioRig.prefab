@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.023132324
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 823375686
+  GlobalObjectIdHash: 4207510535
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -436,6 +436,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   ShowTopMostFoldoutHeaderGroup: 1
+  CharacterIndex:
+    m_InternalValue: -1
   rb: {fileID: 6584049104459631336}
   playerCamera: {fileID: 5748320780352520848}
   playerAudioListener: {fileID: 8417692726925989413}
@@ -450,8 +452,10 @@ MonoBehaviour:
   speed: 10
   jumpForce: 7
   mouseSensitivity: 100
-  CharacterIndex:
-    m_InternalValue: -1
+  characterType: 3
+  hasMedikit: 0
+  letsGoResourcePath: Sounds/LetsGo
+  earthquakeResourcePath: Sounds/Earthquake
 --- !u!114 &5684248997593845895
 MonoBehaviour:
   m_ObjectHideFlags: 0
