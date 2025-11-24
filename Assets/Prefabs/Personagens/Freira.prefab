@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.51
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -266.23688
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -87,12 +87,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6898509122318712269}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2290628426085166544}
   m_SourcePrefab: {fileID: 100100000, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
---- !u!23 &3207828382789061435 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
-  m_PrefabInstance: {fileID: 4218860035771433046}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3912800180322352391 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
@@ -250,13 +248,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   ShowTopMostFoldoutHeaderGroup: 1
+  CharacterIndex:
+    m_InternalValue: -1
   rb: {fileID: 4517609385997621793}
   playerCamera: {fileID: 0}
   playerAudioListener: {fileID: 0}
   networkWeapon: {fileID: 4429545764719905123}
   spectatorCamera: {fileID: 0}
-  playerMeshes:
-  - {fileID: 3207828382789061435}
+  playerRenderers: []
   playerCollider: {fileID: 7809670839955066439}
   spectatorDistance: 5
   spectatorMinPitch: -30
@@ -264,8 +263,8 @@ MonoBehaviour:
   speed: 10
   jumpForce: 7
   mouseSensitivity: 100
-  CharacterIndex:
-    m_InternalValue: -1
+  characterType: 0
+  hasMedikit: 1
 --- !u!114 &4429545764719905123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,8 +318,25 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: 1671a65b855603648aed0f2712e06092, type: 3}
   CurrentWeaponIndex:
     m_InternalValue: 0
---- !u!4 &4397447985458505661 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d9f4d1dad11c9134097ffafaefe1d28e, type: 3}
-  m_PrefabInstance: {fileID: 4218860035771433046}
+--- !u!95 &2290628426085166544
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3912800180322352391}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
