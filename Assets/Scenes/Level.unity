@@ -255,6 +255,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.0019999996, z: 0.059999987}
   m_Center: {x: 0, y: 0.0000000018626451, z: 0}
+--- !u!1 &46719345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 46719346}
+  m_Layer: 0
+  m_Name: SpawnPointParque (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &46719346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46719345}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.2287903, y: 0, z: 226.68643}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &50489096
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -339,6 +370,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.04735916, z: 0.029999994}
   m_Center: {x: 0.00000011920929, y: 0, z: 0}
+--- !u!1 &91397823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 91397824}
+  m_Layer: 0
+  m_Name: Spawn Metro (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &91397824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91397823}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -48.798798, y: -7.945, z: 288.4081}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &99437410
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -644,6 +706,57 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03180702, y: 0.27773115, z: 0.0029999996}
   m_Center: {x: 0, y: 0, z: -2.3283064e-10}
+--- !u!114 &177087399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1527424469
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &177087400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b82852799fd734aa0e95751a087497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
+  ShowTopMostFoldoutHeaderGroup: 1
+  waves:
+  - waveName: 'primeira '
+    enemies:
+    - enemyName: demonio
+      prefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
+      spawnPoints:
+      - {fileID: 1150854235}
+      count: 2
+      patrolRadius: 3
+    timeBetweenSpawns: 0
+  timeBetweenWaves: 1
+  objectsToUnlock:
+  - {fileID: 2066995156}
 --- !u!65 &178054567
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1033,6 +1146,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.009057177, y: 0.030614622, z: 0.012278533}
   m_Center: {x: 0.0005083074, y: -0.0000000013737899, z: 0.0012868098}
+--- !u!1 &275709179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 275709180}
+  - component: {fileID: 275709182}
+  - component: {fileID: 275709181}
+  m_Layer: 0
+  m_Name: Diabrete (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &275709180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275709179}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -52.49, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &275709181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275709179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &275709182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275709179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2849544331
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &280522157
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1075,6 +1262,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0984704, y: 0.26211962, z: 0.124153875}
   m_Center: {x: 0, y: 0, z: 0.0036515903}
+--- !u!1 &292001322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 292001323}
+  - component: {fileID: 292001325}
+  - component: {fileID: 292001324}
+  m_Layer: 0
+  m_Name: Bruto (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &292001323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292001322}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -84.4, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &292001324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292001322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &292001325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292001322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2802063106
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!64 &293236885
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1354,6 +1615,154 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.01702957, y: 0.0024749893, z: 0.029999994}
   m_Center: {x: 0.00000011920929, y: 0, z: -0.0000000018626451}
+--- !u!1 &340362847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 340362848}
+  - component: {fileID: 340362850}
+  - component: {fileID: 340362849}
+  m_Layer: 0
+  m_Name: Diabrete (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &340362848
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340362847}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.438, y: 0.389, z: 1.719}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1057378071}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &340362849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340362847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &340362850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340362847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2001920803
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!1 &349072159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 349072160}
+  - component: {fileID: 349072162}
+  - component: {fileID: 349072161}
+  m_Layer: 0
+  m_Name: Diabrete (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &349072160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349072159}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.082, y: 0.389, z: 12.968}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1057378071}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &349072161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349072159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &349072162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349072159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2144892516
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &353829044
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1459,6 +1868,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.048000023, z: 0.0009999998}
   m_Center: {x: 0.00000023841858, y: -0.016232982, z: 0}
+--- !u!1 &373410289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 373410290}
+  m_Layer: 0
+  m_Name: SpawnPointPraca (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &373410290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373410289}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 30.598541, y: -0.050000012, z: 144.13}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &378480316
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1516,12 +1956,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.019999996, z: 0.019999994}
-  m_Center: {x: 0, y: -0.00000023841858, z: 0}
+  m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!65 &389954824
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1539,7 +1979,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.019999996, z: 0.019999994}
   m_Center: {x: 0, y: -0.00000023841858, z: 0}
@@ -1564,6 +2004,50 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.001, y: 0.0009999998, z: 0.029999994}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &391650361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 391650362}
+  m_Layer: 0
+  m_Name: SpawnPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &391650362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391650361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -211.62122, y: 0.5, z: -5.31}
+  m_LocalScale: {x: 1, y: 1, z: 0.7086}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1150854235}
+  - {fileID: 2121028270}
+  - {fileID: 1719275987}
+  - {fileID: 1495155655}
+  - {fileID: 1497783369}
+  - {fileID: 373410290}
+  - {fileID: 1716064053}
+  - {fileID: 46719346}
+  - {fileID: 1545560246}
+  - {fileID: 445856739}
+  - {fileID: 1854396998}
+  - {fileID: 91397824}
+  - {fileID: 1998159732}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &397857025
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1805,6 +2289,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.016911408, y: 0.043772724, z: 0.043370977}
   m_Center: {x: 0.00000013131648, y: 0, z: -0.0050229207}
+--- !u!1 &445856738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 445856739}
+  m_Layer: 0
+  m_Name: SpawnPointParque (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &445856739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445856738}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12.39122, y: 0, z: 220.37822}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &449095542
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1868,6 +2383,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.19199991, z: 0.027999995}
   m_Center: {x: 0.00000023841858, y: 0, z: 0}
+--- !u!1 &465373695
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 465373696}
+  - component: {fileID: 465373698}
+  - component: {fileID: 465373697}
+  m_Layer: 0
+  m_Name: Diabretes (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &465373696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465373695}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.34, y: -2.66, z: 16.58}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &465373697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465373695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3404420317
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &465373698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465373695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &466272384
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1910,6 +2499,124 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.009057177, y: 0.030614622, z: 0.012278533}
   m_Center: {x: 0.00050854596, y: 0.0000002370751, z: 0.0012868023}
+--- !u!1 &473193633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 473193634}
+  m_Layer: 0
+  m_Name: Ravina
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &473193634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473193633}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1746279131}
+  - {fileID: 1923074986}
+  - {fileID: 1571840420}
+  - {fileID: 1148023500}
+  - {fileID: 1875777362}
+  - {fileID: 1863277002}
+  - {fileID: 787643321}
+  - {fileID: 1012789395}
+  - {fileID: 465373696}
+  - {fileID: 953978226}
+  - {fileID: 1892505984}
+  - {fileID: 1512309811}
+  - {fileID: 938684007}
+  m_Father: {fileID: 1972956342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &473288380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 473288381}
+  - component: {fileID: 473288382}
+  - component: {fileID: 473288383}
+  m_Layer: 0
+  m_Name: Diabrete
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &473288381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473288380}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -17.24553, y: 0.6708301, z: 195.62}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1785131630}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &473288382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473288380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1426404211
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &473288383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473288380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &482735348
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2015,6 +2722,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.013064489, y: 0.03999999, z: 0.016696803}
   m_Center: {x: 0.0020161218, y: -0.000000040978197, z: 0.002924201}
+--- !u!114 &517244052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401806099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2090904952
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!64 &534497333
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2121,6 +2853,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.04, y: 0.03999999, z: 0.03279975}
   m_Center: {x: 0.0003737649, y: -0.0000947872, z: -0.004833736}
+--- !u!4 &553055516 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4259365095657408630, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+  m_PrefabInstance: {fileID: 1724545631}
+  m_PrefabAsset: {fileID: 0}
 --- !u!65 &553225230
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2331,6 +3068,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.14799999, y: 0.0020000061, z: 0.09999998}
   m_Center: {x: 0, y: 0.000000014901161, z: -0.0000000037252903}
+--- !u!1 &624170710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 624170711}
+  - component: {fileID: 624170713}
+  - component: {fileID: 624170712}
+  m_Layer: 0
+  m_Name: Diabrete (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &624170711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624170710}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.04, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &624170712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624170710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &624170713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624170710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 4214146068
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &628073160
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2373,6 +3184,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.005, y: 0.22525722, z: 0.022999994}
   m_Center: {x: 0.00000011920929, y: -0.00000011920929, z: 0}
+--- !u!1 &650848217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 650848218}
+  - component: {fileID: 650848220}
+  - component: {fileID: 650848219}
+  m_Layer: 0
+  m_Name: Bruto (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &650848218
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650848217}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -17.24553, y: 0.6708301, z: 224.56}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1785131630}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &650848219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650848217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
+--- !u!114 &650848220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650848217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1329688609
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &660212250
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2520,6 +3405,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.007190585, y: 0.016720047, z: 0.010272262}
   m_Center: {x: -0.0008030295, y: -0.000000005587936, z: -0.0011475256}
+--- !u!114 &702486931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 391913033
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &705543316
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2562,6 +3472,40 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.04377273, y: 0.016911406, z: 0.043370977}
   m_Center: {x: 0.00000011920929, y: -0.000000012107192, z: -0.0050229207}
+--- !u!1 &713953413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 713953414}
+  m_Layer: 0
+  m_Name: Inicio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &713953414
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713953413}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.23, y: 0, z: -5.49}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2007947472}
+  - {fileID: 1634604078}
+  - {fileID: 1589370702}
+  m_Father: {fileID: 1972956342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &718446326
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2904,6 +3848,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.39999998, y: 0.6377307, z: 0.0029999996}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &783819674
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 783819675}
+  - component: {fileID: 783819677}
+  - component: {fileID: 783819676}
+  m_Layer: 0
+  m_Name: Diabrete (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &783819675
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783819674}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -17.24553, y: 0.6708301, z: 205.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1785131630}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &783819676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783819674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
+--- !u!114 &783819677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783819674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 396211167
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &785889599
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2925,6 +3943,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0049999664, y: 0.002562756, z: 0.019999994}
   m_Center: {x: 0, y: -0.000000014901161, z: 0.000000026077032}
+--- !u!1 &787643320
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 787643321}
+  - component: {fileID: 787643323}
+  - component: {fileID: 787643322}
+  m_Layer: 0
+  m_Name: Diabretes (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &787643321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787643320}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 30.46, y: -2.66, z: 15.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &787643322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787643320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3234775701
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &787643323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787643320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!1 &791330789
 GameObject:
   m_ObjectHideFlags: 0
@@ -3754,6 +4846,41 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.0019999996, z: 0.059999987}
   m_Center: {x: 0.00000011920929, y: 0, z: 0}
+--- !u!114 &920966086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401806099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b82852799fd734aa0e95751a087497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
+  ShowTopMostFoldoutHeaderGroup: 1
+  waves:
+  - waveName: 
+    enemies:
+    - enemyName: Bruto
+      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      spawnPoints:
+      - {fileID: 1854396998}
+      - {fileID: 91397824}
+      - {fileID: 1998159732}
+      count: 15
+      patrolRadius: 5
+    - enemyName: Diabretes
+      prefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+      spawnPoints:
+      - {fileID: 1854396998}
+      - {fileID: 91397824}
+      - {fileID: 1998159732}
+      count: 30
+      patrolRadius: 10
+    timeBetweenSpawns: 3
+  timeBetweenWaves: 2
+  objectsToUnlock: []
 --- !u!65 &921212714
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3775,6 +4902,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.008064472, y: 0.0066666617, z: 0.019999996}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &938684006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 938684007}
+  - component: {fileID: 938684009}
+  - component: {fileID: 938684008}
+  m_Layer: 0
+  m_Name: Brutos (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &938684007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938684006}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.82, y: 0.44, z: 71.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &938684008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938684006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1882354827
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &938684009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938684006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &949750453
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3796,6 +4997,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.10864498, y: 0.12213652, z: 0.0024999995}
   m_Center: {x: 0.000019555911, y: -0.0021075266, z: 2.3283064e-10}
+--- !u!1 &953978225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 953978226}
+  - component: {fileID: 953978228}
+  - component: {fileID: 953978227}
+  m_Layer: 0
+  m_Name: Diabretes (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &953978226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953978225}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.82, y: -2.66, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &953978227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953978225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3021946236
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &953978228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953978225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &955969163
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3838,6 +5113,40 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.16864493, y: 0.14009137, z: 0}
   m_Center: {x: 0, y: -0.000000029802322, z: -2.3283064e-10}
+--- !u!1 &1007149881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1007149882}
+  m_Layer: 0
+  m_Name: Boxes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1007149882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007149881}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -172.08456, y: 0.5, z: 84.51035}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2039621980}
+  - {fileID: 2049904164}
+  - {fileID: 1586178906}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1007425707
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3880,6 +5189,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.099999994, y: 0.0039999993, z: 0.09999997}
   m_Center: {x: 0, y: 0.00000011920929, z: -0.0000000037252903}
+--- !u!1 &1012789394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1012789395}
+  - component: {fileID: 1012789397}
+  - component: {fileID: 1012789396}
+  m_Layer: 0
+  m_Name: Diabretes (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1012789395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012789394}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.08, y: -2.66, z: 12.96}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1012789396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012789394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3796664099
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1012789397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012789394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1053709519
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3901,6 +5284,44 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.060000043, y: 0.006999998, z: 0.019999996}
   m_Center: {x: 0.00000011920929, y: 0.0000000059371814, z: 0.0032418298}
+--- !u!1 &1057378070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1057378071}
+  m_Layer: 0
+  m_Name: Loja
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1057378071
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057378070}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1135286864}
+  - {fileID: 2026161731}
+  - {fileID: 1071277924}
+  - {fileID: 349072160}
+  - {fileID: 1105276891}
+  - {fileID: 2108940977}
+  - {fileID: 340362848}
+  m_Father: {fileID: 1972956342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1062523081
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3937,12 +5358,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.06871716, z: 0.049754187}
-  m_Center: {x: 0.00000011920929, y: -0.00780158, z: 0.014877096}
+  m_Center: {x: -0.02, y: -0.00780158, z: 0.014877096}
 --- !u!65 &1069660569
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3960,10 +5381,84 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.06871716, z: 0.049754187}
   m_Center: {x: 0.00000011920929, y: -0.00780158, z: 0.014877096}
+--- !u!1 &1071277923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1071277924}
+  - component: {fileID: 1071277926}
+  - component: {fileID: 1071277925}
+  m_Layer: 0
+  m_Name: Diabrete (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1071277924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071277923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.082, y: 0.389, z: 15.296}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1057378071}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1071277925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071277923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1071277926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071277923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3486843627
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &1073595217
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4187,6 +5682,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.42, y: 0.0009999998, z: 0.019999996}
   m_Center: {x: -0.010000005, y: -0.00000023841858, z: -0.000000007450581}
+--- !u!1 &1105276890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1105276891}
+  - component: {fileID: 1105276893}
+  - component: {fileID: 1105276892}
+  m_Layer: 0
+  m_Name: Diabrete (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1105276891
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105276890}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.082, y: 0.389, z: 4.768}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1057378071}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1105276892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105276890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1105276893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105276890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3118508080
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &1112697570
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4250,6 +5819,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.0019999996, z: 0.059999987}
   m_Center: {x: 0, y: 0.000000059604645, z: 0}
+--- !u!1 &1135286863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1135286864}
+  - component: {fileID: 1135286865}
+  - component: {fileID: 1135286866}
+  m_Layer: 0
+  m_Name: Lancador
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1135286864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135286863}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.951, y: 0.389, z: 8.582}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1057378071}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1135286865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135286863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 4103949351
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1135286866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135286863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
 --- !u!65 &1140283202
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4355,6 +5998,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.001, y: 0.019883966, z: 0.019999996}
   m_Center: {x: 0.00000011920929, y: 0.000019339841, z: 0.000000031199306}
+--- !u!1 &1148023499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1148023500}
+  - component: {fileID: 1148023502}
+  - component: {fileID: 1148023501}
+  m_Layer: 0
+  m_Name: Lancador (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1148023500
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148023499}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.88, y: -2.66, z: 4.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1148023501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148023499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 497043492
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1148023502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148023499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1148861449
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4376,6 +6093,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.0019999996, z: 0.059999987}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1150854234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1150854235}
+  m_Layer: 0
+  m_Name: SpawnPointPrimeiraWave
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1150854235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150854234}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.4, y: 0.71, z: 15.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1156560168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4460,6 +6208,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.0019999996, z: 0.059999987}
   m_Center: {x: 0.00000011920929, y: 0.00000011920929, z: 0}
+--- !u!1 &1194561916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1194561917}
+  - component: {fileID: 1194561919}
+  - component: {fileID: 1194561918}
+  m_Layer: 0
+  m_Name: Diabrete (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1194561917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194561916}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -20.78, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1194561918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194561916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1194561919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194561916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 792349675
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!64 &1195035105
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4545,6 +6367,120 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.019999996, z: 0.07799999}
   m_Center: {x: 0.00000023841858, y: 0, z: 0}
+--- !u!114 &1212338107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 4071759513
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1212338108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b82852799fd734aa0e95751a087497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
+  ShowTopMostFoldoutHeaderGroup: 1
+  waves:
+  - waveName: Wave1
+    enemies:
+    - enemyName: Diabrete
+      prefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+      spawnPoints:
+      - {fileID: 1716064053}
+      - {fileID: 46719346}
+      - {fileID: 1545560246}
+      - {fileID: 445856739}
+      count: 10
+      patrolRadius: 5
+    - enemyName: Brutos
+      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      spawnPoints:
+      - {fileID: 1716064053}
+      - {fileID: 46719346}
+      - {fileID: 1545560246}
+      - {fileID: 445856739}
+      count: 5
+      patrolRadius: 5
+    timeBetweenSpawns: 0.5
+  - waveName: wave2
+    enemies:
+    - enemyName: Bruto
+      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      spawnPoints:
+      - {fileID: 1716064053}
+      - {fileID: 46719346}
+      - {fileID: 1545560246}
+      - {fileID: 445856739}
+      count: 5
+      patrolRadius: 5
+    - enemyName: Lancador
+      prefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+      spawnPoints:
+      - {fileID: 1716064053}
+      - {fileID: 46719346}
+      - {fileID: 1545560246}
+      - {fileID: 445856739}
+      count: 5
+      patrolRadius: 5
+    timeBetweenSpawns: 0.5
+  - waveName: wave3
+    enemies:
+    - enemyName: Diabrete
+      prefab: {fileID: 0}
+      spawnPoints:
+      - {fileID: 1716064053}
+      - {fileID: 46719346}
+      - {fileID: 1545560246}
+      - {fileID: 445856739}
+      count: 15
+      patrolRadius: 6
+    - enemyName: Lancador
+      prefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+      spawnPoints:
+      - {fileID: 1716064053}
+      - {fileID: 46719346}
+      - {fileID: 1545560246}
+      - {fileID: 445856739}
+      count: 5
+      patrolRadius: 10
+    - enemyName: Bruto
+      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      spawnPoints:
+      - {fileID: 1716064053}
+      - {fileID: 46719346}
+      - {fileID: 1545560246}
+      - {fileID: 445856739}
+      count: 5
+      patrolRadius: 10
+    timeBetweenSpawns: 0.5
+  timeBetweenWaves: 1
+  objectsToUnlock:
+  - {fileID: 2112895560}
 --- !u!65 &1214074406
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4587,6 +6523,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.004, y: 0.09999998, z: 0.058980614}
   m_Center: {x: 0.00000023841858, y: -0.00000023841858, z: 0.000000007450581}
+--- !u!1 &1237508226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1237508227}
+  - component: {fileID: 1237508229}
+  - component: {fileID: 1237508228}
+  m_Layer: 0
+  m_Name: Lancador (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1237508227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237508226}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -46.57, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1237508228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237508226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1237508229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237508226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2486513400
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &1237793724
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4787,6 +6797,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.0019999996, z: 0.059999987}
   m_Center: {x: 0, y: 0.00000011920929, z: -0.0000000037252903}
+--- !u!114 &1280583068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1702715718
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &1281519372
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4808,6 +6843,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.015120313, z: 0.019999996}
   m_Center: {x: 0.00000023841858, y: 0.000000014901161, z: 0}
+--- !u!114 &1285086729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa867327a95b69e4984922893e0c626d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  ShowTopMostFoldoutHeaderGroup: 1
+  interactKey: 101
+  pressE_Prompt_UI: {fileID: 881498937}
 --- !u!1 &1293344039 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2663390557020877522, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
@@ -5562,6 +7612,154 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03000001, y: 0.24047214, z: 0.0029999996}
   m_Center: {x: -0.0043102344, y: -0.002095885, z: 0}
+--- !u!1 &1384757105
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1384757106}
+  - component: {fileID: 1384757108}
+  - component: {fileID: 1384757107}
+  m_Layer: 0
+  m_Name: Lancador (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1384757106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384757105}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.55, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1384757107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384757105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1384757108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384757105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3283230283
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!1 &1393236601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1393236604}
+  - component: {fileID: 1393236603}
+  - component: {fileID: 1393236602}
+  m_Layer: 0
+  m_Name: Diabrete
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1393236602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393236601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1393236603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393236601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1748739496
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!4 &1393236604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393236601}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.0344696, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1401806098 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -163398938865761335, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
@@ -5993,12 +8191,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02, y: 0.041980848, z: 0.019999998}
-  m_Center: {x: 0, y: -0.0000000037252903, z: 0}
+  m_Size: {x: 0.08, y: 0.041980848, z: 0.019999998}
+  m_Center: {x: 0.05, y: -0.0000000037252903, z: 0}
 --- !u!65 &1439376766
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6016,7 +8214,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.041980848, z: 0.019999998}
   m_Center: {x: 0, y: -0.0000000037252903, z: 0}
@@ -6104,6 +8302,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.052487396, y: 0.36999854, z: 0.010499995}
   m_Center: {x: 0.0047462154, y: 0, z: -0.00095000333}
+--- !u!1 &1461975004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1461975005}
+  - component: {fileID: 1461975007}
+  - component: {fileID: 1461975006}
+  m_Layer: 0
+  m_Name: Lancador (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1461975005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461975004}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -21.24, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1461975006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461975004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1461975007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461975004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3712402829
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!64 &1468054670
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6232,6 +8504,68 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.00428283, y: 0.048091903, z: 0.0014268542}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1495155654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1495155655}
+  m_Layer: 0
+  m_Name: SpawnPointPraca (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1495155655
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495155654}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 40.68, y: -0.050000012, z: 149.44234}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1497783368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1497783369}
+  m_Layer: 0
+  m_Name: SpawnPointPraca (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1497783369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497783368}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 44.77, y: -0.050000012, z: 179.79}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1499229977
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6316,6 +8650,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.03999999, z: 0.0039999993}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1512309810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1512309811}
+  - component: {fileID: 1512309813}
+  - component: {fileID: 1512309812}
+  m_Layer: 0
+  m_Name: Brutos (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1512309811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512309810}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.82, y: 0.44, z: 59.68}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1512309812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512309810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1175921041
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1512309813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512309810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1514981744
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6358,6 +8766,48 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.013064488, y: 0.03999999, z: 0.004999999}
   m_Center: {x: 0.0020163604, y: 0.00000003352761, z: 0.000000029802322}
+--- !u!1 &1528509450
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1528509451}
+  m_Layer: 0
+  m_Name: AntesMetro
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1528509451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528509450}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1729641892}
+  - {fileID: 1384757106}
+  - {fileID: 1461975005}
+  - {fileID: 1237508227}
+  - {fileID: 1393236604}
+  - {fileID: 624170711}
+  - {fileID: 1194561917}
+  - {fileID: 275709180}
+  - {fileID: 1708540189}
+  - {fileID: 292001323}
+  - {fileID: 1813716185}
+  m_Father: {fileID: 1972956342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1538070065
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6421,6 +8871,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.15800002, y: 0.16988392, z: 0.26826897}
   m_Center: {x: 0.00000011920929, y: 0, z: 0}
+--- !u!1 &1545560245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1545560246}
+  m_Layer: 0
+  m_Name: SpawnPointParque (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1545560246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545560245}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 11.591217, y: 0, z: 263.90067}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1551787872
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6436,12 +8917,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.16864493, y: 0.019999996, z: 0.12659734}
-  m_Center: {x: 0.0007320456, y: -0.000000059604645, z: 0.05329867}
+  m_Center: {x: 0.0007320456, y: -0.02, z: 0.05329867}
 --- !u!65 &1551787873
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6459,7 +8940,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.16864493, y: 0.019999996, z: 0.12659734}
   m_Center: {x: 0.0007320456, y: -0.000000059604645, z: 0.05329867}
@@ -6484,6 +8965,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0025627564, y: 0.002562756, z: 0.019999996}
   m_Center: {x: 0.00000023841858, y: 0, z: 0}
+--- !u!1 &1571840419
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1571840420}
+  - component: {fileID: 1571840422}
+  - component: {fileID: 1571840421}
+  m_Layer: 0
+  m_Name: Lancador (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1571840420
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571840419}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.75, y: -2.66, z: 0.69}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1571840421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571840419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2038137820
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1571840422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571840419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1585125316
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6505,6 +9060,244 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0000000026226832, y: 0.06873919, z: 0.02301816}
   m_Center: {x: 0.00000011920929, y: 0.00000011920929, z: 0}
+--- !u!1001 &1586178905
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1007149882}
+    m_Modifications:
+    - target: {fileID: 8210384250415616184, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_Name
+      value: caixaplaceholder
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718963146244285145, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: interactionText
+      value: 
+      objectReference: {fileID: 1850496313}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 50.00002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.45455933
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.17310333
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.4988917
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.4988917
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5011059
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5011059
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90.254
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+--- !u!4 &1586178906 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+  m_PrefabInstance: {fileID: 1586178905}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1589370701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1589370702}
+  - component: {fileID: 1589370704}
+  - component: {fileID: 1589370703}
+  m_Layer: 0
+  m_Name: Diabretes (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1589370702
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589370701}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.18, y: -0.03, z: 4.86}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 713953414}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1589370703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589370701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1589370704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589370701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 4279407489
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1594592698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b82852799fd734aa0e95751a087497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WavControllerScript
+  ShowTopMostFoldoutHeaderGroup: 1
+  waves:
+  - waveName: Wave1
+    enemies:
+    - enemyName: Diabretes
+      prefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+      spawnPoints:
+      - {fileID: 2121028270}
+      - {fileID: 1719275987}
+      - {fileID: 1495155655}
+      - {fileID: 1497783369}
+      - {fileID: 373410290}
+      count: 10
+      patrolRadius: 5
+    timeBetweenSpawns: 0.5
+  - waveName: Wave2
+    enemies:
+    - enemyName: lancador
+      prefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+      spawnPoints:
+      - {fileID: 2121028270}
+      - {fileID: 1719275987}
+      - {fileID: 1495155655}
+      - {fileID: 1497783369}
+      - {fileID: 373410290}
+      count: 5
+      patrolRadius: 5
+    - enemyName: bruto
+      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      spawnPoints:
+      - {fileID: 2121028270}
+      - {fileID: 1719275987}
+      - {fileID: 1495155655}
+      - {fileID: 1497783369}
+      - {fileID: 373410290}
+      count: 7
+      patrolRadius: 5
+    timeBetweenSpawns: 0.5
+  - waveName: wave3
+    enemies:
+    - enemyName: Diabretes
+      prefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+      spawnPoints:
+      - {fileID: 2121028270}
+      - {fileID: 1719275987}
+      - {fileID: 1495155655}
+      - {fileID: 1497783369}
+      - {fileID: 373410290}
+      count: 10
+      patrolRadius: 5
+    - enemyName: Lancdores
+      prefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+      spawnPoints:
+      - {fileID: 2121028270}
+      - {fileID: 1719275987}
+      - {fileID: 1495155655}
+      - {fileID: 1497783369}
+      - {fileID: 373410290}
+      count: 5
+      patrolRadius: 0
+    - enemyName: Brutos
+      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      spawnPoints:
+      - {fileID: 2121028270}
+      - {fileID: 1719275987}
+      - {fileID: 1495155655}
+      - {fileID: 1497783369}
+      - {fileID: 373410290}
+      count: 10
+      patrolRadius: 5
+    timeBetweenSpawns: 0
+  timeBetweenWaves: 1
+  objectsToUnlock:
+  - {fileID: 1285086729}
 --- !u!65 &1599731502
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6615,6 +9408,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.049999997, y: 0.3699983, z: 0.0039999993}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1634604077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1634604078}
+  - component: {fileID: 1634604080}
+  - component: {fileID: 1634604079}
+  m_Layer: 0
+  m_Name: Diabretes (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1634604078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634604077}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.052, y: -0.03, z: -6.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 713953414}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1634604079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634604077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1634604080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634604077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2230426150
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &1643647702
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6869,6 +9736,154 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.009057177, y: 0.030614622, z: 0.012278533}
   m_Center: {x: 0.0005083074, y: -0.0000000013737899, z: 0.0012868098}
+--- !u!1 &1708540188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1708540189}
+  - component: {fileID: 1708540191}
+  - component: {fileID: 1708540190}
+  m_Layer: 0
+  m_Name: Bruto
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1708540189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708540188}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -52.49, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1708540190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708540188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1708540191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708540188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1273339296
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!1 &1714290323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1714290324}
+  - component: {fileID: 1714290326}
+  - component: {fileID: 1714290325}
+  m_Layer: 0
+  m_Name: Bruto
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1714290324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714290323}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -17.24553, y: 0.6708301, z: 218.56}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1785131630}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1714290325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714290323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
+--- !u!114 &1714290326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714290323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2310296145
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &1715355438
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6890,6 +9905,142 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.15800005, y: 0.16988394, z: 0.26826897}
   m_Center: {x: 0, y: 0.000000014901161, z: 0}
+--- !u!1 &1716064052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1716064053}
+  m_Layer: 0
+  m_Name: SpawnPointParque
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1716064053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716064052}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.2287903, y: 0, z: 255.06396}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1718564151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1718564152}
+  - component: {fileID: 1718564154}
+  - component: {fileID: 1718564153}
+  m_Layer: 0
+  m_Name: Diabrete (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1718564152
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718564151}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -17.24553, y: 0.6708301, z: 202.43}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1785131630}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1718564153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718564151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
+--- !u!114 &1718564154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718564151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2154045995
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!1 &1719275986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1719275987}
+  m_Layer: 0
+  m_Name: SpawnPointPraca (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1719275987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719275986}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 21.51, y: -0.050000012, z: 179.23}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1723711957
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7135,6 +10286,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 3394996884a413c478b93d99dfceac20, type: 2}
+    - target: {fileID: -6620790970462748372, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.729
+      objectReference: {fileID: 0}
     - target: {fileID: -6478068536995149244, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7171,6 +10326,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4fc1739f3ba6e09428508fd6b8dbed33, type: 2}
+    - target: {fileID: -6107216791775837238, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -6099096204324851893, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -60.209023
@@ -7223,6 +10382,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: -4847352287959624105, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4683669308469848369, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7259,6 +10422,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b196f5f3be7895b4388a826a2a2f4f7c, type: 2}
+    - target: {fileID: -4281813044263271093, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.305
+      objectReference: {fileID: 0}
     - target: {fileID: -4239548330258722318, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7367,6 +10534,22 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: -2647758105056693368, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 177.74304
+      objectReference: {fileID: 0}
+    - target: {fileID: -2647758105056693368, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100.89963
+      objectReference: {fileID: 0}
+    - target: {fileID: -2647758105056693368, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.0236
+      objectReference: {fileID: 0}
+    - target: {fileID: -2647758105056693368, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.009
+      objectReference: {fileID: 0}
     - target: {fileID: -2557636187907454466, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7459,6 +10642,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 74c2e33991631f64f95f183110ad2c63, type: 2}
+    - target: {fileID: -831223583983979436, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -660908427834860452, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7631,6 +10818,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 2163278767093178551, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2286558190182361119, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7767,6 +10958,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 74c2e33991631f64f95f183110ad2c63, type: 2}
+    - target: {fileID: 4344739532604371691, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4373269489913124226, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -8019,6 +11214,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: 289
       addedObject: {fileID: 435713067}
+    - targetCorrespondingSourceObject: {fileID: -2647758105056693368, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1870121686}
+    - targetCorrespondingSourceObject: {fileID: -4812350243951162372, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1883641063}
+    - targetCorrespondingSourceObject: {fileID: 4259365095657408630, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1743483571}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2426218018211744715, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
@@ -8671,24 +11875,48 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -4891269655538601235, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 389954823}
+    - targetCorrespondingSourceObject: {fileID: -4891269655538601235, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 517244052}
+    - targetCorrespondingSourceObject: {fileID: -4891269655538601235, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 920966086}
     - targetCorrespondingSourceObject: {fileID: -831223583983979436, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1439376766}
     - targetCorrespondingSourceObject: {fileID: -831223583983979436, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1439376765}
+    - targetCorrespondingSourceObject: {fileID: -831223583983979436, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 177087399}
+    - targetCorrespondingSourceObject: {fileID: -831223583983979436, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 177087400}
     - targetCorrespondingSourceObject: {fileID: -224247591746833898, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1551787873}
     - targetCorrespondingSourceObject: {fileID: -224247591746833898, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1551787872}
+    - targetCorrespondingSourceObject: {fileID: -224247591746833898, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 702486931}
+    - targetCorrespondingSourceObject: {fileID: -224247591746833898, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1594592698}
     - targetCorrespondingSourceObject: {fileID: -4162497184455768033, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1069660569}
     - targetCorrespondingSourceObject: {fileID: -4162497184455768033, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1069660568}
+    - targetCorrespondingSourceObject: {fileID: -4162497184455768033, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1212338108}
+    - targetCorrespondingSourceObject: {fileID: -4162497184455768033, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1212338107}
     - targetCorrespondingSourceObject: {fileID: -2495072618796999640, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1731724182}
@@ -8905,12 +12133,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6729067472725234966, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2112895558}
+    - targetCorrespondingSourceObject: {fileID: 6729067472725234966, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2112895559}
+    - targetCorrespondingSourceObject: {fileID: 6729067472725234966, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2112895560}
     - targetCorrespondingSourceObject: {fileID: -3725988483003489767, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2066995155}
+    - targetCorrespondingSourceObject: {fileID: -3725988483003489767, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2066995156}
+    - targetCorrespondingSourceObject: {fileID: -3725988483003489767, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2066995157}
     - targetCorrespondingSourceObject: {fileID: 1875847060396180379, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1472395133}
+    - targetCorrespondingSourceObject: {fileID: 1875847060396180379, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1280583068}
+    - targetCorrespondingSourceObject: {fileID: 1875847060396180379, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1285086729}
     - targetCorrespondingSourceObject: {fileID: 2928692547358342395, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 744004326}
@@ -10288,6 +13534,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0040000156, y: 0.03199996, z: 0.058980618}
   m_Center: {x: 0.00000023900066, y: -0.00000033713877, z: -0.015531425}
+--- !u!1 &1729641889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1729641892}
+  - component: {fileID: 1729641890}
+  - component: {fileID: 1729641891}
+  m_Layer: 0
+  m_Name: Lancador
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1729641890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729641889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1113411580
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1729641891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729641889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!4 &1729641892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729641889}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.0344696, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1731724182
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10330,6 +13650,72 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.11549999, y: 0.03000001, z: 0.0004999999}
   m_Center: {x: 0.00000011920929, y: 9.313224e-10, z: 0}
+--- !u!1 &1743483570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1743483571}
+  - component: {fileID: 1743483573}
+  - component: {fileID: 1743483572}
+  m_Layer: 0
+  m_Name: Interact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1743483571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743483570}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 553055516}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1743483572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743483570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22378bcc4f5e59247b7aa5a9944ef634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableTrigger
+--- !u!65 &1743483573
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743483570}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.16, y: -0.04, z: 0.05}
+  m_Center: {x: 0, y: 0.02, z: 0}
 --- !u!65 &1743874333
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10372,6 +13758,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.012, y: 0.08449709, z: 0.028449992}
   m_Center: {x: 0, y: -0.000000003725291, z: -0.000000003259629}
+--- !u!1 &1746279130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1746279131}
+  - component: {fileID: 1746279133}
+  - component: {fileID: 1746279132}
+  m_Layer: 0
+  m_Name: Lancador
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1746279131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746279130}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.88, y: -2.66, z: 0.69}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1746279132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746279130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2586583916
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1746279133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746279130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1748197131
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10414,6 +13874,42 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0019999999, y: 0.3575999, z: 0.024999997}
   m_Center: {x: -0.00041413913, y: -0.000000052154054, z: 0.0007352977}
+--- !u!1 &1785131629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1785131630}
+  m_Layer: 0
+  m_Name: Parque
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1785131630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785131629}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 473288381}
+  - {fileID: 1718564152}
+  - {fileID: 783819675}
+  - {fileID: 1714290324}
+  - {fileID: 650848218}
+  m_Father: {fileID: 1972956342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1790705990
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10507,6 +14003,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.001, y: 0.019883966, z: 0.019999996}
   m_Center: {x: 0.00000011920929, y: 0.00001945905, z: -4.656612e-10}
+--- !u!4 &1805291633 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2647758105056693368, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+  m_PrefabInstance: {fileID: 1724545631}
+  m_PrefabAsset: {fileID: 0}
 --- !u!65 &1806259875
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10528,6 +14029,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.008064472, y: 0.0066666617, z: 0.019999996}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1813716184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1813716185}
+  - component: {fileID: 1813716187}
+  - component: {fileID: 1813716186}
+  m_Layer: 0
+  m_Name: Bruto (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1813716185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813716184}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -113.9, y: -0.047169983, z: 236.75948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1528509451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1813716186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813716184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &1813716187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813716184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 471678257
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &1826082012
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10796,6 +14371,236 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1854396997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1854396998}
+  m_Layer: 0
+  m_Name: Spawn Metro
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1854396998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854396997}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -55.45877, y: -7.945, z: 292.7184}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1859246458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1859246461}
+  - component: {fileID: 1859246460}
+  - component: {fileID: 1859246459}
+  - component: {fileID: 1859246463}
+  - component: {fileID: 1859246462}
+  m_Layer: 0
+  m_Name: Next Map
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1859246459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859246458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1262090773
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!65 &1859246460
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859246458}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 39.651443, y: 2.6136189, z: 3.0139923}
+  m_Center: {x: -1.5689926, y: 0.8068094, z: -3.3559647}
+--- !u!4 &1859246461
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859246458}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -259.33868, y: -9.5, z: 198.87587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1859246462
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859246458}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1859246463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859246458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d741062f108df4a95aa9b0eac21e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneTransitioner
+  ShowTopMostFoldoutHeaderGroup: 1
+  holdDuration: 3
+  interactKey: 101
+  nextSceneName: SubLevel
+  promptText: {fileID: 881498939}
+--- !u!1 &1863277001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1863277002}
+  - component: {fileID: 1863277004}
+  - component: {fileID: 1863277003}
+  m_Layer: 0
+  m_Name: Diabretes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1863277002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863277001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.88, y: -2.66, z: 12.96}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1863277003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863277001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2760937184
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1863277004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863277001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1864230992
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10817,6 +14622,146 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.029976225, y: 0.029976219, z: 0.004999999}
   m_Center: {x: 0.00000011920929, y: 0, z: -0.0000000018626451}
+--- !u!1 &1870121685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1870121686}
+  - component: {fileID: 1870121688}
+  - component: {fileID: 1870121687}
+  m_Layer: 0
+  m_Name: interact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1870121686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870121685}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1805291633}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1870121687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870121685}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.04, y: -0.02, z: -0.04}
+  m_Center: {x: 0, y: 0.01, z: 0}
+--- !u!114 &1870121688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870121685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22378bcc4f5e59247b7aa5a9944ef634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableTrigger
+--- !u!1 &1875777361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1875777362}
+  - component: {fileID: 1875777364}
+  - component: {fileID: 1875777363}
+  m_Layer: 0
+  m_Name: Lancador (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1875777362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875777361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.88, y: -2.66, z: 7.76}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1875777363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875777361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3472930912
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1875777364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875777361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1879193335
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10860,6 +14805,146 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6127375745923170756, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+--- !u!1 &1883641062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1883641063}
+  - component: {fileID: 1883641065}
+  - component: {fileID: 1883641064}
+  m_Layer: 0
+  m_Name: Interact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1883641063
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883641062}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.109, y: -0.0006, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1934986970}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1883641064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883641062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22378bcc4f5e59247b7aa5a9944ef634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableTrigger
+--- !u!65 &1883641065
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883641062}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.110556036, y: 0.04172645, z: 0.01586165}
+  m_Center: {x: 0.04472199, y: 0.00073829177, z: -0.001914276}
+--- !u!1 &1892505983
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1892505984}
+  - component: {fileID: 1892505986}
+  - component: {fileID: 1892505985}
+  m_Layer: 0
+  m_Name: Brutos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1892505984
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892505983}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.82, y: 0.44, z: 47.44}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1892505985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892505983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2720211772
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1892505986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892505983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1900930302
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10965,6 +15050,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0040000156, y: 0.03199996, z: 0.058980618}
   m_Center: {x: 0.00000023900066, y: -0.00000021792947, z: -0.015531425}
+--- !u!1 &1923074985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1923074986}
+  - component: {fileID: 1923074988}
+  - component: {fileID: 1923074987}
+  m_Layer: 0
+  m_Name: Lancador (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1923074986
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923074985}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 30.78, y: -2.66, z: 0.69}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 473193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1923074987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923074985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1487505233
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1923074988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923074985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 5093879526489974539, guid: 98311cc8a256a01408d68c4b7ba37723, type: 3}
+  patrolRadius: 10
+  spawnDelay: 2
 --- !u!65 &1925753057
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11007,6 +15166,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.058041252, y: 0.007787684, z: 0.019999996}
   m_Center: {x: 0.00000011827797, y: -0.000000011641533, z: 0.00061923487}
+--- !u!4 &1934986970 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4812350243951162372, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
+  m_PrefabInstance: {fileID: 1724545631}
+  m_PrefabAsset: {fileID: 0}
 --- !u!65 &1938556190
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11049,6 +15213,42 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1619032, y: 0.068551205, z: 0.10299999}
   m_Center: {x: -0.008648861, y: 0.00444814, z: 0.0000000037252903}
+--- !u!1 &1972956341
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1972956342}
+  m_Layer: 0
+  m_Name: Imimigos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1972956342
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972956341}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -211.31447, y: 0.54717, z: 4.09053}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1057378071}
+  - {fileID: 713953414}
+  - {fileID: 473193634}
+  - {fileID: 1785131630}
+  - {fileID: 1528509451}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1975202048
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11070,6 +15270,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.06, y: 0.0020000022, z: 0.0020000022}
   m_Center: {x: 0.00000023841858, y: -0.000000007450581, z: 0}
+--- !u!1 &1998159731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1998159732}
+  m_Layer: 0
+  m_Name: Spawn Metro (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1998159732
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998159731}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -61.038788, y: -7.945, z: 287.9622}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1999223774
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11133,6 +15364,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.002, y: 0.0019999996, z: 0.059999987}
   m_Center: {x: 0.00000011920929, y: 0, z: 0}
+--- !u!1 &2007947471
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2007947472}
+  - component: {fileID: 2007947473}
+  - component: {fileID: 2007947474}
+  m_Layer: 0
+  m_Name: Diabretes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2007947472
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007947471}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.07, y: -0.03, z: -11.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 713953414}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2007947473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007947471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1478746356
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &2007947474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007947471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
 --- !u!65 &2009434085
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11154,6 +15459,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.60986, y: 0.109, z: 0.0024999995}
   m_Center: {x: 0, y: -0.00000023841858, z: -2.3283064e-10}
+--- !u!1 &2026161730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2026161731}
+  - component: {fileID: 2026161733}
+  - component: {fileID: 2026161732}
+  m_Layer: 0
+  m_Name: Diabrete
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2026161731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026161730}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.082, y: 0.389, z: 17.237}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1057378071}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2026161732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026161730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &2026161733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026161730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1832098545
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &2026714367
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11196,71 +15575,138 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.099999994, y: 0.10647158, z: 0.0029999996}
   m_Center: {x: -0.00000023841858, y: 0, z: 0}
---- !u!1001 &2049551149
+--- !u!1001 &2039621979
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1007149882}
     m_Modifications:
-    - target: {fileID: 2625247857939844768, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 2138750986
+    - target: {fileID: 8210384250415616184, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_Name
+      value: caixaplaceholder
       objectReference: {fileID: 0}
-    - target: {fileID: 2625247857939844768, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 30816999
-      objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
+    - target: {fileID: 8718963146244285145, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: interactionText
+      value: 
+      objectReference: {fileID: 1850496313}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -210.16956
+      value: -83.078064
       objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -22.327213
-      objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
-      propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 149.68253
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7357138028830305959, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7877392380050207773, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
-      propertyPath: m_Name
-      value: FuzileiroRig
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7d609e91b5afdea4c9bec08492c5ea9c, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+--- !u!4 &2039621980 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+  m_PrefabInstance: {fileID: 2039621979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2049904163
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1007149882}
+    m_Modifications:
+    - target: {fileID: 8210384250415616184, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_Name
+      value: caixaplaceholder (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718963146244285145, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: interactionText
+      value: 
+      objectReference: {fileID: 1850496313}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -108.959625
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 121.24331
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.007547068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.007547068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.70706654
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.70706654
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -178.777
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+--- !u!4 &2049904164 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8843649465040259586, guid: 54ff0e1a1dee97d4ab3bf464303ed79d, type: 3}
+  m_PrefabInstance: {fileID: 2049904163}
+  m_PrefabAsset: {fileID: 0}
 --- !u!65 &2051942140
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11345,6 +15791,46 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.041980848, z: 0.019999998}
   m_Center: {x: -0.0000009536743, y: -0.0000000037252903, z: 0}
+--- !u!114 &2066995156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa867327a95b69e4984922893e0c626d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  ShowTopMostFoldoutHeaderGroup: 1
+  interactKey: 101
+  pressE_Prompt_UI: {fileID: 881498937}
+--- !u!114 &2066995157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2105406425
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &2068816295
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11429,6 +15915,80 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.15800002, y: 0.16988392, z: 0.26826897}
   m_Center: {x: 0.00000011920929, y: -0.000000029802322, z: 0}
+--- !u!1 &2108940976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2108940977}
+  - component: {fileID: 2108940979}
+  - component: {fileID: 2108940978}
+  m_Layer: 0
+  m_Name: Bruto
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2108940977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108940976}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20.24, y: 0.389, z: 8.73}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1057378071}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2108940978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108940976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14e5edcbc4c424ba26882f09d08857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  patrolRadius: 10
+  spawnDelay: 1
+--- !u!114 &2108940979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108940976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2786831890
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!65 &2112895558
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11450,6 +16010,46 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.007999999, y: 0.00049999985, z: 0.019999996}
   m_Center: {x: -2.3283064e-10, y: 0.000040564286, z: 9.313226e-10}
+--- !u!114 &2112895559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3264600020
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &2112895560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724545645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa867327a95b69e4984922893e0c626d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  ShowTopMostFoldoutHeaderGroup: 1
+  interactKey: 101
+  pressE_Prompt_UI: {fileID: 881498937}
 --- !u!65 &2115351822
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11492,6 +16092,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.04, y: 0.0019999996, z: 0.047999993}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2121028269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2121028270}
+  m_Layer: 0
+  m_Name: SpawnPointPraca
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2121028270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121028269}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 21.05, y: -0.050000012, z: 149.44234}
+  m_LocalScale: {x: 1, y: 1, z: 1.4112334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 391650362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2130433636
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11543,5 +16174,8 @@ SceneRoots:
   - {fileID: 848987908}
   - {fileID: 1724545631}
   - {fileID: 100983725}
-  - {fileID: 2049551149}
   - {fileID: 791330791}
+  - {fileID: 391650362}
+  - {fileID: 1972956342}
+  - {fileID: 1007149882}
+  - {fileID: 1859246461}
