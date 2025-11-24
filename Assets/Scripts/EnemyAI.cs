@@ -214,7 +214,7 @@ public class EnemyAI : NetworkBehaviour
 
             // Attack/walking decision uses direct distance (works for flying too)
             float distance = Vector3.Distance(transform.position, targetPlayer.position);
-            if (distance <= agent.stoppingDistance)
+            if (distance <= agent.stoppingDistance + 0.5f)
             {
                 currentState = "Attack";
                 animator?.SetTrigger("Attack");

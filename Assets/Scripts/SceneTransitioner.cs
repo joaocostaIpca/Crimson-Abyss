@@ -10,18 +10,24 @@ using UnityEngine.UI;
 public class SceneTransitioner : NetworkBehaviour
 {
     [Header("Definições")]
-    public float holdDuration = 3f;
+    public float holdDuration = 3f; 
     public KeyCode interactKey = KeyCode.E;
     [SerializeField] private string nextSceneName = "SubLevel";
+
+    [Header("Spawn na Próxima Cena")]
+    [SerializeField] private Vector3 targetSpawnPosition = new Vector3(-16.348f, 1.9f, -0.37f);
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI promptText; 
 
     private NetworkVariable<bool> allPlayersReady = new NetworkVariable<bool>(false);
-
+    
     private bool isLocalPlayerInZone = false;
     private float currentHoldTimer = 0f;
     private List<ulong> playersInZone = new List<ulong>();
+    
+    // Variável para impedir spam do comando de transição
+    private bool isTransitioning = false;
 
     private void Start()
     {
@@ -34,22 +40,15 @@ public class SceneTransitioner : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        // Subscrever à mudança de estado
         allPlayersReady.OnValueChanged += OnReadyStateChanged;
-        
-        // Se formos o servidor, verificar estado inicial
-        if (IsServer)
-        {
-            CheckIfAllReady();
-        }
-        
-        // Atualizar UI inicial
+        if (IsServer) CheckIfAllReady();
         UpdateUI();
     }
 
     public override void OnNetworkDespawn()
     {
         allPlayersReady.OnValueChanged -= OnReadyStateChanged;
+        if (promptText != null) promptText.gameObject.SetActive(false);
     }
 
     private void OnReadyStateChanged(bool oldVal, bool newVal)
@@ -59,8 +58,13 @@ public class SceneTransitioner : NetworkBehaviour
 
     void Update()
     {
+        // Se já estamos a transitar, não fazemos mais nada
+        if (isTransitioning) return;
+
         if (isLocalPlayerInZone)
         {
+            UpdateUI(); 
+
             if (allPlayersReady.Value)
             {
                 if (Input.GetKey(interactKey))
@@ -71,10 +75,10 @@ public class SceneTransitioner : NetworkBehaviour
                     if (promptText != null)
                         promptText.text = $"A Viajar em {timeLeft:F1}s...";
 
+                    // --- AQUI ESTÁ A MUDANÇA ---
                     if (currentHoldTimer >= holdDuration)
                     {
-                        RequestLevelChangeServerRpc();
-                        currentHoldTimer = 0f; 
+                        StartCoroutine(TransitionSequence());
                     }
                 }
                 else
@@ -93,24 +97,41 @@ public class SceneTransitioner : NetworkBehaviour
         }
     }
 
-    // --- FÍSICA (Deteta quem entra) ---
+    // --- NOVA CORROTINA DE TRANSIÇÃO ---
+    private IEnumerator TransitionSequence()
+    {
+        isTransitioning = true; // Bloqueia novos inputs
+
+        // 1. Limpa o Texto IMEDIATAMENTE (sem apagar o Canvas)
+        if (promptText != null)
+        {
+            promptText.text = "";
+            promptText.gameObject.SetActive(false);
+        }
+
+        // 2. Espera os 0.2 segundos que pediste
+        yield return new WaitForSeconds(0.2f);
+
+        // 3. Chama o Servidor para mudar de cena
+        RequestLevelChangeServerRpc();
+        
+        currentHoldTimer = 0f;
+        // isTransitioning mantém-se true até mudarmos de cena
+    }
+
+    // --- FÍSICA ---
 
     void OnTriggerEnter(Collider other)
     {
-        // Log local para debug
-        Debug.Log($"[Zona] Entrou: {other.name}");
-
-        // 1. Lógica Local (Para a UI do próprio jogador)
         if (other.CompareTag("Player"))
         {
             var netObj = other.GetComponentInParent<NetworkObject>();
             if (netObj != null && netObj.IsOwner)
             {
                 isLocalPlayerInZone = true;
-                if (promptText != null) promptText.gameObject.SetActive(true);
+                // Só mostra o texto se NÃO estivermos já a transitar
+                if (promptText != null && !isTransitioning) promptText.gameObject.SetActive(true);
                 UpdateUI();
-                
-                // Avisa o servidor
                 SetPlayerInZoneServerRpc(true);
             }
         }
@@ -126,8 +147,6 @@ public class SceneTransitioner : NetworkBehaviour
                 isLocalPlayerInZone = false;
                 currentHoldTimer = 0f;
                 if (promptText != null) promptText.gameObject.SetActive(false);
-                
-                // Avisa o servidor
                 SetPlayerInZoneServerRpc(false);
             }
         }
@@ -135,7 +154,8 @@ public class SceneTransitioner : NetworkBehaviour
 
     private void UpdateUI()
     {
-        if (!isLocalPlayerInZone || promptText == null) return;
+        // Se estivermos a transitar, não queremos que a UI reapareça
+        if (!isLocalPlayerInZone || promptText == null || isTransitioning) return;
 
         if (allPlayersReady.Value)
             promptText.text = $"Segura [{interactKey}] para Viajar";
@@ -148,7 +168,7 @@ public class SceneTransitioner : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SetPlayerInZoneServerRpc(bool entered, ServerRpcParams rpcParams = default)
     {
-        if (!IsSpawned) return; // Previne o erro RpcException
+        if (!IsSpawned) return;
 
         ulong clientId = rpcParams.Receive.SenderClientId;
 
@@ -170,15 +190,13 @@ public class SceneTransitioner : NetworkBehaviour
         if (!IsServer) return;
 
         int totalLiving = GameManagerHelper.GetLivingPlayerCount();
-        Debug.Log($"[Zona] Jogadores na Zona: {playersInZone.Count} / Vivos: {totalLiving}");
-
+        
         if (totalLiving == 0)
         {
             allPlayersReady.Value = false;
             return;
         }
 
-        // Se o número na zona for igual ou maior que o total de vivos, estamos prontos
         bool ready = playersInZone.Count >= totalLiving;
         allPlayersReady.Value = ready;
     }
@@ -190,8 +208,37 @@ public class SceneTransitioner : NetworkBehaviour
 
         if (allPlayersReady.Value)
         {
-            Debug.Log($"[Zona] A mudar para cena: {nextSceneName}");
+            TeleportAllPlayers();
+            Debug.Log($"[SceneTransitioner] A carregar cena: {nextSceneName}");
             NetworkManager.Singleton.SceneManager.LoadScene(nextSceneName, LoadSceneMode.Single);
+        }
+    }
+
+    private void TeleportAllPlayers()
+    {
+        int index = 0;
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            if (client.PlayerObject == null) continue;
+
+            Transform pTransform = client.PlayerObject.transform;
+            var agent = client.PlayerObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            if (agent != null) agent.enabled = false;
+            
+            Vector3 finalPos = targetSpawnPosition;
+            finalPos.x += (index * 1.5f); 
+
+            pTransform.position = finalPos;
+            
+            var rb = client.PlayerObject.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero; 
+                rb.position = finalPos;
+            }
+
+            if (agent != null) agent.enabled = true;
+            index++;
         }
     }
 }
