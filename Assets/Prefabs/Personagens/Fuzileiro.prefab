@@ -255,9 +255,6 @@ PrefabInstance:
       addedObject: {fileID: 8127063727521684492}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50006a8dab9338d4f901d103f90da095, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7081540382464721716}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50006a8dab9338d4f901d103f90da095, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 8511550061866925916}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50006a8dab9338d4f901d103f90da095, type: 3}
       insertIndex: -1
@@ -398,29 +395,6 @@ CapsuleCollider:
   m_Height: 1.8017713
   m_Direction: 1
   m_Center: {x: 0, y: 0.8463139, z: 0}
---- !u!114 &7081540382464721716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214863249251265568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b43129cb269bc0045acb55efc566e2b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetworkWeapon
-  ShowTopMostFoldoutHeaderGroup: 1
-  range: 100
-  damage: 20
-  fireRate: 0.5
-  reloadCooldown: 5
-  maxMagAmmo: 30
-  hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
-  bulletTrailVFX: {fileID: 2700744275236868420, guid: dd3fe4bddf0684b4082cb63601cf06e4, type: 3}
-  trailSpeed: 300
-  muzzleTransform: {fileID: 0}
-  NumberOfBullets: 8
 --- !u!114 &8511550061866925916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,7 +431,7 @@ MonoBehaviour:
   rb: {fileID: 5698069826064371702}
   playerCamera: {fileID: 4760879245637276353}
   playerAudioListener: {fileID: 6020833589001320777}
-  networkWeapon: {fileID: 7081540382464721716}
+  networkWeapon: {fileID: 0}
   spectatorCamera: {fileID: 5536030335545577052}
   playerRenderers: []
   playerCollider: {fileID: 8127063727521684492}
@@ -469,6 +443,8 @@ MonoBehaviour:
   mouseSensitivity: 100
   characterType: 2
   hasMedikit: 0
+  letsGoResourcePath: Sounds/LetsGo
+  earthquakeResourcePath: Sounds/Earthquake
 --- !u!114 &282109462315351576
 MonoBehaviour:
   m_ObjectHideFlags: 0

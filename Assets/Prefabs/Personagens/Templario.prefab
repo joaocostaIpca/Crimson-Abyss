@@ -261,9 +261,6 @@ PrefabInstance:
       addedObject: {fileID: 2031742476884615943}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 38272f8e6ab34ca4ea4b9042bac7b8ef, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6919446515249172184}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 38272f8e6ab34ca4ea4b9042bac7b8ef, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1177792042226595619}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 38272f8e6ab34ca4ea4b9042bac7b8ef, type: 3}
       insertIndex: -1
@@ -434,7 +431,7 @@ MonoBehaviour:
   rb: {fileID: 5080115392288160786}
   playerCamera: {fileID: 9138835753148229273}
   playerAudioListener: {fileID: 2185172875042170920}
-  networkWeapon: {fileID: 6919446515249172184}
+  networkWeapon: {fileID: 0}
   spectatorCamera: {fileID: 4376443484185993648}
   playerRenderers: []
   playerCollider: {fileID: 6086611501422361550}
@@ -446,29 +443,8 @@ MonoBehaviour:
   mouseSensitivity: 100
   characterType: 3
   hasMedikit: 0
---- !u!114 &6919446515249172184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1302071111815882218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b43129cb269bc0045acb55efc566e2b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetworkWeapon
-  ShowTopMostFoldoutHeaderGroup: 1
-  range: 100
-  damage: 20
-  fireRate: 0.5
-  reloadCooldown: 5
-  maxMagAmmo: 30
-  hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
-  bulletTrailVFX: {fileID: 2700744275236868420, guid: 5c6ded302e168874ba665c09fbe04478, type: 3}
-  trailSpeed: 300
-  muzzleTransform: {fileID: 0}
-  NumberOfBullets: 1
+  letsGoResourcePath: Sounds/LetsGo
+  earthquakeResourcePath: Sounds/Earthquake
 --- !u!114 &1177792042226595619
 MonoBehaviour:
   m_ObjectHideFlags: 0
