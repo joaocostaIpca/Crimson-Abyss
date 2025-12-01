@@ -236,8 +236,10 @@ public class InterfaceController : MonoBehaviour
         int index = weaponImageNames.IndexOf(weaponName);
         int emptyIndex = weaponImageNames.IndexOf("Empty");
         
-        if (index >= 0) weaponPicture.sprite = weaponImages[index];
-        else weaponPicture.sprite = (emptyIndex >= 0) ? weaponImages[emptyIndex] : null;
+        if (index >= 0) 
+            weaponPicture.sprite = weaponImages[index];
+        else 
+            weaponPicture.sprite = weaponImages[emptyIndex];
 
         // Logic for secondary/tertiary weapons
         PlayerWeaponManager weaponManager = localPlayer.GetComponent<PlayerWeaponManager>();
@@ -251,16 +253,20 @@ public class InterfaceController : MonoBehaviour
     // Helper to clean up UpdateWeapon code
     private void UpdateWeaponSlot(PlayerWeaponManager mgr, int offset, Image imgSlot, int emptyIndex)
     {
-        if (imgSlot == null) return;
         int count = mgr.weaponPrefabs.Count;
-        if (count == 0) return;
-
+        if (offset >= count)
+        {
+            imgSlot.sprite = weaponImages[emptyIndex];
+            return;
+        }
         int nextIndex = (mgr.CurrentWeaponIndex.Value + offset) % count;
         string name = mgr.weaponPrefabs[nextIndex].name;
         int imgIndex = weaponImageNames.IndexOf(name);
         
-        if (imgIndex >= 0) imgSlot.sprite = weaponImages[imgIndex];
-        else imgSlot.sprite = (emptyIndex >= 0) ? weaponImages[emptyIndex] : null;
+        if (imgIndex >= 0) 
+            imgSlot.sprite = weaponImages[imgIndex];
+        else 
+            imgSlot.sprite = weaponImages[emptyIndex];
     }
 
     public void UpdatePlayer(bool isActive, int playerSlot, int charIndex, int playerHealth, Sprite playerPicture)

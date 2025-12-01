@@ -2,7 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using System.Collections;
 
-public class NetworkWeapon : NetworkBehaviour
+public class NetworkWeapon : MonoBehaviour
 {
     [Header("Weapon Settings")]
     public float range = 100f;
@@ -12,8 +12,8 @@ public class NetworkWeapon : NetworkBehaviour
 
     [Header("Ammo Settings")]
     public int maxMagAmmo = 30;
-    private NetworkVariable<int> currentAmmo = new NetworkVariable<int>(0);
-    private NetworkVariable<int> maxAmmo = new NetworkVariable<int>(120);
+    public int currentAmmo = 30;
+    public int maxAmmo = 120;
 
     [Header("Effects")]
     public GameObject hitEffect;
@@ -22,57 +22,30 @@ public class NetworkWeapon : NetworkBehaviour
     public Transform muzzleTransform; // optional, assign muzzle here (falls back to player root)
     public int NumberOfBullets = 1;   // number of bullets fired
 
-
-    // --- MUDANÇA 1: Referência da UI ---
-    private InterfaceController ui;
-
     private float nextFireTime = 0f;
     private float nextReloadTime = 0f;
     private Camera cam;
 
-    // --- MUDANÇA 2: Nova função para o PlayerController chamar ---
-    public void SetInterface(InterfaceController interfaceController)
+    private void Start()
     {
-        ui = interfaceController;
-        // Atualiza a UI com a munição inicial
+        cam = GetComponentInParent<PlayerController>().playerCamera;
+    }
+
+    private void Awake()
+    {
         UpdateAmmoUI();
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        currentAmmo.OnValueChanged += OnAmmoChanged;
-        maxAmmo.OnValueChanged += OnAmmoChanged;
-
-        if (IsOwner)
-        {
-            cam = GetComponentInParent<PlayerController>().playerCamera;
-            InitializeAmmoServerRpc();
-        }
-        else
-        {
-            this.enabled = false;
-        }
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        currentAmmo.OnValueChanged -= OnAmmoChanged;
-        maxAmmo.OnValueChanged -= OnAmmoChanged;
-    }
-
-    [ServerRpc]
-    private void InitializeAmmoServerRpc()
-    {
-        currentAmmo.Value = maxMagAmmo;
-        maxAmmo.Value = 120;
     }
 
     void Update()
     {
-        if (!IsOwner) return;
-
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime && currentAmmo.Value > 0)
+        if (Input.GetMouseButtonDown(0))
         {
+            if (Time.time < nextFireTime)
+            {
+                print("Weapon on cooldown");
+                return;
+            }
+            Debug.Log("Firing weapon");
             nextFireTime = Time.time + fireRate;
             Shoot();
         }
@@ -87,11 +60,11 @@ public class NetworkWeapon : NetworkBehaviour
     {
         Vector3 origin = cam.transform.position;
         Vector3 direction = cam.transform.forward;
-        ShootServerRpc(origin, direction, true);
+        ShotFired(origin, direction, true);
         for (int i = 2; i < NumberOfBullets; i++)
         {
             direction = GetSpreadDirection(cam.transform.forward, 3f);
-            ShootServerRpc(origin, direction, false);
+            ShotFired(origin, direction, false);
         }
     }
 
@@ -104,13 +77,17 @@ public class NetworkWeapon : NetworkBehaviour
         return rot * forward;
     }
 
-    [ServerRpc]
-    void ShootServerRpc(Vector3 rayOrigin, Vector3 rayDirection, bool reduceAmmo)
+    void ShotFired(Vector3 rayOrigin, Vector3 rayDirection, bool reduceAmmo)
     {
         if (reduceAmmo)
         {
-            if (currentAmmo.Value <= 0) return;
-            currentAmmo.Value--;
+            if (currentAmmo <= 0)
+            {
+                Debug.Log("No ammo to shoot, reload!");
+                return;
+            }
+            currentAmmo--;
+            UpdateAmmoUI();
         }
 
         RaycastHit hit;
@@ -130,7 +107,7 @@ public class NetworkWeapon : NetworkBehaviour
             }
 
             if (hitEffect != null)
-                ShowHitEffectClientRpc(hitPoint, hitNormal);
+                ShowHitEffect(hitPoint, hitNormal);
         }
 
         // compute authoritative start position for the trail: prefer a muzzle Transform if assigned,
@@ -143,20 +120,17 @@ public class NetworkWeapon : NetworkBehaviour
             startPos = new Vector3(transform.position.x, transform.position.y + 1.4f, transform.position.z);
         }
         // send start position + direction + hit point to all clients
-        SpawnBulletTrailClientRpc(startPos, rayDirection, hitPoint);
+        SpawnBulletTrail(startPos, rayDirection, hitPoint);
     }
 
 
-    [ClientRpc]
-    void ShowHitEffectClientRpc(Vector3 point, Vector3 normal)
+    void ShowHitEffect(Vector3 point, Vector3 normal)
     {
         GameObject impact = Instantiate(hitEffect, point, Quaternion.LookRotation(normal));
         Destroy(impact, 1f);
     }
 
-    // New: clients receive authoritative start + direction + hit point and instantiate a one-shot effect.
-    [ClientRpc]
-    void SpawnBulletTrailClientRpc(Vector3 startPos, Vector3 direction, Vector3 hitPoint)
+    void SpawnBulletTrail(Vector3 startPos, Vector3 direction, Vector3 hitPoint)
     {
         Vector3 spawnPos = startPos;
         Quaternion rot = Quaternion.identity;
@@ -221,63 +195,39 @@ public class NetworkWeapon : NetworkBehaviour
 
     void Reload()
     {
-        ReloadServerRpc();
-        nextReloadTime = Time.time + reloadCooldown;
-    }
-
-    [ServerRpc]
-    void ReloadServerRpc()
-    {
-        int ammoNeeded = maxMagAmmo - currentAmmo.Value;
+        int ammoNeeded = maxMagAmmo - currentAmmo;
         if (ammoNeeded <= 0) return;
 
-        if (maxAmmo.Value >= ammoNeeded)
+        if (maxAmmo >= ammoNeeded)
         {
-            maxAmmo.Value -= ammoNeeded;
-            currentAmmo.Value = maxMagAmmo;
+            maxAmmo -= ammoNeeded;
+            currentAmmo = maxMagAmmo;
         }
         else
         {
-            currentAmmo.Value += maxAmmo.Value;
-            maxAmmo.Value = 0;
+            currentAmmo += maxAmmo;
+            maxAmmo = 0;
         }
-    }
-
-    void OnAmmoChanged(int previousValue, int newValue)
-    {
-        // Atualiza a UI se formos o dono
-        if (IsOwner)
-        {
-            UpdateAmmoUI();
-        }
+        nextReloadTime = Time.time + reloadCooldown;
+        UpdateAmmoUI();
     }
 
     public void UpdateAmmoUI()
     {
-        // --- MUDANÇA 3: Usar a referência 'ui' ---
-        if (ui != null)
-        {
-            ui.UpdateAmmo(currentAmmo.Value, maxMagAmmo, maxAmmo.Value);
-        }
+        // find the InterfaceController in the Canvas object
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        InterfaceController interfaceController = canvas.GetComponent<InterfaceController>();
+        interfaceController.UpdateAmmo(currentAmmo, maxMagAmmo, maxAmmo);
     }
 
     // --- NOVA FUNÇÃO: CHAMADA PELA SUPPLY BOX ---
     public void RefillAmmo()
     {
-        // Só o dono pode pedir para recarregar
-        if (IsOwner)
-        {
-            RefillAmmoServerRpc();
-        }
-    }
-
-    [ServerRpc]
-    private void RefillAmmoServerRpc()
-    {
         // Enche a munição total (ex: dá 4 pentes extra)
-        maxAmmo.Value = 120; 
+        maxAmmo = 120; 
         // Opcional: Enche também o pente atual
-        currentAmmo.Value = maxMagAmmo;
+        currentAmmo = maxMagAmmo;
+        UpdateAmmoUI();
     }
 
 }

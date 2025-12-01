@@ -6,11 +6,10 @@ public class PlayerWeaponManager : NetworkBehaviour
 {
     [Header("Assigned weapon prefabs (inspector)")]
     [SerializeField] public List<GameObject> weaponPrefabs = new List<GameObject>();
+    [SerializeField] public Transform weaponHolder;
 
     // networked current selection (server-authoritative via ServerRpc)
     public NetworkVariable<int> CurrentWeaponIndex = new NetworkVariable<int>(0);
-
-    private GameObject runtimeWeaponInstance;
 
     public override void OnNetworkSpawn()
     {
@@ -39,15 +38,18 @@ public class PlayerWeaponManager : NetworkBehaviour
 
     private void UpdateLocalWeaponVisual(int index)
     {
-        //if (runtimeWeaponInstance != null) Destroy(runtimeWeaponInstance);
-        if (index < 0 || index >= weaponPrefabs.Count) return;
+        Debug.Log($"{name} is changing weapon");
+        // clear existing children
+        foreach (Transform child in weaponHolder)
+        {
+            Destroy(child.gameObject);
+        }
 
-        // update the visual representation of the weapon for the local player (put the weapon prefab in the right position so that it is visible to the player)
-
-        //var prefab = weaponPrefabs[index];
-        //runtimeWeaponInstance = Instantiate(prefab, transform);
-        //runtimeWeaponInstance.transform.localPosition = Vector3.zero;
-        //runtimeWeaponInstance.transform.localRotation = Quaternion.identity;
+        // instantiate the prefab under weaponHolder 
+        Debug.Log($"Instantiating weapon index {index}");
+        var prefab = weaponPrefabs[index];
+        GameObject runtimeWeaponInstance = Instantiate(prefab, weaponHolder);
+        runtimeWeaponInstance.transform.localPosition = Vector3.zero;
     }
 
     // Called locally by PlayerController input to request a weapon cycle

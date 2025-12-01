@@ -16,7 +16,6 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private Rigidbody rb;
     public Camera playerCamera;
     public AudioListener playerAudioListener;
-    public NetworkWeapon networkWeapon;
     private Animator animator;
 
     [Header("Modo Espectador")]
@@ -97,7 +96,6 @@ public class PlayerController : NetworkBehaviour
     void Awake()
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
-        if (networkWeapon == null) networkWeapon = GetComponent<NetworkWeapon>();
         target = GetComponent<TargetMultiplayer>();
         if (playerCollider == null) playerCollider = GetComponent<Collider>();
         animator = GetComponent<Animator>();
@@ -140,7 +138,6 @@ public class PlayerController : NetworkBehaviour
         {
             playerCamera.enabled = true;
             if (playerAudioListener != null) playerAudioListener.enabled = true;
-            if (networkWeapon != null) networkWeapon.enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
@@ -154,7 +151,6 @@ public class PlayerController : NetworkBehaviour
         {
             playerCamera.enabled = false;
             if (playerAudioListener != null) playerAudioListener.enabled = false;
-            if (networkWeapon != null) networkWeapon.enabled = false;
             if (spectatorCamera != null)
             {
                 spectatorCamera.enabled = false;
@@ -186,7 +182,6 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner)
         {
             ui.SetLocalPlayer(this.gameObject);
-            networkWeapon.SetInterface(ui);
         }
         ui.SetMedikitEnabled(true);
     }
@@ -272,7 +267,6 @@ public class PlayerController : NetworkBehaviour
 
         if (IsOwner)
         {
-            if (networkWeapon != null) networkWeapon.enabled = false;
             playerCamera.enabled = false;
             if (playerAudioListener != null) playerAudioListener.enabled = false;
 
@@ -352,9 +346,9 @@ public class PlayerController : NetworkBehaviour
         }
         
         // Weapon Switching (Example: Key 1)
-        if (networkWeapon != null && Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-             // ui.SwitchToNextWeapon(); // Uncomment if your UI has this method
+             ui.SwitchToNextWeapon(); // Uncomment if your UI has this method
         }
 
         // --- Ability (H Key) Logic ---
