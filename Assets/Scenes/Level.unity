@@ -7276,7 +7276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
   ShowTopMostFoldoutHeaderGroup: 1
   interactKey: 101
-  pressE_Prompt_UI: {fileID: 881498937}
+  promptText: {fileID: 881498939}
 --- !u!1 &1293344039 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2663390557020877522, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
@@ -17795,9 +17795,9 @@ Transform:
   m_GameObject: {fileID: 1859246458}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -259.33868, y: -9.5, z: 198.87587}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -274.65, y: -10.43, z: 241.42}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19150,7 +19150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
   ShowTopMostFoldoutHeaderGroup: 1
   interactKey: 101
-  pressE_Prompt_UI: {fileID: 881498937}
+  promptText: {fileID: 881498939}
 --- !u!114 &2066995157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19394,7 +19394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
   ShowTopMostFoldoutHeaderGroup: 1
   interactKey: 101
-  pressE_Prompt_UI: {fileID: 881498937}
+  promptText: {fileID: 881498939}
 --- !u!65 &2115351822
 BoxCollider:
   m_ObjectHideFlags: 0

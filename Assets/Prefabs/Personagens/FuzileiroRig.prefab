@@ -273,6 +273,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7507278222133400908}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2989872384711916711}
   m_SourcePrefab: {fileID: 100100000, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
 --- !u!137 &6307292442816090706 stripped
 SkinnedMeshRenderer:
@@ -464,8 +467,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   ShowTopMostFoldoutHeaderGroup: 1
-  CharacterIndex:
-    m_InternalValue: -1
   rb: {fileID: 1210291166014748438}
   playerCamera: {fileID: 2513472350722020523}
   playerAudioListener: {fileID: 8607758629713376164}
@@ -479,9 +480,11 @@ MonoBehaviour:
   spectatorMaxPitch: 80
   speed: 10
   jumpForce: 7
+  currentSpeedMultiplier: 1
+  currentJumpMultiplier: 1
   mouseSensitivity: 100
-  characterType: 2
-  hasMedikit: 0
+  CharacterIndex:
+    m_InternalValue: -1
 --- !u!114 &7507278222133400908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,3 +498,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTriggerCheck
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &2989872384711916711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7877392380050207773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 982fa579f03b30843a2272d2d40bc6aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAbilitySystem
+  ShowTopMostFoldoutHeaderGroup: 1
+  hActionMaxDuration: 10
+  hCooldown: 30
+  healingAuraVfxPrefab: {fileID: 2077869657146396373, guid: 1e8934f2f95442d428c38acded5ed47c, type: 3}
+  letsGoResourcePath: Audio/LetsGo
+  earthquakeResourcePath: Audio/Earthquake
