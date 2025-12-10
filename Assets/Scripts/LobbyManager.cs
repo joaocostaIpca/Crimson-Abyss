@@ -20,18 +20,24 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private GameObject panelJoin;
     [SerializeField] private GameObject panelWaiting;
 
-    [Header("Main Menu")]
+    [Header("Main Menu Buttons")]
     [SerializeField] private Button buttonShowCreate;
     [SerializeField] private Button buttonShowJoin;
+    // --- NOVO: Botão para voltar ao Menu Principal ---
+    [SerializeField] private Button buttonBackToMain; 
 
-    [Header("Join Panel")]
+    [Header("Join Panel Buttons")]
     [SerializeField] private TMP_InputField inputIP;
     [SerializeField] private Button buttonDoConnect;
+    // --- NOVO: Botão para voltar ao Painel Anterior ---
+    [SerializeField] private Button buttonBackFromJoin;
 
-    [Header("Waiting Panel")]
+    [Header("Waiting Panel Buttons")]
     [SerializeField] private TextMeshProUGUI textHostIP;
     [SerializeField] private TextMeshProUGUI textPlayerList;
     [SerializeField] private Button buttonStartGame;
+    // --- NOVO: Botão para sair do Lobby/Sala ---
+    [SerializeField] private Button buttonLeaveLobby;
     
     [Header("Character Selection UI")]
     [SerializeField] private List<TextMeshProUGUI> characterStatusTexts; 
@@ -41,6 +47,7 @@ public class LobbyManager : NetworkBehaviour
     [Header("Game Settings")]
     [SerializeField] private int maxPlayers = 4;
     [SerializeField] private string gameSceneName = "Level";
+    [SerializeField] private string mainMenuSceneName = "MainMenu"; // Nome da cena do menu
     
     [SerializeField] private List<GameObject> characterPrefabs; 
 
@@ -50,6 +57,8 @@ public class LobbyManager : NetworkBehaviour
     public NetworkList<FixedString64Bytes> PlayerNames = new NetworkList<FixedString64Bytes>();
     
     public static LobbyManager Instance;
+
+    private Vector3 pendingSpawnPosition = Vector3.zero;
 
     private void Awake()
     {
@@ -63,15 +72,59 @@ public class LobbyManager : NetworkBehaviour
         
         CharacterPreviews = characterPreviews; 
         
+        // --- Listeners Originais ---
         buttonShowCreate.onClick.AddListener(OnShowCreatePanel);
         buttonShowJoin.onClick.AddListener(OnShowJoinPanel);
         buttonDoConnect.onClick.AddListener(OnJoinServer);
         buttonStartGame.onClick.AddListener(OnStartGame);
+
+        // --- MUDANÇA: Listeners dos Novos Botões ---
+        if(buttonBackToMain) buttonBackToMain.onClick.AddListener(OnBackToMainClicked);
+        if(buttonBackFromJoin) buttonBackFromJoin.onClick.AddListener(OnBackFromJoinClicked);
+        if(buttonLeaveLobby) buttonLeaveLobby.onClick.AddListener(OnLeaveLobbyClicked);
     }
     
+    // --- NOVAS FUNÇÕES DE NAVEGAÇÃO ---
+
+   private void OnBackToMainClicked()
+    {
+        Debug.Log("A voltar ao Menu Principal e a limpar memória...");
+
+        // 1. Se o NetworkManager existir, desliga e destrói
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+            Destroy(NetworkManager.Singleton.gameObject);
+        }
+
+        // 2. Destrói a instância do LobbyManager (este script)
+        if (Instance != null)
+        {
+            Destroy(gameObject); 
+        }
+
+        // 3. Carrega o Menu
+        SceneManager.LoadScene(mainMenuSceneName);
+    }
+
+    private void OnBackFromJoinClicked()
+    {
+        // Volta para o painel principal do Lobby (Escolha Criar/Entrar)
+        ShowPanel(panelMainMenu);
+    }
+
+    private void OnLeaveLobbyClicked()
+    {
+        // Sai da sala (dá shutdown na rede) e volta ao Menu Principal
+        ShutdownAndReturnToMenu();
+    }
+
+    // ------------------------------------
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
         if (IsServer)
         {
             characterLocks.Clear();
@@ -80,8 +133,10 @@ public class LobbyManager : NetworkBehaviour
                 characterLocks.Add(99); 
             }
         }
+        
         characterLocks.OnListChanged += OnCharacterLocksChanged;
         PlayerNames.OnListChanged += OnPlayerListChanged; 
+        
         UpdateCharacterSelectionUI();
         UpdatePlayerListUI();
     }
@@ -89,6 +144,7 @@ public class LobbyManager : NetworkBehaviour
     private void Start()
     {
         ShowPanel(panelMainMenu);
+
         if (NetworkManager.Singleton == null) return;
         
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
@@ -100,6 +156,7 @@ public class LobbyManager : NetworkBehaviour
     public override void OnDestroy()
     {
         if (Instance == this) Instance = null;
+
         if (NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
@@ -107,6 +164,7 @@ public class LobbyManager : NetworkBehaviour
             NetworkManager.Singleton.ConnectionApprovalCallback = null;
         }
         SceneManager.sceneLoaded -= OnSceneWasLoaded;
+        
         if(characterLocks != null)
         {
             characterLocks.OnListChanged -= OnCharacterLocksChanged;
@@ -117,7 +175,65 @@ public class LobbyManager : NetworkBehaviour
             PlayerNames.OnListChanged -= OnPlayerListChanged;
             PlayerNames.Dispose();
         }
+        
         base.OnDestroy(); 
+    }
+
+    public void ChangeLevel(string sceneName, Vector3 spawnPos)
+    {
+        if (!IsServer) return;
+        pendingSpawnPosition = spawnPos;
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    private void OnSceneWasLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == gameSceneName)
+        {
+            if (lobbyCanvas != null) lobbyCanvas.gameObject.SetActive(false);
+
+            if (NetworkManager.Singleton.IsServer)
+            {
+                Vector3 spawnBasePos = (pendingSpawnPosition != Vector3.zero) ? pendingSpawnPosition : new Vector3(-215, 1, -19);
+                pendingSpawnPosition = Vector3.zero;
+                Quaternion spawnRot = Quaternion.identity;
+                int index = 0;
+
+                foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+                {
+                    ulong clientId = client.ClientId;
+                    Vector3 finalPos = spawnBasePos;
+                    finalPos.x += (index * 2.0f);
+
+                    PlayerLobbyShell shell = client.PlayerObject.GetComponent<PlayerLobbyShell>();
+                    if (shell != null)
+                    {
+                        int charIndex = shell.SelectedCharacterIndex.Value;
+                        if (charIndex == -1)
+                        {
+                            charIndex = FindFirstFreeCharacter();
+                            if (charIndex != -1) TryLockCharacter(charIndex, clientId);
+                            else charIndex = 0; 
+                        }
+                        GameObject prefabToSpawn = characterPrefabs[charIndex];
+                        GameObject playerInstance = Instantiate(prefabToSpawn, finalPos, spawnRot);
+                        
+                        playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+                        playerInstance.GetComponent<PlayerController>().CharacterIndex.Value = charIndex;
+                        shell.NetworkObject.Despawn(true);
+                    }
+                    else
+                    {
+                        var agent = client.PlayerObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                        if (agent != null) agent.enabled = false;
+                        client.PlayerObject.transform.position = finalPos;
+                        client.PlayerObject.transform.rotation = spawnRot;
+                        if (agent != null) agent.enabled = true;
+                    }
+                    index++;
+                }
+            }
+        }
     }
 
     private void ShowPanel(GameObject panelToShow)
@@ -176,16 +292,8 @@ public class LobbyManager : NetworkBehaviour
         return true;
     }
 
-    private void OnCharacterLocksChanged(NetworkListEvent<ulong> changeEvent)
-    {
-        UpdateCharacterSelectionUI();
-    }
-    
-    private void OnPlayerListChanged(NetworkListEvent<FixedString64Bytes> changeEvent)
-    {
-        UpdatePlayerListUI();
-    }
-
+    private void OnCharacterLocksChanged(NetworkListEvent<ulong> changeEvent) { UpdateCharacterSelectionUI(); }
+    private void OnPlayerListChanged(NetworkListEvent<FixedString64Bytes> changeEvent) { UpdatePlayerListUI(); }
 
     private void UpdateCharacterSelectionUI()
     {
@@ -220,101 +328,42 @@ public class LobbyManager : NetworkBehaviour
 
     private void ConnectionApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        if (NetworkManager.Singleton.ConnectedClients.Count >= maxPlayers)
-        {
-            response.Approved = false;
-        }
-        else
-        {
-            response.Approved = true;
-            response.CreatePlayerObject = true; 
-        }
+        if (NetworkManager.Singleton.ConnectedClients.Count >= maxPlayers) response.Approved = false;
+        else { response.Approved = true; response.CreatePlayerObject = true; }
         response.Pending = false;
     }
 
     private void OnClientConnected(ulong clientId)
     {
-        if (NetworkManager.Singleton.IsServer)
-        {
-            UpdateServerPlayerNameList();
-        }
-        if (NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost)
-        {
-            textHostIP.text = "Ligado! A aguardar que o Host comece...";
-        }
+        if (NetworkManager.Singleton.IsServer) UpdateServerPlayerNameList();
+        if (NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost) textHostIP.text = "Ligado! A aguardar que o Host comece...";
     }
 
     private void OnClientDisconnected(ulong clientId)
     {
-        if (NetworkManager.Singleton.IsServer)
+        if (IsServer) 
         {
             UpdateServerPlayerNameList();
             for (int i = 0; i < characterLocks.Count; i++)
             {
-                if (characterLocks[i] == clientId)
-                {
-                    characterLocks[i] = 99;
-                    break;
-                }
+                if (characterLocks[i] == clientId) { characterLocks[i] = 99; break; }
             }
         }
-        // Se formos um Cliente, o NetworkManager vai tratar da desconexão
+        else 
+        {
+            Debug.Log("Fui desconectado do Host. A voltar ao menu...");
+            ShutdownAndReturnToMenu();
+        }
     }
     
-    // --- MUDANÇA: Voltámos a auto-destruir ---
-    private void OnSceneWasLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == gameSceneName && NetworkManager.Singleton.IsServer)
-        {
-            Vector3 spawnPos = new Vector3(-215, 1, -19);
-            Quaternion spawnRot = Quaternion.identity;
-            
-            foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
-            {
-                ulong clientId = client.ClientId;
-                PlayerLobbyShell shell = client.PlayerObject.GetComponent<PlayerLobbyShell>();
-                int charIndex = shell.SelectedCharacterIndex.Value;
-                if (charIndex == -1)
-                {
-                    charIndex = FindFirstFreeCharacter();
-                    if (charIndex != -1) TryLockCharacter(charIndex, clientId);
-                    else charIndex = 0; 
-                }
-                GameObject prefabToSpawn = characterPrefabs[charIndex];
-                GameObject playerInstance = Instantiate(prefabToSpawn, spawnPos, spawnRot);
-                spawnPos.x += 2.0f; 
-                
-                playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
-                playerInstance.GetComponent<PlayerController>().CharacterIndex.Value = charIndex;
-                shell.NetworkObject.Despawn(true);
-            }
-            // Destrói-se a si mesmo (e ao Canvas filho)
-            NetworkObject.Despawn(true);
-        }
-    }
-
-    private int FindFirstFreeCharacter()
-    {
-        for (int i = 0; i < characterLocks.Count; i++)
-        {
-            if (characterLocks[i] == 99) return i;
-        }
-        return -1; 
-    }
+    private int FindFirstFreeCharacter() { for (int i = 0; i < characterLocks.Count; i++) if (characterLocks[i] == 99) return i; return -1; }
     
     private void UpdatePlayerListUI()
     {
         string playerList = "Jogadores Ligados:\n";
-        foreach (var name in PlayerNames)
-        {
-            playerList += $"- {name}\n";
-        }
+        foreach (var name in PlayerNames) playerList += $"- {name}\n";
         textPlayerList.text = playerList;
-        
-        if (IsServer)
-        {
-            buttonStartGame.interactable = (PlayerNames.Count >= 1 && PlayerNames.Count <= maxPlayers);
-        }
+        if (IsServer) buttonStartGame.interactable = (PlayerNames.Count >= 1 && PlayerNames.Count <= maxPlayers);
     }
     
     private void UpdateServerPlayerNameList()
@@ -332,11 +381,27 @@ public class LobbyManager : NetworkBehaviour
     {
         foreach (var hostEntry in Dns.GetHostAddresses(Dns.GetHostName()))
         {
-            if (hostEntry.AddressFamily == AddressFamily.InterNetwork)
-            {
-                return hostEntry.ToString();
-            }
+            if (hostEntry.AddressFamily == AddressFamily.InterNetwork) return hostEntry.ToString();
         }
         return "127.0.0.1";
+    }
+    
+    // --- FUNÇÃO DE SAÍDA ATUALIZADA ---
+    public void ShutdownAndReturnToMenu()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+            Destroy(NetworkManager.Singleton.gameObject);
+        }
+        
+        if (InterfaceController.Instance != null) Destroy(InterfaceController.Instance.gameObject);
+        Destroy(gameObject); 
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Carrega o Main Menu em vez da LobbyScene
+        SceneManager.LoadScene(mainMenuSceneName); 
     }
 }
