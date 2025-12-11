@@ -123,6 +123,7 @@ Material:
     - _NoiseSpeed: 6
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _PulsoVeloc: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SmoothnessTextureChannel: 0
