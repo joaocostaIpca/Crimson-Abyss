@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
+using TMPro; // Necessário para mexer no Texto
 
 [DefaultExecutionOrder(100)]
 public class Interactable : NetworkBehaviour
@@ -9,7 +10,8 @@ public class Interactable : NetworkBehaviour
     public KeyCode interactKey = KeyCode.E;
     
     [Header("UI")]
-    [SerializeField] private GameObject pressE_Prompt_UI; 
+    // MUDANÇA: Agora é um TextMeshProUGUI para podermos mudar o texto
+    [SerializeField] private TextMeshProUGUI promptText; 
 
     private NetworkVariable<bool> isLocked = new NetworkVariable<bool>(true);
     private NetworkVariable<bool> canInteract = new NetworkVariable<bool>(false);
@@ -21,8 +23,12 @@ public class Interactable : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         
-        if (pressE_Prompt_UI != null)
-            pressE_Prompt_UI.SetActive(false);
+        if (promptText != null)
+        {
+            promptText.gameObject.SetActive(false);
+            // Define o texto inicial
+            promptText.text = $"Press [{interactKey}] to interact";
+        }
             
         if (!IsClient) return; 
         
@@ -32,14 +38,11 @@ public class Interactable : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        // --- A CORREÇÃO ESTÁ AQUI ---
-        // Quando este objeto é destruído (Despawned),
-        // garante que a UI "Pressiona E" se esconde.
-        if (pressE_Prompt_UI != null)
+        // Garante que a UI se esconde ao destruir
+        if (promptText != null)
         {
-            pressE_Prompt_UI.SetActive(false);
+            promptText.gameObject.SetActive(false);
         }
-        // --- FIM DA CORREÇÃO ---
 
         if (IsClient)
         {
@@ -50,11 +53,7 @@ public class Interactable : NetworkBehaviour
     
     private void OnCanInteractChanged(bool previousValue, bool newValue)
     {
-        if (pressE_Prompt_UI != null)
-        {
-            // (A lógica de mostrar continua igual)
-            pressE_Prompt_UI.SetActive(newValue && localPlayerIsInside);
-        }
+        UpdateUI(newValue && localPlayerIsInside);
     }
 
     void Update()
@@ -76,9 +75,9 @@ public class Interactable : NetworkBehaviour
     {
         localPlayerIsInside = true;
         PlayerChangedTriggerStateServerRpc(true);
-            
-        if (pressE_Prompt_UI != null)
-            pressE_Prompt_UI.SetActive(canInteract.Value);
+        
+        // Atualiza a UI se pudermos interagir
+        UpdateUI(canInteract.Value);
     }
 
     public void OnPlayerExited()
@@ -86,10 +85,23 @@ public class Interactable : NetworkBehaviour
         localPlayerIsInside = false;
         PlayerChangedTriggerStateServerRpc(false);
 
-        if (pressE_Prompt_UI != null)
-            pressE_Prompt_UI.SetActive(false);
+        // Esconde a UI
+        UpdateUI(false);
     }
 
+    // Função auxiliar para controlar a UI e o Texto
+    private void UpdateUI(bool show)
+    {
+        if (promptText != null)
+        {
+            promptText.gameObject.SetActive(show);
+            if (show)
+            {
+                // Escreve o texto explicitamente
+                promptText.text = $"Press [{interactKey}] to interact";
+            }
+        }
+    }
 
     // --- FUNÇÕES DO SERVIDOR ---
     public void Unlock()
@@ -133,7 +145,6 @@ public class Interactable : NetworkBehaviour
         }
     }
     
-    // (Esta função é pública para o GameManagerHelper a poder chamar)
     public void ServerCheckInteractionState()
     {
         if (!IsServer) return;
