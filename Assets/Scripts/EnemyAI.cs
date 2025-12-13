@@ -50,7 +50,7 @@ public class EnemyAI : NetworkBehaviour
     private Vector3 currentPatrolTarget;
     private bool isPatrolling = false;
     private bool isWaitingAtPatrolPoint = false;
-
+    private GameObject fireballPrefab;
     private Animator animator;
 
     #endregion
@@ -60,6 +60,12 @@ public class EnemyAI : NetworkBehaviour
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        fireballPrefab = Resources.Load("VFX/Fireball/Fireball") as GameObject;
+
+        if (enemyType == EnemyType.Lancador && fireballPrefab == null)
+        {
+            Debug.LogError($"{name}: Fireball prefab not found in Resources/VFX/Fireball/Fireball.");
+        }
 
         if (agent == null)
         {
@@ -356,14 +362,31 @@ public class EnemyAI : NetworkBehaviour
         // 1. Espera pelo "ponto de dano" da animação
         yield return new WaitForSeconds(attackAnimDelay);
 
-        // 2. Verifica se o jogador ainda está ao alcance
-        if (targetPlayer != null && Vector3.Distance(transform.position, targetPlayer.position) <= agent.stoppingDistance + 0.5f)
+        if (enemyType != EnemyType.Lancador)
         {
-            // 3. Aplica o dano (o TargetMultiplayer no jogador vai tratar da rede)
-            TargetMultiplayer playerHealth = targetPlayer.GetComponent<TargetMultiplayer>();
-            if (playerHealth != null)
+            // 2. Verifica se o jogador ainda está ao alcance
+            if (targetPlayer != null && Vector3.Distance(transform.position, targetPlayer.position) <= agent.stoppingDistance + 0.5f)
             {
-                playerHealth.TakeDamageServerRpc(enemyDamage);
+                // 3. Aplica o dano (o TargetMultiplayer no jogador vai tratar da rede)
+                TargetMultiplayer playerHealth = targetPlayer.GetComponent<TargetMultiplayer>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamageServerRpc(enemyDamage);
+                }
+            }
+        }
+        else
+        {
+            // instantiate fireball prefab and launch towards player
+            GameObject fireball = Instantiate(fireballPrefab, transform.position, Quaternion.identity);
+            Vector3 targetPos = targetPlayer.position + Vector3.up * 1.0f; // Aim for player's center
+            Vector3 direction = (targetPos - fireball.transform.position).normalized;
+            // add force to fireball's rigidbody
+            Rigidbody fbRb = fireball.GetComponent<Rigidbody>();
+            if (fbRb != null)
+            {
+                float launchForce = 15f;
+                fbRb.AddForce(direction * launchForce, ForceMode.VelocityChange);
             }
         }
     }

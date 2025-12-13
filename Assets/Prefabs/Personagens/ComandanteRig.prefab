@@ -521,7 +521,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   weaponPrefabs:
   - {fileID: 7488954327490413148, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-  - {fileID: 3585462651938836691, guid: cbb4cc2304060204f90aee88ab68c095, type: 3}
+  - {fileID: 6942992363786325340, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
   weaponHolder: {fileID: 6108262359823791170}
   CurrentWeaponIndex:
     m_InternalValue: 0

@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7488954327490413148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1529627976006611978}
+  - component: {fileID: 8034936289641854409}
+  m_Layer: 0
+  m_Name: LightSMG
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1529627976006611978
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7488954327490413148}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2764150836645634697}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8034936289641854409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7488954327490413148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43129cb269bc0045acb55efc566e2b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkWeapon
+  range: 40
+  damage: 10
+  fireRate: 0.05
+  reloadCooldown: 5
+  maxMagAmmo: 50
+  currentAmmo: 50
+  maxAmmo: 150
+  hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
+  bulletTrailVFX: {fileID: 2700744275236868420, guid: f8021b41a09d04a4f92496d1090f4ba9, type: 3}
+  trailSpeed: 300
+  muzzleTransform: {fileID: 3410967896836259113}
+  NumberOfBullets: 1
+--- !u!1001 &390214543933192780
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1529627976006611978}
+    m_Modifications:
+    - target: {fileID: -5337594363269840203, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3107302235
+      objectReference: {fileID: 0}
+    - target: {fileID: -5337594363269840203, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5337594363269840203, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3807964652
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917697219127198335, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+      propertyPath: m_Name
+      value: Light SMG
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6856831347817292574, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+--- !u!4 &2764150836645634697 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2537336958091827397, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+  m_PrefabInstance: {fileID: 390214543933192780}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3410967896836259113 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3043416529803380581, guid: 71197720d5cf8ae458882ffbc316033c, type: 3}
+  m_PrefabInstance: {fileID: 390214543933192780}
+  m_PrefabAsset: {fileID: 0}
