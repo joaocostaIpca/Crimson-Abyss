@@ -284,21 +284,6 @@ public class PlayerController : NetworkBehaviour
              ui.SwitchToNextWeapon(); // Uncomment if your UI has this method
         }
 
-        // --- Ability (H Key) Logic ---
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            // Prevent starting locally if still on cooldown (uses networked timestamp)
-            if (hActionCoroutine == null && HCooldownRemaining() <= 0f)
-            {
-                hActionCoroutine = StartCoroutine(HActionCoroutine());
-            }
-            else
-            {
-                // Optional feedback: still on cooldown
-                Debug.Log($"Ability on cooldown: {HCooldownRemaining():F1}s");
-            }
-        }
-
         // --- Animation Sync ---
         if (animator != null)
         {
