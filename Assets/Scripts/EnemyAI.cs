@@ -40,7 +40,7 @@ public class EnemyAI : NetworkBehaviour
 
     private Coroutine reactionCoroutine;
     
-    // --- ESTADO ---
+    
     private string currentState = "Idle"; // O estado atual da FSM
 
     private Transform targetPlayer;
@@ -82,7 +82,7 @@ public class EnemyAI : NetworkBehaviour
             agent.updateRotation = true;
         }
 
-        // Setup para testes offline (sem multiplayer)
+        //Setup para testes offline 
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
         {
             if (enemyType != EnemyType.Lancador && !agent.isOnNavMesh)
@@ -166,18 +166,17 @@ public class EnemyAI : NetworkBehaviour
             reactionCoroutine = StartCoroutine(CheckPlayers());
         }
 
-        // --- AQUI ESTA A INTEGRACAO ---
-        // 1. A Árvore decide qual deve ser o estado
+        // A Árvore decide qual deve ser o estado
         string nextState = RunDecisionTree();
 
-        // 2. Se o estado mudou, aplicamos triggers de animação (FSM Logic)
+        
         if (nextState != currentState)
         {
             currentState = nextState;
             UpdateAnimationState(currentState);
         }
 
-        // 3. A FSM executa o comportamento continuo do estado
+      
         ExecuteCurrentState();
     }
 
@@ -196,7 +195,7 @@ public class EnemyAI : NetworkBehaviour
     }
 
     // ========================================================================================
-    // --- ÁRVORE DE DECISÃO (IMPLEMENTAÇÃO) ---
+    // --- ÁRVORE DE DECISÃO 
     // Estrutura hierárquica: Cada método é um "Nó" que faz uma pergunta.
     // ========================================================================================
 
