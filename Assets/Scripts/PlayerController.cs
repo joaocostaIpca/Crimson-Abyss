@@ -31,6 +31,11 @@ public class PlayerController : NetworkBehaviour
     public float speed = 10f;
     public float jumpForce = 7f;
     
+    // --- NOVO: Gravidade Extra ---
+    [Header("Física de Salto")]
+    [Tooltip("Aumenta isto (ex: 2.5 ou 3) para cair mais rápido e não flutuar.")]
+    public float gravityMultiplier = 2.5f; 
+
     // Variáveis de Buff (para o Comandante alterar)
     [HideInInspector] public float currentSpeedMultiplier = 1f;
     [HideInInspector] public float currentJumpMultiplier = 1f;
@@ -77,6 +82,9 @@ public class PlayerController : NetworkBehaviour
                 spectatorCamera = specCamTransform.GetComponent<Camera>();
             }
         }
+        
+        // Garante que o Rigidbody usa a gravidade padrão (nós vamos adicionar extra por cima)
+        rb.useGravity = true;
     }
 
     public override void OnNetworkSpawn()
@@ -248,12 +256,10 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void ApplyComandanteBuffClientRpc(float speedMult, float jumpMult, float duration, ClientRpcParams clientRpcParams = default)
     {
-        // Só aplica se formos o alvo deste RPC (o OwnerClientId é verificado no envio)
         if (buffCoroutine != null) StopCoroutine(buffCoroutine);
         
         currentSpeedMultiplier = speedMult;
         currentJumpMultiplier = jumpMult;
-        // Debug.Log("Buff do Comandante Recebido!");
 
         buffCoroutine = StartCoroutine(RemoveBuffRoutine(duration));
     }
@@ -263,7 +269,6 @@ public class PlayerController : NetworkBehaviour
         yield return new WaitForSeconds(duration);
         currentSpeedMultiplier = 1f;
         currentJumpMultiplier = 1f;
-        // Debug.Log("Buff do Comandante Acabou.");
     }
 
     void Update()
@@ -320,13 +325,22 @@ public class PlayerController : NetworkBehaviour
         float finalSpeed = speed * currentSpeedMultiplier;
         Vector3 targetVelocity = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized * finalSpeed;
         
-        targetVelocity.y = rb.linearVelocity.y; // Preserve gravity
-        rb.linearVelocity = targetVelocity;
+        // Mantém a velocidade Y atual (gravidade)
+        targetVelocity.y = rb.linearVelocity.y; 
+        
+        // NOTA: Se der erro no 'linearVelocity', muda para 'velocity' (depende da tua versão do Unity)
+        rb.linearVelocity = targetVelocity; 
 
         if (jumpInput && isGrounded)
         {
             // Aplica Multiplicador de Pulo
             float finalJump = jumpForce * currentJumpMultiplier;
+            
+            // Zera a velocidade vertical antes de pular para consistência
+            Vector3 vel = rb.linearVelocity;
+            vel.y = 0;
+            rb.linearVelocity = vel;
+
             rb.AddForce(Vector3.up * finalJump, ForceMode.Impulse);
 
             // Animation Trigger Sync
@@ -342,6 +356,15 @@ public class PlayerController : NetworkBehaviour
         else
         {
             jumpInput = false;
+        }
+
+        // --- NOVO: APLICAR GRAVIDADE EXTRA ---
+        // Se não estiver no chão, puxa para baixo com força extra
+        if (!isGrounded)
+        {
+            // Physics.gravity.y é -9.81. Multiplicamos para ficar mais forte.
+            // Usamos (gravityMultiplier - 1) porque o Rigidbody já aplica 1x gravidade nativa.
+            rb.AddForce(Vector3.up * Physics.gravity.y * (gravityMultiplier - 1), ForceMode.Acceleration);
         }
     }
 
