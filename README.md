@@ -22,15 +22,15 @@ Fluxo Lógico
 
 O método principal RunDecisionTree() inicia a avaliação da árvore.
 
-Diagrama de Decisão (Mermaid)
-graph TD
-    A[Início: RunDecisionTree] --> B{Tem Alvo?}
-    B -- Sim --> C{Está no Alcance?}
-    B -- Não --> D{Tem Memória da Posição?}
-    C -- Sim --> E[RESULTADO: ATACAR]
-    C -- Não --> F[RESULTADO: PERSEGUIR]
-    D -- Sim --> G[RESULTADO: INVESTIGAR]
-    D -- Não --> H[RESULTADO: PATRULHAR]
+    Diagrama de Decisão (Mermaid)
+    graph TD
+        A[Início: RunDecisionTree] --> B{Tem Alvo?}
+        B -- Sim --> C{Está no Alcance?}
+        B -- Não --> D{Tem Memória da Posição?}
+        C -- Sim --> E[RESULTADO: ATACAR]
+        C -- Não --> F[RESULTADO: PERSEGUIR]
+        D -- Sim --> G[RESULTADO: INVESTIGAR]
+        D -- Não --> H[RESULTADO: PATRULHAR]
 
 Implementação no Código
 
@@ -40,9 +40,9 @@ Outro nó (continuação da decisão)
 
 Ou um estado final (folha)
 
-// Exemplo do Nó Raiz da Árvore
-private string Node_HasTarget()
-{
+    // Exemplo do Nó Raiz da Árvore
+    private string Node_HasTarget()
+    {
     if (targetPlayer != null)
     {
         // Se tem alvo, pergunta: "Estou perto para atacar?"
@@ -53,7 +53,7 @@ private string Node_HasTarget()
         // Se não tem alvo, pergunta: "Lembro-me onde ele estava?"
         return Node_HasLastKnownPosition(); 
     }
-}
+    }
 
 Execução: Máquina de Estados (O "Corpo")
 
@@ -74,20 +74,20 @@ Lógica contínua do comportamento
 
 Existe uma separação clara entre Decisão e Execução.
 
-private void Update()
-{
-    // 1. O Cérebro decide
-    string nextState = RunDecisionTree();
-
-    // 2. O Corpo executa
-    if (nextState != currentState)
+    private void Update()
     {
-        currentState = nextState;
-        UpdateAnimationState(currentState);
+        // 1. O Cérebro decide
+        string nextState = RunDecisionTree();
+    
+        // 2. O Corpo executa
+        if (nextState != currentState)
+        {
+            currentState = nextState;
+            UpdateAnimationState(currentState);
+        }
+    
+        ExecuteCurrentState();
     }
-
-    ExecuteCurrentState();
-}
 
 Pathfinding e Algoritmos de Navegação
 
@@ -104,16 +104,17 @@ Evitar obstáculos estáticos
 Navegação eficiente em ambientes dinâmicos
 
 Lógica Principal
-agent.SetDestination(target);
+    
+    agent.SetDestination(target);
 
 Patrulha com Validação de NavMesh
 
 Antes de se mover, o inimigo valida se o ponto aleatório é alcançável no grafo de navegação.
 
-if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
-{
+    if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
+    {
     agent.CalculatePath(hit.position, path); // Calcula rota A* válida
-}
+    }
 
 Inimigos Voadores (Movimento Vetorial)
 
@@ -128,19 +129,19 @@ Rotação suave para o alvo
 
 Independente da topologia do terreno
 
-private void MoveLancadorTowards(Vector3 target, float speed)
-{
-    Vector3 dir = target - transform.position;
+    private void MoveLancadorTowards(Vector3 target, float speed)
+    {
+        Vector3 dir = target - transform.position;
+        
+        // Movimento linear
+        transform.position += dir.normalized * speed * Time.deltaTime;
     
-    // Movimento linear
-    transform.position += dir.normalized * speed * Time.deltaTime;
-
-    // Rotação suave para olhar para o alvo
-    Quaternion desired = Quaternion.LookRotation(dir.normalized);
-    transform.rotation = Quaternion.Slerp(
-        transform.rotation,
-        desired,
-        Time.deltaTime * flightRotateSpeed
-    );
-}
+        // Rotação suave para olhar para o alvo
+        Quaternion desired = Quaternion.LookRotation(dir.normalized);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            desired,
+            Time.deltaTime * flightRotateSpeed
+        );
+    }
 
