@@ -16,29 +16,45 @@ public class PlayerWeaponManager : NetworkBehaviour
         base.OnNetworkSpawn();
         CurrentWeaponIndex.OnValueChanged += OnWeaponIndexChanged;
 
-        // Ensure owner has a visual on connect (local-only)
-        if (IsOwner)
+        // Ensure clients (including owner) have a visual on connect
+        if (IsClient)
         {
             UpdateLocalWeaponVisual(CurrentWeaponIndex.Value);
-            string name = (CurrentWeaponIndex.Value >= 0 && CurrentWeaponIndex.Value < weaponPrefabs.Count) ? weaponPrefabs[CurrentWeaponIndex.Value].name : null;
-            InterfaceController.Instance?.UpdateWeapon(name);
+
+            // update HUD only for the owner
+            if (IsOwner)
+            {
+                string name = (CurrentWeaponIndex.Value >= 0 && CurrentWeaponIndex.Value < weaponPrefabs.Count) ? weaponPrefabs[CurrentWeaponIndex.Value].name : null;
+                InterfaceController.Instance?.UpdateWeapon(name);
+            }
         }
     }
 
     private void OnWeaponIndexChanged(int previous, int current)
     {
-        if (IsOwner)
+        // Run visual update on all clients (owner and non-owner).
+        if (IsClient)
         {
             UpdateLocalWeaponVisual(current);
-            // update HUD
-            string name = (current >= 0 && current < weaponPrefabs.Count) ? weaponPrefabs[current].name : null;
-            InterfaceController.Instance?.UpdateWeapon(name);
+
+            // update HUD only for the owner
+            if (IsOwner)
+            {
+                string name = (current >= 0 && current < weaponPrefabs.Count) ? weaponPrefabs[current].name : null;
+                InterfaceController.Instance?.UpdateWeapon(name);
+            }
         }
     }
 
     private void UpdateLocalWeaponVisual(int index)
     {
         Debug.Log($"{name} is changing weapon");
+        if (!IsClient)
+        {
+            // don't instantiate visuals on a dedicated server
+            return;
+        }
+
         // clear existing children
         foreach (Transform child in weaponHolder)
         {

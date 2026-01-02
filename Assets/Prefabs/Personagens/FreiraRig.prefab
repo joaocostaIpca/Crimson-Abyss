@@ -1008,6 +1008,7 @@ MonoBehaviour:
   spectatorMaxPitch: 80
   speed: 10
   jumpForce: 7
+  gravityMultiplier: 2.5
   currentSpeedMultiplier: 1
   currentJumpMultiplier: 1
   mouseSensitivity: 100
@@ -1076,7 +1077,7 @@ MonoBehaviour:
   drawTripods: 0
   boneSize: 1
   tripodSize: 1
-  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  boneColor: {r: 1, g: 0, b: 0.028217316, a: 0.5}
   m_Transforms:
   - {fileID: 7578320961988596308}
   - {fileID: 2051744009420316957}

@@ -9703,6 +9703,7 @@ GameObject:
   - component: {fileID: 2124058564157613288}
   - component: {fileID: 3112679203608906435}
   - component: {fileID: 5815634053382013542}
+  - component: {fileID: 5793363414996392589}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Untagged
@@ -14579,6 +14580,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52d193b03ff1bb3468dd4d0de5921268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  damage: 20
+  maxDistance: 40
+  maxLifetime: 10
+--- !u!114 &5793363414996392589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6387276765581788508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3112477381
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &9086594418067025246
 GameObject:
   m_ObjectHideFlags: 0
