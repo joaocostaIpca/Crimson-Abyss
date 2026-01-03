@@ -1016,7 +1016,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAbilitySystem
   ShowTopMostFoldoutHeaderGroup: 1
   hCooldown: 30
-  healingAuraVfxPrefab: {fileID: 2077869657146396373, guid: 1e8934f2f95442d428c38acded5ed47c, type: 3}
+  healingAuraVfxPrefab: {fileID: 6459102235157322065, guid: 796debfa877607c41884d27d78a4165d, type: 3}
   letsGoResourcePath: Audio/LetsGo
   earthquakeResourcePath: Audio/Earthquake
 --- !u!114 &2310222223581191148
@@ -1133,6 +1133,10 @@ MonoBehaviour:
   weaponHolder: {fileID: 3053697409676720403}
   CurrentWeaponIndex:
     m_InternalValue: 0
+  WeaponRotation:
+    m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
+  angleSendThreshold: 0.5
+  rotationLerpSpeed: 20
 --- !u!4 &7978818205496230425 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1092408308860062549, guid: 2b0fb82b2b99415448c390c3b2f40e2c, type: 3}
