@@ -151,7 +151,6 @@ Transform:
   - {fileID: 4552841156024738544}
   - {fileID: 2639902682090589485}
   - {fileID: 3246669025375074799}
-  - {fileID: 12170758917742774}
   m_Father: {fileID: 8560039412084165098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677770827022677863
@@ -423,68 +422,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9181288666360390522}
   m_Enabled: 1
---- !u!1001 &1518110786611827900
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 7498617460489178042}
-    m_Modifications:
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7488954327490413148, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-      propertyPath: m_Name
-      value: LightSMG
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
---- !u!4 &12170758917742774 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1529627976006611978, guid: 7f8077a81a2c5074bb537369f8e78033, type: 3}
-  m_PrefabInstance: {fileID: 1518110786611827900}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2612124748784499054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -766,7 +703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1656089645
+  GlobalObjectIdHash: 877816357
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1

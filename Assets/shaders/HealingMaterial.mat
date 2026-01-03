@@ -44,13 +44,14 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _FresnelPower: 1.42
-    - _InteriorFill: 0.1
-    - _Intersections: 0.59
-    - _ScrollSpeed: 0.2
+    - _FresnelPower: 0
+    - _HealingHeight: 2
+    - _InteriorFill: 0
+    - _Intersections: 0.1
+    - _ScrollSpeed: 0.3
     - _Transparency: 0.2
     m_Colors:
-    - _Emission: {r: 0, g: 5.656854, b: 2.383928, a: 1}
+    - _Emission: {r: 0, g: 1, b: 0, a: 1}
     - _Tiling: {r: 5, g: 5, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

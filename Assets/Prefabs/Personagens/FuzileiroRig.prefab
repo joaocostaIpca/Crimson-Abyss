@@ -242,7 +242,6 @@ Transform:
   m_Children:
   - {fileID: 6849007924424333094}
   - {fileID: 4733742920198050284}
-  - {fileID: 8905412408456871025}
   m_Father: {fileID: 6405214132612539844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7443619851608486340
@@ -359,68 +358,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3053697409676720403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1191139495771564951
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 3053697409676720403}
-    m_Modifications:
-    - target: {fileID: 6942992363786325340, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_Name
-      value: Revolver
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
---- !u!4 &8905412408456871025 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7715130604065101798, guid: 24c8887cd7bf7a64c9cddb294962127b, type: 3}
-  m_PrefabInstance: {fileID: 1191139495771564951}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7031094782504978764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1046,6 +983,7 @@ MonoBehaviour:
   spectatorMaxPitch: 80
   speed: 10
   jumpForce: 7
+  gravityMultiplier: 2.5
   currentSpeedMultiplier: 1
   currentJumpMultiplier: 1
   mouseSensitivity: 100

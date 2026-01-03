@@ -1,20 +1,30 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class FireballController : MonoBehaviour
+// Mudamos de MonoBehaviour para NetworkBehaviour
+public class FireballController : NetworkBehaviour
 {
     [Header("Fireball settings")]
     [SerializeField] private float damage = 20f;
-    [SerializeField] private float maxDistance = 40f;   // destroy after this many meters from spawn
-    [SerializeField] private float maxLifetime = 10f;   // fallback in seconds
+    [SerializeField] private float maxDistance = 40f;
+    [SerializeField] private float maxLifetime = 10f;
 
     private Vector3 spawnPosition;
     private float spawnTime;
-    private Rigidbody rb;
     private bool hasHit;
 
-
-    void Start()
+    // Usamos OnNetworkSpawn em vez de Start para garantir que a rede está pronta
+    public override void OnNetworkSpawn()
     {
+        if (!IsServer)
+        {
+            // Se formos Cliente, desativamos este script. 
+            // O NetworkTransform vai tratar de mover a bola visualmente.
+            // Não queremos que o Cliente calcule colisões ou destrua a bola sozinho.
+            enabled = false;
+            return;
+        }
+
         spawnPosition = transform.position;
         spawnTime = Time.time;
         hasHit = false;
@@ -22,33 +32,34 @@ public class FireballController : MonoBehaviour
 
     void Update()
     {
-        if (hasHit) return;
+        // Dupla segurança: Apenas o servidor executa lógica
+        if (!IsServer || hasHit) return;
 
-        // distance-based lifetime
+        // Verifica distância
         if (Vector3.Distance(spawnPosition, transform.position) >= maxDistance)
         {
-            Destroy(gameObject);
-            hasHit = true;
+            DespawnFireball();
             return;
         }
 
-        // time-based fallback
+        // Verifica tempo
         if (Time.time - spawnTime >= maxLifetime)
         {
-            Destroy(gameObject);
-            hasHit = true;
+            DespawnFireball();
             return;
         }
     }
 
-    // handle both trigger and normal collisions so prefab can be configured either way
     private void OnTriggerEnter(Collider other)
     {
+        // Apenas o servidor processa colisões
+        if (!IsServer) return;
         HandleCollision(other.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!IsServer) return;
         HandleCollision(collision.gameObject);
     }
 
@@ -56,28 +67,27 @@ public class FireballController : MonoBehaviour
     {
         if (hasHit || other == null) return;
 
-        // ignore collisions with other projectiles or the enemy that spawned this (if it has EnemyAI)
+        // Ignora colisões com outras bolas ou com o inimigo
         if (other.GetComponentInParent<FireballController>() != null) return;
         if (other.GetComponentInParent<EnemyAI>() != null) return;
 
-        // If we hit a player, apply damage using the project's TargetMultiplayer API (server-authoritative)
+        // Aplica dano
         if (other.CompareTag("Player"))
         {
             var tm = other.GetComponentInParent<TargetMultiplayer>();
             if (tm != null)
             {
-                // ServerRpc will be routed to server and apply damage authoritatively.
-                tm.TakeDamageServerRpc(damage);
-            }
-            else
-            {
-                // Fallback: call a local method if present
-                other.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
+                tm.TakeDamage(damage);
             }
         }
 
-        // destroy the fireball on any hit
+        DespawnFireball();
+    }
+
+    private void DespawnFireball()
+    {
+        if (hasHit) return;
         hasHit = true;
-        Destroy(gameObject);
+        GetComponent<NetworkObject>().Despawn();
     }
 }

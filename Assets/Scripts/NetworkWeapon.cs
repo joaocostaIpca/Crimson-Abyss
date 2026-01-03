@@ -17,18 +17,26 @@ public class NetworkWeapon : MonoBehaviour
 
     [Header("Effects")]
     public GameObject hitEffect;
-    public GameObject bulletTrailVFX;  // particle prefab
+    public GameObject bulletTrailVFX;
     public float trailSpeed = 300f;
-    public Transform muzzleTransform; // optional, assign muzzle here (falls back to player root)
-    public int NumberOfBullets = 1;   // number of bullets fired
+    public Transform muzzleTransform;
+    public int NumberOfBullets = 1;
 
     private float nextFireTime = 0f;
     private float nextReloadTime = 0f;
     private Camera cam;
 
+    // --- FIX: Referência para o Manager que sabe quem é o Dono ---
+    private PlayerWeaponManager weaponManager;
+
     private void Start()
     {
-        cam = GetComponentInParent<PlayerController>().playerCamera;
+        // Procura o PlayerController e a Camera
+        var pc = GetComponentInParent<PlayerController>();
+        if (pc != null) cam = pc.playerCamera;
+
+        // --- FIX: Guarda referência do WeaponManager para checar IsOwner ---
+        weaponManager = GetComponentInParent<PlayerWeaponManager>();
     }
 
     private void Awake()
@@ -38,6 +46,10 @@ public class NetworkWeapon : MonoBehaviour
 
     void Update()
     {
+        // --- FIX CRITICO: Só processa input se formos o dono deste jogador ---
+        // Se weaponManager for nulo OU se NÃO formos o dono, não fazemos nada.
+        if (weaponManager == null || !weaponManager.IsOwner) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             if (Time.time < nextFireTime)
@@ -45,7 +57,7 @@ public class NetworkWeapon : MonoBehaviour
                 print("Weapon on cooldown");
                 return;
             }
-            Debug.Log("Firing weapon");
+            // Debug.Log removido para evitar spam, podes recolocar se quiseres
             nextFireTime = Time.time + fireRate;
             Shoot();
         }
@@ -58,13 +70,18 @@ public class NetworkWeapon : MonoBehaviour
 
     void Shoot()
     {
+        // Verifica se a camara existe (o Client pode não ter a camera do Proxy ativada)
+        if (cam == null) return;
+
         Vector3 origin = cam.transform.position;
         Vector3 direction = cam.transform.forward;
+
         ShotFired(origin, direction, true);
-        for (int i = 2; i < NumberOfBullets; i++)
+
+        for (int i = 1; i < NumberOfBullets; i++) // Corrigido de '2' para '1' se quiseres loops corretos
         {
-            direction = GetSpreadDirection(cam.transform.forward, 3f);
-            ShotFired(origin, direction, false);
+            Vector3 spreadDir = GetSpreadDirection(cam.transform.forward, 3f);
+            ShotFired(origin, spreadDir, false);
         }
     }
 
@@ -94,6 +111,7 @@ public class NetworkWeapon : MonoBehaviour
         Vector3 hitPoint = rayOrigin + rayDirection * range;
         Vector3 hitNormal = Vector3.zero;
 
+        // Lógica de Raycast (Apenas o dono calcula o hit, o servidor valida o dano depois)
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, range))
         {
             hitPoint = hit.point;
@@ -106,23 +124,26 @@ public class NetworkWeapon : MonoBehaviour
                     target.TakeDamageServerRpc(damage);
             }
 
+            // Efeito visual local IMEDIATO (Hit)
             if (hitEffect != null)
                 ShowHitEffect(hitPoint, hitNormal);
         }
 
-        // compute authoritative start position for the trail: prefer a muzzle Transform if assigned,
-        // otherwise use the player's root position (this script is on the player).
         Vector3 startPos;
         if (muzzleTransform != null)
             startPos = muzzleTransform.position;
         else
-        {
             startPos = new Vector3(transform.position.x, transform.position.y + 1.4f, transform.position.z);
-        }
-        // send start position + direction + hit point to all clients
-        SpawnBulletTrail(startPos, rayDirection, hitPoint);
-    }
 
+        // 1) Feedback Visual Local Imediato (Dono vê o tiro instantaneamente)
+        SpawnLocalBulletTrail(startPos, rayDirection, hitPoint);
+
+        // 2) Avisar o Servidor para mostrar aos outros
+        if (weaponManager != null)
+        {
+            weaponManager.RequestFireServerRpc(startPos, rayDirection, hitPoint);
+        }
+    }
 
     void ShowHitEffect(Vector3 point, Vector3 normal)
     {
@@ -130,7 +151,7 @@ public class NetworkWeapon : MonoBehaviour
         Destroy(impact, 1f);
     }
 
-    void SpawnBulletTrail(Vector3 startPos, Vector3 direction, Vector3 hitPoint)
+    private void SpawnLocalBulletTrail(Vector3 startPos, Vector3 direction, Vector3 hitPoint)
     {
         Vector3 spawnPos = startPos;
         Quaternion rot = Quaternion.identity;
@@ -139,37 +160,21 @@ public class NetworkWeapon : MonoBehaviour
 
         GameObject trail = Instantiate(bulletTrailVFX, spawnPos, rot);
 
-        // If the prefab contains a ParticleSystem, play it once and destroy after its lifetime.
         var ps = trail.GetComponent<ParticleSystem>();
         if (ps != null)
         {
             var main = ps.main;
-
             if (main.loop)
             {
-                Debug.LogWarning($"{name}: bulletTrailVFX ParticleSystem is looping. For single-shot trails set Loop = false.");
+                // Aviso removido ou mantido conforme preferência
             }
-
-            // Ensure the system plays (PlayOnAwake is fine too; Play() is safe)
             ps.Play();
-
-            // Compute a conservative destroy time: duration + max startLifetime
             float duration = main.duration;
-            float startLifetimeMax = main.startLifetime.constant; // default
-            var st = main.startLifetime;
-            // handle two-constant mode
-            if (st.mode == ParticleSystemCurveMode.TwoConstants)
-                startLifetimeMax = st.constantMax;
-            else
-                startLifetimeMax = st.constant;
-
-            float destroyAfter = duration + startLifetimeMax;
-            if (destroyAfter <= 0f) destroyAfter = 2f; // fallback
-            Destroy(trail, destroyAfter + 0.1f);
+            // Simplificação para destruir
+            Destroy(trail, duration + 0.2f);
         }
         else
         {
-            // fallback for non-particle prefab: move object from start->hit like old behaviour
             StartCoroutine(MoveTrail(trail, spawnPos, hitPoint));
         }
     }
@@ -178,20 +183,18 @@ public class NetworkWeapon : MonoBehaviour
     {
         float distance = Vector3.Distance(start, end);
         float duration = distance / Mathf.Max(0.0001f, trailSpeed);
-        // avoid division-by-zero and super-fast movement
         if (duration <= 0f) duration = 0.01f;
 
         float t = 0f;
         while (t < 1f)
         {
+            if (trail == null) yield break; // Segurança
             t += Time.deltaTime / duration;
             trail.transform.position = Vector3.Lerp(start, end, t);
             yield return null;
         }
-
-        Destroy(trail, 0.05f);
+        if (trail != null) Destroy(trail, 0.05f);
     }
-
 
     void Reload()
     {
@@ -214,20 +217,18 @@ public class NetworkWeapon : MonoBehaviour
 
     public void UpdateAmmoUI()
     {
-        // find the InterfaceController in the Canvas object
         Canvas canvas = FindFirstObjectByType<Canvas>();
-        InterfaceController interfaceController = canvas.GetComponent<InterfaceController>();
-        interfaceController.UpdateAmmo(currentAmmo, maxMagAmmo, maxAmmo);
+        if (canvas != null)
+        {
+            InterfaceController interfaceController = canvas.GetComponent<InterfaceController>();
+            interfaceController?.UpdateAmmo(currentAmmo, maxMagAmmo, maxAmmo);
+        }
     }
 
-    // --- NOVA FUNÇÃO: CHAMADA PELA SUPPLY BOX ---
     public void RefillAmmo()
     {
-        // Enche a munição total (ex: dá 4 pentes extra)
-        maxAmmo = 120; 
-        // Opcional: Enche também o pente atual
+        maxAmmo = 120;
         currentAmmo = maxMagAmmo;
         UpdateAmmoUI();
     }
-
 }
