@@ -108,11 +108,11 @@ Transform:
   m_GameObject: {fileID: 2386652919830036712}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5868241, y: -0.49240386, z: -0.49240386, w: 0.41317588}
-  m_LocalPosition: {x: 0.18644, y: 0.26675665, z: -0.070199996}
-  m_LocalScale: {x: 0.1, y: 0.10000002, z: 0.10000001}
+  m_LocalPosition: {x: 0.18044001, y: 1.392, z: 0.4088}
+  m_LocalScale: {x: 0.10000001, y: 0.100000024, z: 0.100000024}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2278835306781149427}
+  m_Father: {fileID: 6723456554992913844}
   m_LocalEulerAnglesHint: {x: 0, y: -100, z: -100}
 --- !u!1 &2859589126175637557
 GameObject:
@@ -139,11 +139,11 @@ Transform:
   m_GameObject: {fileID: 2859589126175637557}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.47, y: -0.102243304, z: -0.725}
+  m_LocalPosition: {x: 0.464, y: 1.023, z: -0.24600002}
   m_LocalScale: {x: 0.024, y: 0.024, z: 0.024}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2278835306781149427}
+  m_Father: {fileID: 6723456554992913844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5184305851942479133
 GameObject:
@@ -175,8 +175,7 @@ Transform:
   m_LocalPosition: {x: -0.006, y: 1.6252433, z: 0.079}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2278835306781149427}
+  m_Children: []
   m_Father: {fileID: 6723456554992913844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &8380606075279741747
@@ -319,13 +318,11 @@ Transform:
   m_GameObject: {fileID: 6603209083576057225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0.4}
+  m_LocalPosition: {x: 0.126, y: 1.3152432, z: 0.493}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8051709861188664498}
-  - {fileID: 5883670527260935361}
-  m_Father: {fileID: 6040789303975344863}
+  m_Children: []
+  m_Father: {fileID: 6723456554992913844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8524644007817163429
 GameObject:
@@ -626,6 +623,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1950863946681259288}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8051709861188664498}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5883670527260935361}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2278835306781149427}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
       insertIndex: -1
@@ -660,6 +666,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1654779140162741956}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6242487852453689640}
   m_SourcePrefab: {fileID: 100100000, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
 --- !u!4 &47367888036329037 stripped
 Transform:
@@ -1069,6 +1078,22 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
   angleSendThreshold: 0.5
   rotationLerpSpeed: 20
+--- !u!114 &6242487852453689640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6198453585050572558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3462c17bb787c724b85e57a951d79737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRigHandler
+  ShowTopMostFoldoutHeaderGroup: 1
+  handRig: {fileID: 8732134501397187594}
+  rightHandConstraint: {fileID: 4595775808558878114}
+  ikFadeSpeed: 10
 --- !u!4 &6723456554992913844 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 22fd522fb7bf68c489182949445b84d9, type: 3}
