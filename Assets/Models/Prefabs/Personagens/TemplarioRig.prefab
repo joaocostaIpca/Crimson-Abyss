@@ -25,11 +25,11 @@ Transform:
   m_GameObject: {fileID: 274452117658032032}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0, z: -0.775}
+  m_LocalPosition: {x: 0.46600008, y: 1.2277822, z: -0.246}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5489877333495717569}
+  m_Father: {fileID: 7653758080875902714}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2514642440978613325
 GameObject:
@@ -202,13 +202,11 @@ Transform:
   m_GameObject: {fileID: 5123794661758027629}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.18, y: -0.4, z: 0.34999996}
+  m_LocalPosition: {x: 0.23400006, y: 1.3777822, z: 0.659}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8732959498178889406}
-  - {fileID: 650934088528048300}
-  m_Father: {fileID: 569549425353709448}
+  m_Children: []
+  m_Father: {fileID: 3431891480671805544}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6197198147388472132
 GameObject:
@@ -239,7 +237,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8732959498178889406}
+  - {fileID: 650934088528048300}
   m_Father: {fileID: 6857562130851272742}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5575288446234131189
@@ -296,8 +296,7 @@ Transform:
   m_LocalPosition: {x: -0.013999939, y: 1.6277822, z: 0.179}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5489877333495717569}
+  m_Children: []
   m_Father: {fileID: 3431891480671805544}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5748320780352520848
@@ -384,11 +383,11 @@ Transform:
   m_GameObject: {fileID: 9175599912112924553}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5868241, y: -0.49240386, z: -0.49240386, w: 0.41317588}
-  m_LocalPosition: {x: 0.07, y: 0.1, z: -0.21899997}
-  m_LocalScale: {x: 0.10000001, y: 0.10000001, z: 0.10000002}
+  m_LocalPosition: {x: 0.23600006, y: 1.3277822, z: 0.31}
+  m_LocalScale: {x: 0.10000002, y: 0.10000002, z: 0.10000003}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5489877333495717569}
+  m_Father: {fileID: 7653758080875902714}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2894194305924892547
 PrefabInstance:
@@ -546,6 +545,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6857562130851272742}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5489877333495717569}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
       insertIndex: -1
@@ -580,6 +582,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2502513705320455493}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1835801169875575013}
   m_SourcePrefab: {fileID: 100100000, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
 --- !u!4 &23507406053937451 stripped
 Transform:
@@ -964,6 +969,22 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
   angleSendThreshold: 0.5
   rotationLerpSpeed: 20
+--- !u!114 &1835801169875575013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2660316431195945682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3462c17bb787c724b85e57a951d79737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRigHandler
+  ShowTopMostFoldoutHeaderGroup: 1
+  handRig: {fileID: 6775970826864567984}
+  rightHandConstraint: {fileID: 5575288446234131189}
+  ikFadeSpeed: 10
 --- !u!4 &2772855889820260917 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8191740002585371210, guid: 998e71eca171b354fa289ddc8dcfb4b8, type: 3}
