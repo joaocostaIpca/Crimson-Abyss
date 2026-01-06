@@ -80,9 +80,6 @@ PrefabInstance:
       addedObject: {fileID: 1248113934013800989}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 650dec539f7884041bd4aae31624eb56, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5556473943321166709}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 650dec539f7884041bd4aae31624eb56, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1785298461695087757}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 650dec539f7884041bd4aae31624eb56, type: 3}
       insertIndex: -1
@@ -235,7 +232,7 @@ MonoBehaviour:
   rb: {fileID: 3612922992042268143}
   playerCamera: {fileID: 0}
   playerAudioListener: {fileID: 0}
-  networkWeapon: {fileID: 5556473943321166709}
+  networkWeapon: {fileID: 0}
   spectatorCamera: {fileID: 0}
   playerRenderers: []
   playerCollider: {fileID: 2525026002227906032}
@@ -247,6 +244,8 @@ MonoBehaviour:
   mouseSensitivity: 100
   characterType: 1
   hasMedikit: 0
+  letsGoResourcePath: Sounds/LetsGo
+  earthquakeResourcePath: Sounds/Earthquake
 --- !u!114 &1248113934013800989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,29 +264,6 @@ MonoBehaviour:
   maxHealth: 100
   health:
     m_InternalValue: 100
---- !u!114 &5556473943321166709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1852405574603973326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b43129cb269bc0045acb55efc566e2b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetworkWeapon
-  ShowTopMostFoldoutHeaderGroup: 1
-  range: 100
-  damage: 20
-  fireRate: 0.5
-  reloadCooldown: 5
-  maxMagAmmo: 30
-  hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
-  bulletTrailVFX: {fileID: 2700744275236868420, guid: 5c6ded302e168874ba665c09fbe04478, type: 3}
-  trailSpeed: 300
-  muzzleTransform: {fileID: 0}
-  NumberOfBullets: 1
 --- !u!114 &1785298461695087757
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6395757400826541426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1863133889361306001}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1863133889361306001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6395757400826541426}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1772, z: 0.215}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7715130604065101798}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &7825882952905453581
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.1385137
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.8999147
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      propertyPath: m_Name
+      value: Revolver
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1863133889361306001}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2931554009566457208}
+  m_SourcePrefab: {fileID: 100100000, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+--- !u!1 &6942992363786325340 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+  m_PrefabInstance: {fileID: 7825882952905453581}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2931554009566457208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6942992363786325340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43129cb269bc0045acb55efc566e2b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkWeapon
+  range: 60
+  damage: 15
+  fireRate: 0.5
+  reloadCooldown: 5
+  maxMagAmmo: 30
+  currentAmmo: 30
+  maxAmmo: 120
+  hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
+  bulletTrailVFX: {fileID: 2700744275236868420, guid: 532d9b69d4cce6449aff6d08c56fe37b, type: 3}
+  trailSpeed: 300
+  muzzleTransform: {fileID: 1863133889361306001}
+  NumberOfBullets: 1
+--- !u!4 &7715130604065101798 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ff5376d39a8a5594a91f3a2ee89d510e, type: 3}
+  m_PrefabInstance: {fileID: 7825882952905453581}
+  m_PrefabAsset: {fileID: 0}

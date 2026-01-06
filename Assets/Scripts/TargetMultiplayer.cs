@@ -45,11 +45,24 @@ public class TargetMultiplayer : NetworkBehaviour
         IsDead.OnValueChanged -= OnDeathStateChanged;
     }
 
+    // New server-side public helper to apply damage directly from server code
+    public void TakeDamage(float amount)
+    {
+        if (!IsServer) return;
+        ApplyDamage(amount);
+    }
+
+    // Existing ServerRpc remains for clients to request damage
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(float amount)
     {
         if (!IsServer) return;
+        ApplyDamage(amount);
+    }
 
+    // Shared damage logic used by both the ServerRpc and the server helper method
+    private void ApplyDamage(float amount)
+    {
         // Se já estiver morto, não pode levar mais dano
         if (IsDead.Value) return;
         if (health.Value <= 0) return;

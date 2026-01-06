@@ -1,13 +1,13 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+using TMPro;
 using Unity.Collections; 
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [DefaultExecutionOrder(100)] 
 public class LobbyManager : NetworkBehaviour 
@@ -58,6 +58,9 @@ public class LobbyManager : NetworkBehaviour
     
     public static LobbyManager Instance;
 
+    // temporary persistent AudioListener created early to avoid "there are no AudioListener" warnings
+    private GameObject persistentAudioListener;
+
     private Vector3 pendingSpawnPosition = Vector3.zero;
 
     private void Awake()
@@ -72,6 +75,13 @@ public class LobbyManager : NetworkBehaviour
         
         CharacterPreviews = characterPreviews; 
         
+        // Ensure an AudioListener exists very early so Unity doesn't spam "there are no AudioListener" logs
+        if (FindAnyObjectByType<AudioListener>() == null)
+        {
+            persistentAudioListener = new GameObject("GlobalAudioListener");
+            persistentAudioListener.AddComponent<AudioListener>();
+        }
+
         // --- Listeners Originais ---
         buttonShowCreate.onClick.AddListener(OnShowCreatePanel);
         buttonShowJoin.onClick.AddListener(OnShowJoinPanel);
@@ -194,7 +204,7 @@ public class LobbyManager : NetworkBehaviour
 
             if (NetworkManager.Singleton.IsServer)
             {
-                Vector3 spawnBasePos = (pendingSpawnPosition != Vector3.zero) ? pendingSpawnPosition : new Vector3(-215, 1, -19);
+                Vector3 spawnBasePos = (pendingSpawnPosition != Vector3.zero) ? pendingSpawnPosition : new Vector3(-215, 2f, -19);
                 pendingSpawnPosition = Vector3.zero;
                 Quaternion spawnRot = Quaternion.identity;
                 int index = 0;
@@ -213,14 +223,15 @@ public class LobbyManager : NetworkBehaviour
                         {
                             charIndex = FindFirstFreeCharacter();
                             if (charIndex != -1) TryLockCharacter(charIndex, clientId);
-                            else charIndex = 0; 
+                            else charIndex = 0;
                         }
                         GameObject prefabToSpawn = characterPrefabs[charIndex];
                         GameObject playerInstance = Instantiate(prefabToSpawn, finalPos, spawnRot);
-                        
+
                         playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
                         playerInstance.GetComponent<PlayerController>().CharacterIndex.Value = charIndex;
                         shell.NetworkObject.Despawn(true);
+                        Debug.LogError($"Spawned player {clientId} at {finalPos}.");
                     }
                     else
                     {
@@ -229,8 +240,58 @@ public class LobbyManager : NetworkBehaviour
                         client.PlayerObject.transform.position = finalPos;
                         client.PlayerObject.transform.rotation = spawnRot;
                         if (agent != null) agent.enabled = true;
+                        Debug.LogError($"Moved player {clientId} to {finalPos}.");
                     }
                     index++;
+                }
+            }
+
+            // CLIENT-SIDE: attach AudioListener to the local player's camera
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsClient)
+            {
+                try
+                {
+                    ulong localId = NetworkManager.Singleton.LocalClientId;
+                    NetworkClient localClient = null;
+
+                    // Try dictionary access first (works on newer Netcode versions)
+                    var connClients = NetworkManager.Singleton.ConnectedClients;
+                    if (connClients != null && connClients.TryGetValue(localId, out var nc))
+                        localClient = nc;
+
+                    if (localClient != null && localClient.PlayerObject != null)
+                    {
+                        var playerGO = localClient.PlayerObject.gameObject;
+                        var cam = playerGO.GetComponentInChildren<Camera>();
+                        if (cam != null)
+                        {
+                            // ensure local camera has an AudioListener
+                            var existing = cam.GetComponent<AudioListener>();
+                            if (existing == null) cam.gameObject.AddComponent<AudioListener>();
+                            else existing.enabled = true;
+
+                            // remove the temporary persistent listener if we created one earlier
+                            if (persistentAudioListener != null)
+                            {
+                                Destroy(persistentAudioListener);
+                                persistentAudioListener = null;
+                            }
+
+                            Debug.Log($"[LobbyManager] AudioListener attached to local player camera for client {localId}.");
+                        }
+                        else
+                        {
+                            Debug.LogWarning("[LobbyManager] Local player object has no Camera child to attach AudioListener to.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[LobbyManager] Could not find local player's NetworkClient.PlayerObject after scene load.");
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"[LobbyManager] Exception while attaching AudioListener: {ex}");
                 }
             }
         }
