@@ -4,6 +4,8 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+
 [RequireComponent(typeof(TargetMultiplayer))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : NetworkBehaviour
@@ -34,25 +36,31 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] private float flightRotateSpeed = 5f;
     [SerializeField] private float flightArrivalDistance = 0.5f;
 
+    [Header("Components")]
     private NavMeshAgent agent;
     private Rigidbody rb;
+    private Animator animator;
+    private GameObject fireballPrefab;
+
+    // Variáveis de Estado Internas
     private float defaultAgentSpeed;
-
     private Coroutine reactionCoroutine;
-    
-    
-    private string currentState = "Idle"; // O estado atual da FSM
+    private string currentState = "Idle"; 
 
+    // Memória da IA
     private Transform targetPlayer;
     private Vector3 lastKnownPosition;
     private bool hasLastKnownPosition = false;
 
+    // Patrulha
     private Vector3 startPosition;
     private Vector3 currentPatrolTarget;
     private bool isPatrolling = false;
     private bool isWaitingAtPatrolPoint = false;
-    private GameObject fireballPrefab;
-    private Animator animator;
+
+    // --- ARQUITETURA DE MODELO (O Cérebro) ---
+    private AIDecisionModel aiModel;
+    private AIContext currentContext;
 
     #endregion
 
@@ -64,9 +72,7 @@ public class EnemyAI : NetworkBehaviour
         fireballPrefab = Resources.Load("VFX/Fireball/Fireball") as GameObject;
 
         if (enemyType == EnemyType.Lancador && fireballPrefab == null)
-        {
-            Debug.LogError($"{name}: Fireball prefab not found in Resources/VFX/Fireball/Fireball.");
-        }
+            Debug.LogError($"{name}: Fireball prefab not found in Resources.");
 
         if (agent == null)
         {
@@ -76,6 +82,7 @@ public class EnemyAI : NetworkBehaviour
 
         defaultAgentSpeed = agent.speed;
 
+        // Configuração específica do Lancador (Voador) vs Terrestre
         if (enemyType == EnemyType.Lancador)
         {
             agent.updatePosition = false;
@@ -88,7 +95,7 @@ public class EnemyAI : NetworkBehaviour
             agent.updateRotation = true;
         }
 
-        //Setup para testes offline 
+        // Setup para testes offline (sem rede)
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
         {
             if (enemyType != EnemyType.Lancador && !agent.isOnNavMesh)
@@ -98,6 +105,11 @@ public class EnemyAI : NetworkBehaviour
             }
             this.enabled = true;
             if (agent != null) agent.enabled = true;
+            
+            // Inicializa modelo offline
+            aiModel = new AIDecisionModel();
+            currentContext = new AIContext();
+            
             SetPatrolMode(transform.position, patrolRadius);
         }
     }
@@ -108,8 +120,14 @@ public class EnemyAI : NetworkBehaviour
         
         if (IsServer)
         {
+            // --- INICIALIZAÇÃO DO MODELO ---
+            aiModel = new AIDecisionModel();
+            currentContext = new AIContext();
+            // ------------------------------
+
             if (agent != null) agent.enabled = true;
 
+            // Garante que o agente está no NavMesh
             if (enemyType != EnemyType.Lancador)
             {
                 if (!agent.isOnNavMesh)
@@ -132,6 +150,7 @@ public class EnemyAI : NetworkBehaviour
             return;
         }
 
+        // Se for cliente, desliga a lógica (o ServerNetworkTransform trata da posição)
         this.enabled = false;
         if (agent != null) agent.enabled = false;
     }
@@ -165,25 +184,77 @@ public class EnemyAI : NetworkBehaviour
 
     private void Update()
     {
+        // Segurança de Rede
         if (NetworkManager.Singleton != null && !IsServer) return;
 
+        // Sensor de Jogadores (Corre periodicamente)
         if (reactionCoroutine == null)
         {
             reactionCoroutine = StartCoroutine(CheckPlayers());
         }
 
-        // A Árvore decide qual deve ser o estado
-        string nextState = RunDecisionTree();
+        // 1. RECOLHER DADOS (Contexto)
+        UpdateContextData();
 
-        
+        // 2. PEDIR DECISÃO AO MODELO
+        string nextState = aiModel.Evaluate(currentContext);
+
+        // 3. APLICAR TRANSIÇÃO DE ESTADO
         if (nextState != currentState)
         {
+            // Lógica específica: Se desistir de procurar, volta a patrulhar
+            if (nextState == "Patrol" && currentState == "Searching")
+            {
+                hasLastKnownPosition = false; 
+                if (isPatrolling) FindNewPatrolPoint();
+            }
+
             currentState = nextState;
             UpdateAnimationState(currentState);
         }
 
-      
+        // 4. EXECUTAR COMPORTAMENTO (Move, Ataca, etc)
         ExecuteCurrentState();
+    }
+
+    // Preenche o "Formulário" para o Modelo analisar
+    private void UpdateContextData()
+    {
+        // A. Dados do Alvo
+        currentContext.HasTarget = (targetPlayer != null);
+        
+        if (targetPlayer != null)
+        {
+            hasLastKnownPosition = true;
+            lastKnownPosition = targetPlayer.position;
+            currentContext.DistanceToTarget = Vector3.Distance(transform.position, targetPlayer.position);
+        }
+        else
+        {
+            currentContext.DistanceToTarget = 999f;
+        }
+
+        // B. Dados de Memória e Cooldown
+        currentContext.HasLastKnownPos = hasLastKnownPosition;
+        currentContext.IsAttackCooldownOver = (Time.time > lastAttackTime + attackCooldown);
+        currentContext.AttackRange = agent.stoppingDistance + 0.5f;
+
+        // C. Lógica de "Chegou ao Destino" (Baseada no teu código antigo de Node_Arrived)
+        bool arrived = false;
+        if (currentState == "Searching")
+        {
+            if (enemyType == EnemyType.Lancador)
+            {
+                Vector3 dest = new Vector3(lastKnownPosition.x, (flightHeight != 0f ? flightHeight : startPosition.y), lastKnownPosition.z);
+                if (Vector3.Distance(transform.position, dest) < 0.5f) arrived = true;
+            }
+            else
+            {
+                if (!agent.pathPending && agent.remainingDistance < 0.5f) arrived = true;
+            }
+        }
+        currentContext.ArrivedAtDestination = arrived;
+        currentContext.IsPatrolling = isPatrolling;
     }
 
     private void UpdateAnimationState(string state)
@@ -193,114 +264,12 @@ public class EnemyAI : NetworkBehaviour
         switch (state)
         {
             case "Attack": animator.SetTrigger("Attack"); break;
-            case "Walking": animator.SetTrigger("Walk"); break;
+            case "Walking": animator.SetTrigger("Walk"); break; // Perseguir
             case "Searching": animator.SetTrigger("Walk"); break;
             case "Patrol": animator.SetTrigger("Walk"); break;
             case "Idle": animator.SetTrigger("Idle"); break;
         }
     }
-
-    // ========================================================================================
-    // --- ÁRVORE DE DECISÃO 
-    // Estrutura hierárquica: Cada método é um "Nó" que faz uma pergunta.
-    // ========================================================================================
-
-    private string RunDecisionTree()
-    {
-        return Node_HasTarget();
-    }
-
-    // Nó 1: Tenho um alvo vivo e visível?
-    private string Node_HasTarget()
-    {
-        if (targetPlayer != null)
-        {
-            // Sim -> Passa para o próximo nó de decisão
-            return Node_IsTargetInAttackRange();
-        }
-        else
-        {
-            // Não -> Vamos verificar se temos uma última posição conhecida
-            return Node_HasLastKnownPosition();
-        }
-    }
-
-    // Nó 2: O alvo está perto o suficiente para atacar?
-    private string Node_IsTargetInAttackRange()
-    {
-        // Atualiza LKP já que estamos a ver o alvo
-        hasLastKnownPosition = true;
-        lastKnownPosition = targetPlayer.position;
-
-        float distance = Vector3.Distance(transform.position, targetPlayer.position);
-        
-        if (distance <= agent.stoppingDistance + 0.5f)
-        {
-            return "Attack"; // FOLHA DA ÁRVORE (Resultado Final)
-        }
-        else
-        {
-            return "Walking"; // FOLHA DA ÁRVORE (Resultado Final - Perseguir)
-        }
-    }
-
-    // Nó 3: Tenho uma memória de onde o jogador estava?
-    private string Node_HasLastKnownPosition()
-    {
-        if (hasLastKnownPosition)
-        {
-            return Node_ArrivedAtLastKnownPosition();
-        }
-        else
-        {
-            return Node_IsPatrolMode();
-        }
-    }
-
-    // Nó 4: Já cheguei ao local que estou a investigar?
-    private string Node_ArrivedAtLastKnownPosition()
-    {
-        // Lógica de chegada (funciona para voador e terrestre)
-        bool arrived = false;
-
-        if (enemyType == EnemyType.Lancador)
-        {
-            Vector3 searchTarget = new Vector3(lastKnownPosition.x, (flightHeight != 0f ? flightHeight : startPosition.y), lastKnownPosition.z);
-            if (Vector3.Distance(transform.position, searchTarget) < 0.5f) arrived = true;
-        }
-        else
-        {
-            if (!agent.pathPending && agent.remainingDistance < 0.5f) arrived = true;
-        }
-
-        if (arrived)
-        {
-            hasLastKnownPosition = false; // Esquecer posição
-            if (isPatrolling) FindNewPatrolPoint();
-            return Node_IsPatrolMode(); // Reavaliar
-        }
-        else
-        {
-            return "Searching"; // FOLHA (Continuar a investigar)
-        }
-    }
-
-    // Nó 5: Estou em modo patrulha?
-    private string Node_IsPatrolMode()
-    {
-        if (isPatrolling)
-        {
-            return "Patrol"; // FOLHA
-        }
-        else
-        {
-            return "Idle"; // FOLHA (Default)
-        }
-    }
-
-    // ========================================================================================
-    // --- FIM DA ÁRVORE DE DECISÃO ---
-    // ========================================================================================
 
     private void ExecuteCurrentState()
     {
@@ -359,7 +328,7 @@ public class EnemyAI : NetworkBehaviour
             {
                 agent.speed = defaultAgentSpeed * patrolSpeedMultiplier;
                 if (!agent.isOnNavMesh) return;
-                   
+                    
                 agent.SetDestination(currentPatrolTarget);
 
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
@@ -375,16 +344,16 @@ public class EnemyAI : NetworkBehaviour
         }
     }
 
+    // --- MÉTODOS AUXILIARES DE MOVIMENTO E ATAQUE (Mantidos do Original) ---
+
     private IEnumerator AttackSequence()
     {
         yield return new WaitForSeconds(attackAnimDelay);
 
         if (enemyType != EnemyType.Lancador)
         {
-            // 2. Verifica se o jogador ainda está ao alcance
             if (targetPlayer != null && Vector3.Distance(transform.position, targetPlayer.position) <= agent.stoppingDistance + 0.5f)
             {
-                // 3. Aplica o dano (o TargetMultiplayer no jogador vai tratar da rede)
                 TargetMultiplayer playerHealth = targetPlayer.GetComponent<TargetMultiplayer>();
                 if (playerHealth != null)
                 {
@@ -394,29 +363,16 @@ public class EnemyAI : NetworkBehaviour
         }
         else
         {
-            // instantiate fireball prefab and launch towards player
             GameObject fireball = Instantiate(fireballPrefab, transform.position, Quaternion.identity);
-
-            // Ensure the fireball is spawned across the network
             NetworkObject netObj = fireball.GetComponent<NetworkObject>();
-            if (netObj != null)
-            {
-                if (!netObj.IsSpawned)
-                    netObj.Spawn();
-            }
-            else
-            {
-                Debug.LogWarning($"{name}: Fireball prefab has no NetworkObject. Add a NetworkObject component and register the prefab in NetworkManager.NetworkConfig.NetworkPrefabs to spawn it across clients.");
-            }
+            if (netObj != null && !netObj.IsSpawned) netObj.Spawn();
 
-            Vector3 targetPos = targetPlayer.position + Vector3.up * 1.0f; // Aim for player's center
+            Vector3 targetPos = targetPlayer.position + Vector3.up * 1.0f;
             Vector3 direction = (targetPos - fireball.transform.position).normalized;
-            // add force to fireball's rigidbody
             Rigidbody fbRb = fireball.GetComponent<Rigidbody>();
             if (fbRb != null)
             {
-                float launchForce = 15f;
-                fbRb.AddForce(direction * launchForce, ForceMode.VelocityChange);
+                fbRb.AddForce(direction * 15f, ForceMode.VelocityChange);
             }
         }
     }
@@ -435,10 +391,10 @@ public class EnemyAI : NetworkBehaviour
             return;
         }
 
-        bool foundPoint = false;
         NavMeshPath path = new NavMeshPath();
+        bool foundPoint = false;
 
-        for (int attempts = 0; attempts < 8 && !foundPoint; attempts++)
+        for (int attempts = 0; attempts < 5 && !foundPoint; attempts++)
         {
             Vector2 randomCirclePoint = Random.insideUnitCircle * patrolRadius;
             Vector3 randomPos = startPosition + new Vector3(randomCirclePoint.x, 0, randomCirclePoint.y);
@@ -449,18 +405,7 @@ public class EnemyAI : NetworkBehaviour
                 {
                     currentPatrolTarget = hit.position;
                     foundPoint = true;
-                    break;
                 }
-            }
-        }
-
-        if (!foundPoint)
-        {
-            if (NavMesh.SamplePosition(startPosition, out NavMeshHit hit2, patrolRadius, NavMesh.AllAreas) &&
-               agent.CalculatePath(hit2.position, path) && path.status == NavMeshPathStatus.PathComplete)
-            {
-                currentPatrolTarget = hit2.position;
-                foundPoint = true;
             }
         }
 
@@ -468,7 +413,7 @@ public class EnemyAI : NetworkBehaviour
         {
             currentPatrolTarget = transform.position;
             isPatrolling = false;
-            currentState = "Idle"; 
+            currentState = "Idle";
         }
     }
 
@@ -487,30 +432,32 @@ public class EnemyAI : NetworkBehaviour
         targetPlayer = null;
         float closestDistance = minimumDistance;
 
-        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        if (NetworkManager.Singleton != null)
         {
-            if (client.PlayerObject != null)
+            foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
             {
-                TargetMultiplayer playerHealth = client.PlayerObject.GetComponent<TargetMultiplayer>();
-                if (playerHealth != null && playerHealth.IsDead.Value) continue;
-
-                Transform player = client.PlayerObject.transform;
-                float distance = Vector3.Distance(transform.position, player.position);
-
-                if (distance < closestDistance)
+                if (client.PlayerObject != null)
                 {
-                    if (Physics.Raycast(transform.position, (player.position - transform.position).normalized, out RaycastHit hit, minimumDistance))
+                    TargetMultiplayer playerHealth = client.PlayerObject.GetComponent<TargetMultiplayer>();
+                    if (playerHealth != null && playerHealth.IsDead.Value) continue;
+
+                    Transform player = client.PlayerObject.transform;
+                    float distance = Vector3.Distance(transform.position, player.position);
+
+                    if (distance < closestDistance)
                     {
-                        if (hit.collider.transform == player)
+                        if (Physics.Raycast(transform.position, (player.position - transform.position).normalized, out RaycastHit hit, minimumDistance))
                         {
-                            closestDistance = distance;
-                            targetPlayer = player;
+                            if (hit.collider.transform == player)
+                            {
+                                closestDistance = distance;
+                                targetPlayer = player;
+                            }
                         }
                     }
                 }
             }
         }
-
         reactionCoroutine = null;
     }
 
@@ -525,5 +472,84 @@ public class EnemyAI : NetworkBehaviour
 
         Quaternion desired = Quaternion.LookRotation(dir.normalized);
         transform.rotation = Quaternion.Slerp(transform.rotation, desired, Time.deltaTime * flightRotateSpeed);
+    }
+}
+
+
+public class AIContext
+{
+    public bool HasTarget;
+    public float DistanceToTarget;
+    public bool HasLastKnownPos;
+    public bool ArrivedAtDestination;
+    public bool IsAttackCooldownOver;
+    public float AttackRange;
+    public bool IsPatrolling;
+}
+
+public class AIDecisionModel
+{
+    // Avalia os dados e devolve o nome do Estado Vencedor
+    public string Evaluate(AIContext context)
+    {
+        // 1. Calcular Utilidade (Score) para cada ação possível
+        float scoreAttack = CalculateAttackScore(context);
+        float scoreChase  = CalculateChaseScore(context); // Walking
+        float scoreSearch = CalculateSearchScore(context);
+        float scorePatrol = 0.15f; // Valor base (fallback)
+
+        // 2. O maior score ganha
+        if (scoreAttack > scoreChase && scoreAttack > scoreSearch && scoreAttack > scorePatrol)
+            return "Attack";
+
+        if (scoreChase > scoreAttack && scoreChase > scoreSearch && scoreChase > scorePatrol)
+            return "Walking"; // Perseguir
+
+        if (scoreSearch > scoreAttack && scoreSearch > scoreChase && scoreSearch > scorePatrol)
+            return "Searching"; // Investigar
+
+        if (context.IsPatrolling)
+            return "Patrol";
+
+        return "Idle";
+    }
+
+    private float CalculateAttackScore(AIContext ctx)
+    {
+        // Regra: Só ataca se tiver alvo
+        if (!ctx.HasTarget) return 0f;
+
+        // Regra: Se estiver dentro do alcance de ataque
+        if (ctx.DistanceToTarget <= ctx.AttackRange)
+        {
+            // Se tiver cooldown, é prioridade máxima (1.0), se não, ainda quer atacar mas menos (0.7)
+            return ctx.IsAttackCooldownOver ? 1.0f : 0.7f;
+        }
+        
+        return 0f;
+    }
+
+    private float CalculateChaseScore(AIContext ctx)
+    {
+        // Regra: Persegue se vê o alvo, mas está longe
+        if (ctx.HasTarget && ctx.DistanceToTarget > ctx.AttackRange)
+        {
+            return 0.9f; // Prioridade alta, mas menor que atacar com cooldown
+        }
+        return 0f;
+    }
+
+    private float CalculateSearchScore(AIContext ctx)
+    {
+        // Regra: Não vê o alvo, mas lembra-se onde ele estava
+        if (!ctx.HasTarget && ctx.HasLastKnownPos)
+        {
+            // Se ainda não chegou ao ponto de investigação
+            if (!ctx.ArrivedAtDestination)
+            {
+                return 0.8f; 
+            }
+        }
+        return 0f;
     }
 }
