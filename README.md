@@ -7,141 +7,118 @@ A game created by  Team Brick
 O Jogo é um FPS multiplayer Local inspirado por jogos como o Left 4 Dead 2 e Warhammer 40k Space Marine 2
 A história segue um esquadrão de soldados que cai no inferno e lutam o seu caminho até sair, composto por uma freira, um templario e dois soldados, um comandante e um especialista de armas.
 
-Sistema de Inteligência Artificial e Navegação
+Este projeto implementa uma arquitetura de IA moderna e modular, desenhada para ambientes Multiplayer. O sistema abandona os if/else tradicionais em favor de uma abordagem baseada em Utility AI (IA Baseada em Utilidade) combinada com uma Máquina de Estados (FSM).
 
-Este projeto implementa uma arquitetura de IA híbrida, desenhada para ambientes Multiplayer, combinando a estrutura lógica de uma Árvore de Decisões com a execução robusta de uma Máquina de Estados (FSM).
+1. O Cérebro: Modelo de Utilidade (Utility AI)
+Em vez de seguir uma árvore fixa, o inimigo "pensa" em termos de utilidade. A cada frame, o sistema avalia o contexto do jogo e atribui uma pontuação (Score) a cada ação possível. A ação com a pontuação mais alta é a escolhida.
 
-Arquitetura: Árvore de Decisões (O "Cérebro")
+Isto permite comportamentos mais orgânicos e dinâmicos.
 
-A lógica de decisão não utiliza if/else encadeados aleatoriamente.
-Em vez disso, é utilizada uma Árvore de Decisões estruturada.
+Fluxo de Dados (Data Flow)
+Contexto (AIContext): O sistema recolhe dados brutos do mundo (distância ao jogador, se tem linha de visão, cooldowns, última posição conhecida).
 
-A cada frame, o NPC avalia uma série de perguntas (Nós) para determinar a sua intenção.
+Modelo (AIDecisionModel): Uma classe matemática pura processa esses dados e calcula pontuações de 0.0 a 1.0 para cada estado.
 
-Fluxo Lógico
+Decisão: O estado vencedor é enviado para execução.
 
-O método principal RunDecisionTree() inicia a avaliação da árvore.
+    Diagrama Lógico (Mermaid)
+    Fragmento do código
 
-    Diagrama de Decisão (Mermaid)
-    graph TD
-        A[Início: RunDecisionTree] --> B{Tem Alvo?}
-        B -- Sim --> C{Está no Alcance?}
-        B -- Não --> D{Tem Memória da Posição?}
-        C -- Sim --> E[RESULTADO: ATACAR]
-        C -- Não --> F[RESULTADO: PERSEGUIR]
-        D -- Sim --> G[RESULTADO: INVESTIGAR]
-        D -- Não --> H[RESULTADO: PATRULHAR]
-
+    graph LR
+    Input[Contexto do Mundo] --> Model{Modelo de Decisão}
+    
+    Model -->|Avalia| A[Score Ataque]
+    Model -->|Avalia| B[Score Perseguição]
+    Model -->|Avalia| C[Score Investigação]
+    Model -->|Avalia| D[Score Patrulha]
+    
+    A & B & C & D --> Compare[Comparação: Winner Takes All]
+    Compare --> Output[Novo Estado Ativo]
+    
 Implementação no Código
+O modelo avalia fatores como distância e cooldowns para gerar o score. Exemplo da lógica de pontuação de ataque:
 
-Cada Nó da árvore é um método que retorna:
+    C#
 
-Outro nó (continuação da decisão)
-
-Ou um estado final (folha)
-
-    // Exemplo do Nó Raiz da Árvore
-    private string Node_HasTarget()
+    // Exemplo: Cálculo de Utilidade de Ataque
+    private float GetAttackScore(AIContext ctx)
     {
-    if (targetPlayer != null)
+    // Se não vê o alvo, a utilidade é 0
+    if (!ctx.HasTarget) return 0f;
+
+    // Se está perto o suficiente
+    if (ctx.DistanceToTarget <= ctx.AttackRange)
     {
-        // Se tem alvo, pergunta: "Estou perto para atacar?"
-        return Node_IsTargetInAttackRange(); 
+        // Se o ataque está pronto (sem cooldown), prioridade máxima (1.0)
+        // Se ainda tem cooldown, a vontade é menor (0.7), mas ainda quer estar perto
+        return ctx.IsAttackCooldownOver ? 1.0f : 0.7f;
     }
-    else
-    {
-        // Se não tem alvo, pergunta: "Lembro-me onde ele estava?"
-        return Node_HasLastKnownPosition(); 
-    }
+    
+    return 0f;
     }
 
-Execução: Máquina de Estados (O "Corpo")
+2. O Corpo: Máquina de Estados (FSM)
+Enquanto o Modelo decide "O Quê" fazer, a Máquina de Estados decide "Como" fazer. O EnemyAI atua como o executor, aplicando o movimento, animações e física correspondentes à decisão do modelo.
 
-Enquanto a Árvore de Decisões decide o que fazer,
-a Máquina de Estados (FSM) decide como fazer.
+Esta separação (Decoupling) facilita a manutenção e testes.
 
-O estado resultante é responsável por:
-
-Execução de animações
-
-Movimento
-
-Física
-
-Cooldowns
-
-Lógica contínua do comportamento
-
-Existe uma separação clara entre Decisão e Execução.
+    C#
 
     private void Update()
     {
-        // 1. O Cérebro decide
-        string nextState = RunDecisionTree();
-    
-        // 2. O Corpo executa
-        if (nextState != currentState)
-        {
-            currentState = nextState;
-            UpdateAnimationState(currentState);
-        }
-    
-        ExecuteCurrentState();
+    // 1. O Cérebro decide com base no contexto
+    string nextState = aiModel.Evaluate(currentContext);
+
+    // 2. O Corpo executa a transição se necessário
+    if (nextState != currentState)
+    {
+        currentState = nextState;
+        UpdateAnimationState(currentState);
     }
 
-Pathfinding e Algoritmos de Navegação
-
-O sistema de movimento utiliza Polimorfismo de Comportamento para diferenciar inimigos terrestres de inimigos voadores.
+    // 3. Execução do comportamento contínuo
+    ExecuteCurrentState();
+    }
+    
+ Pathfinding e Algoritmos de Navegação
+O sistema de movimento utiliza Polimorfismo de Comportamento para diferenciar inimigos terrestres de inimigos voadores, garantindo que cada tipo de inimigo navega no ambiente da forma mais eficiente.
 
 Inimigos Terrestres (NavMesh / A*)
+Os inimigos terrestres (ex: Diabrete, Bruto) utilizam o algoritmo A* através do sistema de NavMesh da Unity.
 
-Os inimigos terrestres utilizam o algoritmo A* através do sistema de NavMesh da Unity, permitindo:
+Capacidades: Cálculo de rotas complexas, evitamento de obstáculos estáticos e navegação em terreno irregular.
 
-Cálculo de rotas complexas
+Validação: Antes de iniciar uma patrulha, o sistema valida se o ponto aleatório é alcançável no grafo de navegação.
 
-Evitar obstáculos estáticos
+    C#
 
-Navegação eficiente em ambientes dinâmicos
-
-Lógica Principal
-    
-    agent.SetDestination(target);
-
-Patrulha com Validação de NavMesh
-
-Antes de se mover, o inimigo valida se o ponto aleatório é alcançável no grafo de navegação.
-
+    // Validação de ponto de patrulha no NavMesh
     if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
     {
-    agent.CalculatePath(hit.position, path); // Calcula rota A* válida
+    // Apenas move se o caminho for válido e completo
+    if (agent.CalculatePath(hit.position, path) && path.status == NavMeshPathStatus.PathComplete)
+    {
+        currentPatrolTarget = hit.position;
     }
-
+    }
+    
 Inimigos Voadores (Movimento Vetorial)
+Os inimigos voadores (ex: Lançador) ignoram o NavMesh para movimento, utilizando álgebra vetorial direta em 3D. Isto permite-lhes flutuar sobre obstáculos e manter uma altura constante (flightHeight).
 
-Os inimigos voadores ignoram completamente o NavMesh.
-Utilizam movimento vetorial direto em 3D, mantendo uma altura constante de voo (flightHeight).
+Movimento: Linear direto em direção ao alvo.
 
-Características do Movimento
+Rotação: Interpolação esférica (Slerp) para rotações suaves.
 
-Movimento linear direto
-
-Rotação suave para o alvo
-
-Independente da topologia do terreno
+    C#
 
     private void MoveLancadorTowards(Vector3 target, float speed)
     {
-        Vector3 dir = target - transform.position;
-        
-        // Movimento linear
-        transform.position += dir.normalized * speed * Time.deltaTime;
+    Vector3 dir = target - transform.position;
     
-        // Rotação suave para olhar para o alvo
-        Quaternion desired = Quaternion.LookRotation(dir.normalized);
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            desired,
-            Time.deltaTime * flightRotateSpeed
-        );
-    }
+    // Movimento direto ignorando o chão
+    transform.position += dir.normalized * speed * Time.deltaTime;
 
+    // Rotação suave para olhar para o alvo
+    Quaternion desired = Quaternion.LookRotation(dir.normalized);
+    transform.rotation = Quaternion.Slerp(transform.rotation, desired, Time.deltaTime * flightRotateSpeed);
+}
