@@ -18,6 +18,7 @@ public class NetworkWeapon : MonoBehaviour
     public int maxMagAmmo = 30;
     public int currentAmmo = 30;
     public int maxAmmo = 120;
+    public int WeaponMaxAmmo = 120;
 
     [Header("Effects")]
     public GameObject hitEffect;
@@ -140,22 +141,31 @@ public class NetworkWeapon : MonoBehaviour
     {
         int needed = maxMagAmmo - currentAmmo;
         if (needed <= 0) return;
-        if (maxAmmo >= needed) { maxAmmo -= needed; currentAmmo = maxMagAmmo; }
-        else { currentAmmo += maxAmmo; maxAmmo = 0; }
+        if (maxAmmo >= needed) 
+        { 
+            maxAmmo -= needed; 
+            currentAmmo = maxMagAmmo; 
+        }
+        else 
+        { 
+            currentAmmo += maxAmmo; 
+            maxAmmo = 0; 
+        }
         nextReloadTime = Time.time + reloadCooldown;
-        UpdateAmmoUI();
+        UpdateAmmoUI();        
     }
 
     public void UpdateAmmoUI()
     {
-        Canvas canvas = FindFirstObjectByType<Canvas>();
-        if (canvas != null)
-            canvas.GetComponent<InterfaceController>()?.UpdateAmmo(currentAmmo, maxMagAmmo, maxAmmo);
+        weaponManager?.ReportCurrentWeaponAmmoFromOwner(currentAmmo, maxAmmo);
+        var mgr = GetComponentInParent<PlayerWeaponManager>();
+        if (mgr == null || !mgr.IsOwner) return;
+        InterfaceController.Instance?.UpdateAmmo(currentAmmo, maxMagAmmo, maxAmmo);
     }
 
     public void RefillAmmo()
     {
-        maxAmmo = 120;
+        maxAmmo = WeaponMaxAmmo;
         currentAmmo = maxMagAmmo;
         UpdateAmmoUI();
     }

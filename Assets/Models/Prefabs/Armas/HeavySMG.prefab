@@ -117,6 +117,7 @@ MonoBehaviour:
   maxMagAmmo: 6
   currentAmmo: 6
   maxAmmo: 12
+  WeaponMaxAmmo: 12
   hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
   bulletTrailVFX: {fileID: 2700744275236868420, guid: ed8fbcce3cdb6f14c9c99d24d81bdce2, type: 3}
   trailSpeed: 200

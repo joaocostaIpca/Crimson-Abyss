@@ -95,8 +95,17 @@ public class SupplyBox : MonoBehaviour
     {
         if (playerWeapon != null)
         {
-            // 1. Enche a munição (envia RPC ao servidor)
-            playerWeapon.RefillAmmo(); 
+            // Prefer using the PlayerWeaponManager to refill ALL weapons.
+            var mgr = player.GetComponent<PlayerWeaponManager>();
+            if (mgr != null)
+            {
+                mgr.RefillAllWeaponsLocal();
+            }
+            else
+            {
+                // Fallback: if no manager found, refill the single weapon instance.
+                playerWeapon.RefillAmmo();
+            }
 
             // 2. Esconde o texto da UI
             if (interactionText != null)

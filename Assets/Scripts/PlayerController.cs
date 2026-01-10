@@ -8,6 +8,8 @@ using System.Linq;
 [RequireComponent(typeof(Animator))]
 public class PlayerController : NetworkBehaviour
 {
+    #region variables
+
     [Header("Componentes")]
     [SerializeField] private Rigidbody rb;
     public Camera playerCamera;
@@ -59,6 +61,8 @@ public class PlayerController : NetworkBehaviour
     // --- Sincronização Manual de Animação ---
     private NetworkVariable<bool> netIsMoving = new NetworkVariable<bool>(false);
     private bool lastIsMovingState = false;
+
+    #endregion
 
     void Awake()
     {

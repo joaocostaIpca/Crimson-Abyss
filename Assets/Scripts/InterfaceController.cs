@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Netcode;
 
 public class InterfaceController : MonoBehaviour
 {
@@ -73,8 +74,8 @@ public class InterfaceController : MonoBehaviour
         if (minimapBoxIcon == null) minimapBoxIcon = Resources.Load<Sprite>("Images/MinimapBox");
         if (minimapOtherPlayerIcon == null) minimapOtherPlayerIcon = Resources.Load<Sprite>("Images/MinimapPlayer");
 
-        Object[] loadedImages = Resources.LoadAll("Images/WeaponPictures", typeof(Sprite));
-        foreach (Object obj in loadedImages)
+        UnityEngine.Object[] loadedImages = Resources.LoadAll("Images/WeaponPictures", typeof(Sprite));
+        foreach (UnityEngine.Object obj in loadedImages)
         {
             weaponImageNames.Add(obj.name);
             weaponImages.Add((Sprite)obj);
@@ -227,21 +228,34 @@ public class InterfaceController : MonoBehaviour
         }
     }
 
-    public void UpdateWeapon(string weaponName)
+    public void UpdateWeapon(ulong ownerClientId, string weaponName)
     {
-        // Debug.Log("Updating weapon to: " + weaponName);
-
         if (weaponPicture == null) return;
-        
-        int index = weaponImageNames.IndexOf(weaponName);
-        int emptyIndex = weaponImageNames.IndexOf("Empty");
-        
-        if (index >= 0) 
-            weaponPicture.sprite = weaponImages[index];
-        else 
-            weaponPicture.sprite = weaponImages[emptyIndex];
 
-        // Logic for secondary/tertiary weapons
+        int emptyIndex = weaponImageNames.IndexOf("Empty");
+
+        // Só atualiza o ícone principal se a mudança pertencer ao jogador local
+        bool updateMain = false;
+        if (localPlayer != null)
+        {
+            var nb = localPlayer.GetComponent<NetworkBehaviour>();
+            if (nb != null)
+            {
+                updateMain = (nb.OwnerClientId == ownerClientId);
+            }
+        }
+
+        if (updateMain)
+        {
+            int index = weaponImageNames.IndexOf(weaponName);
+            if (index >= 0)
+                weaponPicture.sprite = weaponImages[index];
+            else
+                weaponPicture.sprite = weaponImages[emptyIndex];
+        }
+
+        if (localPlayer == null) return;
+
         PlayerWeaponManager weaponManager = localPlayer.GetComponent<PlayerWeaponManager>();
         if (weaponManager != null)
         {

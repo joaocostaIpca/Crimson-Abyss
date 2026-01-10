@@ -88,6 +88,15 @@ public class TargetMultiplayer : NetworkBehaviour
             {
                 // Define o estado como Morto
                 IsDead.Value = true;
+
+                // OPTIONAL: clear server-side weapon index so all clients update visuals
+                var pwm = GetComponent<PlayerWeaponManager>();
+                if (pwm != null)
+                {
+                    // setting to -1 causes UpdateLocalWeaponVisual to destroy the visual on clients
+                    pwm.CurrentWeaponIndex.Value = -1;
+                }
+
                 // (O OnValueChanged vai tratar de chamar o ClientRpc)
             }
         }
@@ -112,6 +121,17 @@ public class TargetMultiplayer : NetworkBehaviour
             if (playerController != null)
             {
                 playerController.EnableSpectatorMode();
+
+                // Remove local weapon visual and disable weapon manager on the owner client
+                // (this runs on all clients; check ownership to only affect the local player)
+                if (playerController.IsOwner)
+                {
+                    var wm = playerController.GetComponent<PlayerWeaponManager>();
+                    if (wm != null)
+                    {
+                        wm.RemoveLocalWeaponVisualAndDisable();
+                    }
+                }
             }
 
             // Avisa o servidor (Host) para verificar a lógica do jogo
