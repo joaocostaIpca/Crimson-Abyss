@@ -87,7 +87,7 @@ MonoBehaviour:
   maxAmmo: 150
   WeaponMaxAmmo: 150
   hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
-  bulletTrailVFX: {fileID: 2700744275236868420, guid: f8021b41a09d04a4f92496d1090f4ba9, type: 3}
+  bulletTrailVFX: {fileID: 2700744275236868420, guid: 532d9b69d4cce6449aff6d08c56fe37b, type: 3}
   trailSpeed: 300
   muzzleTransform: {fileID: 3410967896836259113}
   NumberOfBullets: 1
