@@ -231,7 +231,7 @@ MonoBehaviour:
   flightSpeed: 4
   flightRotateSpeed: 5
   flightArrivalDistance: 0.5
-  showDebugUI: 1
+  showDebugUI: 0
 --- !u!95 &4461392950112729410
 Animator:
   serializedVersion: 7

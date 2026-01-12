@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8264627892784730130}
   m_Layer: 0
   m_Name: Lancador
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,6 +151,7 @@ MonoBehaviour:
   flightSpeed: 3
   flightRotateSpeed: 5
   flightArrivalDistance: 0.5
+  showDebugUI: 1
 --- !u!95 &5953456642242830258
 Animator:
   serializedVersion: 7

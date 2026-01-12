@@ -2802,7 +2802,7 @@ MonoBehaviour:
   - waveName: 'primeira '
     enemies:
     - enemyName: demonio
-      prefab: {fileID: 7902563242427140785, guid: 602999bd834b7ab4d954e85ae47c34c9, type: 3}
+      prefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
       spawnPoints:
       - {fileID: 1150854235}
       count: 2
@@ -4389,7 +4389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 1
 --- !u!114 &292001325
@@ -8867,7 +8867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 2
 --- !u!114 &650848220
@@ -12836,7 +12836,7 @@ MonoBehaviour:
   - waveName: 
     enemies:
     - enemyName: Bruto
-      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      prefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
       spawnPoints:
       - {fileID: 1854396998}
       - {fileID: 91397824}
@@ -13133,7 +13133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 2
 --- !u!65 &949750453
@@ -16242,7 +16242,7 @@ MonoBehaviour:
   - waveName: wave3
     enemies:
     - enemyName: Diabrete
-      prefab: {fileID: 0}
+      prefab: {fileID: 6759254694569850245, guid: 754a8337c5aa5b04e9c0c42e972a01ca, type: 3}
       spawnPoints:
       - {fileID: 1716064053}
       - {fileID: 46719346}
@@ -16260,7 +16260,7 @@ MonoBehaviour:
       count: 5
       patrolRadius: 10
     - enemyName: Bruto
-      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      prefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
       spawnPoints:
       - {fileID: 1716064053}
       - {fileID: 46719346}
@@ -21480,7 +21480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 2
 --- !u!65 &1514981744
@@ -22911,7 +22911,7 @@ MonoBehaviour:
       count: 5
       patrolRadius: 5
     - enemyName: bruto
-      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      prefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
       spawnPoints:
       - {fileID: 2121028270}
       - {fileID: 1719275987}
@@ -22944,7 +22944,7 @@ MonoBehaviour:
       count: 5
       patrolRadius: 0
     - enemyName: Brutos
-      prefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+      prefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
       spawnPoints:
       - {fileID: 2121028270}
       - {fileID: 1719275987}
@@ -24577,7 +24577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 1
 --- !u!114 &1708540191
@@ -24651,7 +24651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 2
 --- !u!114 &1714290326
@@ -32653,7 +32653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 1
 --- !u!114 &1813716187
@@ -33784,7 +33784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 2
 --- !u!65 &1900930302
@@ -36427,7 +36427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemySpawner
   ShowTopMostFoldoutHeaderGroup: 1
-  enemyPrefab: {fileID: 8519824548221529306, guid: 2399f98dcca0f9f4e99755d9a12dee0b, type: 3}
+  enemyPrefab: {fileID: 5301373170610737025, guid: 6b6feb93e109f4e4dbf2c97318aa9e8b, type: 3}
   patrolRadius: 10
   spawnDelay: 1
 --- !u!114 &2108940979

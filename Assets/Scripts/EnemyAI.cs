@@ -215,7 +215,7 @@ public class EnemyAI : NetworkBehaviour
 
             currentState = nextState;
             
-            // AQUI ESTÁ A MUDANÇA: Chama a função que sincroniza a animação
+            // Chama a função que sincroniza a animação quando o estado muda
             UpdateAnimationState(currentState);
         }
 
@@ -264,7 +264,7 @@ public class EnemyAI : NetworkBehaviour
     }
 
     // ======================================================================================
-    // MUDANÇA PRINCIPAL: SISTEMA DE ANIMAÇÃO SINCRONIZADA
+    // SISTEMA DE ANIMAÇÃO SINCRONIZADA
     // ======================================================================================
 
     /// <summary>
@@ -323,7 +323,6 @@ public class EnemyAI : NetworkBehaviour
             case "Idle": 
                 // Parado, usa Bool = false
                 animator.SetBool("IsWalking", false);
-                
                 break;
         }
     }
@@ -353,8 +352,11 @@ public class EnemyAI : NetworkBehaviour
             {
                 lastAttackTime = Time.time;
                 
-                // OPCIONAL: Se quiseres forçar a animação de ataque a cada golpe mesmo que o estado não mude:
-                // UpdateAnimationState("Attack"); 
+                // === AQUI ESTÁ A CORREÇÃO ===
+                // Força a animação de ataque a tocar novamente a cada golpe
+                // Mesmo que o estado já seja "Attack"
+                UpdateAnimationState("Attack"); 
+                // ============================
                 
                 StartCoroutine(AttackSequence());
             }
