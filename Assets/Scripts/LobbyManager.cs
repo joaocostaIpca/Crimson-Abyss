@@ -308,7 +308,7 @@ public class LobbyManager : NetworkBehaviour
     {
         ShowPanel(panelWaiting);
         buttonStartGame.gameObject.SetActive(true);
-        textHostIP.text = $"IP da Sala: {GetLocalIPv4()}";
+        textHostIP.text = $"Room IP: {GetLocalIPv4()}";
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         NetworkManager.Singleton.StartHost();
@@ -335,7 +335,7 @@ public class LobbyManager : NetworkBehaviour
         NetworkManager.Singleton.StartClient();
         ShowPanel(panelWaiting);
         buttonStartGame.gameObject.SetActive(false);
-        textHostIP.text = $"A ligar a {ip}...";
+        textHostIP.text = $"Connecting to {ip}...";
     }
 
     public bool TryLockCharacter(int charIndex, ulong clientId)
@@ -364,12 +364,12 @@ public class LobbyManager : NetworkBehaviour
             if (i >= characterLocks.Count) break; 
             if (characterLocks[i] == 99)
             {
-                characterStatusTexts[i].text = "Livre";
+                characterStatusTexts[i].text = "Unpicked";
                 characterStatusTexts[i].color = Color.green;
             }
             else
             {
-                characterStatusTexts[i].text = $"Pego por: Jogador {characterLocks[i]}";
+                characterStatusTexts[i].text = $"Picked by: Player {characterLocks[i]}";
                 characterStatusTexts[i].color = Color.red;
             }
         }
@@ -397,7 +397,7 @@ public class LobbyManager : NetworkBehaviour
     private void OnClientConnected(ulong clientId)
     {
         if (NetworkManager.Singleton.IsServer) UpdateServerPlayerNameList();
-        if (NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost) textHostIP.text = "Ligado! A aguardar que o Host comece...";
+        if (NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost) textHostIP.text = "Connected! Awaiting for the host to start...";
     }
 
     private void OnClientDisconnected(ulong clientId)
@@ -421,7 +421,7 @@ public class LobbyManager : NetworkBehaviour
     
     private void UpdatePlayerListUI()
     {
-        string playerList = "Jogadores Ligados:\n";
+        string playerList = "Connected Players:\n";
         foreach (var name in PlayerNames) playerList += $"- {name}\n";
         textPlayerList.text = playerList;
         if (IsServer) buttonStartGame.interactable = (PlayerNames.Count >= 1 && PlayerNames.Count <= maxPlayers);
@@ -432,7 +432,7 @@ public class LobbyManager : NetworkBehaviour
         PlayerNames.Clear();
         foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
-            string name = "Jogador " + client.ClientId;
+            string name = "Player " + client.ClientId;
             if (client.ClientId == 0) name += " (Host)";
             PlayerNames.Add(name);
         }
