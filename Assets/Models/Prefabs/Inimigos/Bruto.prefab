@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bruto
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 551ddf7d01824544bb13a3870abb98cd, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 551ddf7d01824544bb13a3870abb98cd, type: 3}
       propertyPath: m_Controller
       value: 
@@ -258,8 +262,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5301373170610737025}
   serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 60
+  m_LinearDamping: 5
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
