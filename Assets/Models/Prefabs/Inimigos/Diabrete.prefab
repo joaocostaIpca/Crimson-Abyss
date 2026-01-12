@@ -181,7 +181,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!195 &7540703742058850235
 NavMeshAgent:
@@ -231,6 +231,7 @@ MonoBehaviour:
   flightSpeed: 4
   flightRotateSpeed: 5
   flightArrivalDistance: 0.5
+  showDebugUI: 1
 --- !u!95 &4461392950112729410
 Animator:
   serializedVersion: 7
@@ -240,7 +241,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6759254694569850245}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: e050d3118cddceb48aa1750722f96155, type: 3}
   m_Controller: {fileID: 9100000, guid: 054c3160504b20b48917efa35c422df9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0

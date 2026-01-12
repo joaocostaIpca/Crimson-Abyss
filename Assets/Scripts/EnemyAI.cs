@@ -4,8 +4,6 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
-
-
 [RequireComponent(typeof(TargetMultiplayer))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : NetworkBehaviour
@@ -18,12 +16,12 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] int reactionDelay = 500;
     [SerializeField] float minimumDistance = 30f;
     [SerializeField] private float flightHeight = 0f;
-    [SerializeField] private EnemyType enemyType = EnemyType.Diabrete; 
+    [SerializeField] private EnemyType enemyType = EnemyType.Diabrete;
 
     [Header("Attack Settings")]
     [SerializeField] private float enemyDamage = 10f;
-    [SerializeField] private float attackCooldown = 2f; 
-    [SerializeField] private float attackAnimDelay = 0.5f; 
+    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private float attackAnimDelay = 0.5f;
     private float lastAttackTime = 0f;
 
     [Header("Patrol Settings")]
@@ -36,6 +34,9 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] private float flightRotateSpeed = 5f;
     [SerializeField] private float flightArrivalDistance = 0.5f;
 
+    [Header("Debug")]
+    [SerializeField] private bool showDebugUI = true;
+
     [Header("Components")]
     private NavMeshAgent agent;
     private Rigidbody rb;
@@ -45,7 +46,10 @@ public class EnemyAI : NetworkBehaviour
     // Variáveis de Estado Internas
     private float defaultAgentSpeed;
     private Coroutine reactionCoroutine;
-    private string currentState = "Idle"; 
+    private string currentState = "Idle";
+    
+    // Variável para evitar spam de animações
+    private string currentAnimState = "";
 
     // Memória da IA
     private Transform targetPlayer;
@@ -105,11 +109,11 @@ public class EnemyAI : NetworkBehaviour
             }
             this.enabled = true;
             if (agent != null) agent.enabled = true;
-            
+
             // Inicializa modelo offline
             aiModel = new AIDecisionModel();
             currentContext = new AIContext();
-            
+
             SetPatrolMode(transform.position, patrolRadius);
         }
     }
@@ -117,7 +121,7 @@ public class EnemyAI : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        
+
         if (IsServer)
         {
             // --- INICIALIZAÇÃO DO MODELO ---
@@ -205,11 +209,13 @@ public class EnemyAI : NetworkBehaviour
             // Lógica específica: Se desistir de procurar, volta a patrulhar
             if (nextState == "Patrol" && currentState == "Searching")
             {
-                hasLastKnownPosition = false; 
+                hasLastKnownPosition = false;
                 if (isPatrolling) FindNewPatrolPoint();
             }
 
             currentState = nextState;
+            
+            // AQUI ESTÁ A MUDANÇA: Chama a função que sincroniza a animação
             UpdateAnimationState(currentState);
         }
 
@@ -222,7 +228,7 @@ public class EnemyAI : NetworkBehaviour
     {
         // A. Dados do Alvo
         currentContext.HasTarget = (targetPlayer != null);
-        
+
         if (targetPlayer != null)
         {
             hasLastKnownPosition = true;
@@ -239,7 +245,7 @@ public class EnemyAI : NetworkBehaviour
         currentContext.IsAttackCooldownOver = (Time.time > lastAttackTime + attackCooldown);
         currentContext.AttackRange = agent.stoppingDistance + 0.5f;
 
-        // C. Lógica de "Chegou ao Destino" (Baseada no teu código antigo de Node_Arrived)
+        // C. Lógica de "Chegou ao Destino"
         bool arrived = false;
         if (currentState == "Searching")
         {
@@ -257,17 +263,68 @@ public class EnemyAI : NetworkBehaviour
         currentContext.IsPatrolling = isPatrolling;
     }
 
+    // ======================================================================================
+    // MUDANÇA PRINCIPAL: SISTEMA DE ANIMAÇÃO SINCRONIZADA
+    // ======================================================================================
+
+    /// <summary>
+    /// Chamado pelo Servidor quando o estado muda.
+    /// Toca no servidor e manda para os clientes.
+    /// </summary>
     private void UpdateAnimationState(string state)
+    {
+        // 1. Toca localmente no servidor
+        PlayAnimationLocal(state);
+
+        // 2. Manda para todos os clientes via RPC
+        UpdateAnimationClientRpc(state);
+    }
+
+    [ClientRpc]
+    private void UpdateAnimationClientRpc(string state)
+    {
+        // Se for o Host (Server+Client), já tocou acima, então ignora para não repetir
+        if (IsServer) return; 
+        
+        PlayAnimationLocal(state);
+    }
+
+   /// <summary>
+    /// A lógica real de tocar animação. É chamada tanto no Server como nos Clients.
+    /// </summary>
+    private void PlayAnimationLocal(string state)
     {
         if (animator == null) return;
         
+        currentAnimState = state; // Guarda para o Debug
+
+        // --- RESETAR ESTADOS ANTERIORES ---
+        // Garante que não ficamos com o Bool "preso" se mudarmos para ataque
+        if (state != "Walking" && state != "Searching" && state != "Patrol")
+        {
+            animator.SetBool("IsWalking", false);
+        }
+
         switch (state)
         {
-            case "Attack": animator.SetTrigger("Attack"); break;
-            case "Walking": animator.SetTrigger("Walk"); break; // Perseguir
-            case "Searching": animator.SetTrigger("Walk"); break;
-            case "Patrol": animator.SetTrigger("Walk"); break;
-            case "Idle": animator.SetTrigger("Idle"); break;
+            case "Attack":
+                // Ataque é uma ação única, usa Trigger
+                animator.SetBool("IsWalking", false); // Para de andar para atacar
+                animator.SetTrigger("Attack"); 
+                break;
+
+            case "Walking": 
+            case "Searching": 
+            case "Patrol": 
+                // Estes estados implicam movimento, usa Bool = true
+                animator.SetBool("IsWalking", true); 
+                break;
+
+            case "Idle": 
+                // Parado, usa Bool = false
+                animator.SetBool("IsWalking", false);
+                
+                break;
         }
     }
 
@@ -295,6 +352,10 @@ public class EnemyAI : NetworkBehaviour
             if (Time.time > lastAttackTime + attackCooldown && targetPlayer != null)
             {
                 lastAttackTime = Time.time;
+                
+                // OPCIONAL: Se quiseres forçar a animação de ataque a cada golpe mesmo que o estado não mude:
+                // UpdateAnimationState("Attack"); 
+                
                 StartCoroutine(AttackSequence());
             }
         }
@@ -328,7 +389,7 @@ public class EnemyAI : NetworkBehaviour
             {
                 agent.speed = defaultAgentSpeed * patrolSpeedMultiplier;
                 if (!agent.isOnNavMesh) return;
-                    
+
                 agent.SetDestination(currentPatrolTarget);
 
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
@@ -344,7 +405,7 @@ public class EnemyAI : NetworkBehaviour
         }
     }
 
-    // --- MÉTODOS AUXILIARES DE MOVIMENTO E ATAQUE (Mantidos do Original) ---
+    // --- MÉTODOS AUXILIARES ---
 
     private IEnumerator AttackSequence()
     {
@@ -473,8 +534,34 @@ public class EnemyAI : NetworkBehaviour
         Quaternion desired = Quaternion.LookRotation(dir.normalized);
         transform.rotation = Quaternion.Slerp(transform.rotation, desired, Time.deltaTime * flightRotateSpeed);
     }
-}
 
+    // ======================================================================================
+    // DEBUG VISUAL - SÓ APARECE NO EDITOR/BUILD SE showDebugUI = true
+    // ======================================================================================
+    private void OnGUI()
+    {
+        if (!showDebugUI) return;
+
+        // Converte a posição do inimigo (acima da cabeça) para o ecrã
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2.5f);
+
+        // Se o inimigo estiver atrás da câmara, não desenha
+        if (screenPos.z < 0) return;
+
+        // Inverte o Y porque o GUI tem coordenadas invertidas
+        screenPos.y = Screen.height - screenPos.y;
+
+        // Cria uma caixa simples
+        GUI.Box(new Rect(screenPos.x - 75, screenPos.y, 150, 70), "AI Debug: " + enemyType);
+        
+        GUIStyle style = new GUIStyle();
+        style.normal.textColor = Color.white;
+        style.alignment = TextAnchor.MiddleCenter;
+
+        GUI.Label(new Rect(screenPos.x - 75, screenPos.y + 20, 150, 20), $"State: {currentState}", style);
+        GUI.Label(new Rect(screenPos.x - 75, screenPos.y + 40, 150, 20), $"Anim: {currentAnimState}", style);
+    }
+}
 
 public class AIContext
 {
@@ -494,7 +581,7 @@ public class AIDecisionModel
     {
         // 1. Calcular Utilidade (Score) para cada ação possível
         float scoreAttack = CalculateAttackScore(context);
-        float scoreChase  = CalculateChaseScore(context); // Walking
+        float scoreChase = CalculateChaseScore(context); // Walking
         float scoreSearch = CalculateSearchScore(context);
         float scorePatrol = 0.15f; // Valor base (fallback)
 
@@ -525,7 +612,7 @@ public class AIDecisionModel
             // Se tiver cooldown, é prioridade máxima (1.0), se não, ainda quer atacar mas menos (0.7)
             return ctx.IsAttackCooldownOver ? 1.0f : 0.7f;
         }
-        
+
         return 0f;
     }
 
@@ -547,7 +634,7 @@ public class AIDecisionModel
             // Se ainda não chegou ao ponto de investigação
             if (!ctx.ArrivedAtDestination)
             {
-                return 0.8f; 
+                return 0.8f;
             }
         }
         return 0f;
