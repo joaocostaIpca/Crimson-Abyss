@@ -1,6 +1,7 @@
-using UnityEngine;
-using Unity.Netcode;
 using System.Collections;
+using System.Collections.Generic;
+using Unity.Netcode;
+using UnityEngine;
 
 public class NetworkWeapon : MonoBehaviour
 {
@@ -11,8 +12,28 @@ public class NetworkWeapon : MonoBehaviour
     [Header("Weapon Settings")]
     public float range = 100f;
     public float damage = 20f;
-    public float fireRate = 0.5f;
     public float reloadCooldown = 5f;
+
+    [SerializeField] WeaponFireSettings fireSettings;
+
+    public enum FireMode
+    {
+        Semi,
+        Auto,
+        Burst
+    }
+
+
+    [System.Serializable]
+    public class FireModeSettings
+    {
+        public FireMode mode;
+
+        public float fireRate = 0.1f;      // Semi / Auto
+        public int burstCount = 3;         // Burst only
+        public float burstInterval = 0.08f;// Burst only
+    }
+
 
     [Header("Ammo Settings")]
     public int maxMagAmmo = 30;
@@ -30,8 +51,20 @@ public class NetworkWeapon : MonoBehaviour
     private float nextFireTime = 0f;
     private float nextReloadTime = 0f;
     private Camera cam;
+    bool isBursting;
+
+    [System.Serializable]
+    public class WeaponFireSettings
+    {
+        public List<FireModeSettings> modes;
+        public FireMode currentFireMode;
+
+    }
 
     private PlayerWeaponManager weaponManager;
+
+
+
 
     private void Start()
     {
@@ -49,12 +82,10 @@ public class NetworkWeapon : MonoBehaviour
     {
         if (weaponManager == null || !weaponManager.IsOwner) return;
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (Time.time < nextFireTime) return;
-            nextFireTime = Time.time + fireRate;
-            Shoot();
-        }
+        if (Input.GetKeyDown(KeyCode.B))
+            CycleFireMode();
+
+        HandleFireInput();
 
         if (Input.GetKeyDown(KeyCode.R) && Time.time >= nextReloadTime)
         {
@@ -62,9 +93,91 @@ public class NetworkWeapon : MonoBehaviour
         }
     }
 
+    FireModeSettings CurrentModeSettings =>
+    fireSettings.modes.Find(m => m.mode == fireSettings.currentFireMode);
+
+    void HandleFireInput()
+    {
+        FireModeSettings mode = CurrentModeSettings;
+        if (mode == null) return;
+
+        switch (fireSettings.currentFireMode)
+        {
+            case FireMode.Semi:
+                if (Input.GetButtonDown("Fire1") && Time.time >= nextFireTime)
+                {
+                    nextFireTime = Time.time + mode.fireRate;
+                    Shoot();
+                }
+                break;
+
+            case FireMode.Auto:
+                if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
+                {
+                    nextFireTime = Time.time + mode.fireRate;
+                    Shoot();
+                }
+                break;
+
+            case FireMode.Burst:
+                if (Input.GetButtonDown("Fire1") && !isBursting)
+                    StartCoroutine(BurstFire(mode));
+                break;
+        }
+    }
+
+
+    IEnumerator BurstFire(FireModeSettings mode)
+    {
+        isBursting = true;
+
+        int shotsToFire = Mathf.Min(
+            mode.burstCount,
+            currentAmmo
+        );
+
+        for (int i = 0; i < shotsToFire; i++)
+        {
+            Shoot();
+
+            if (currentAmmo <= 0)
+                break;
+
+            yield return new WaitForSeconds(mode.burstInterval);
+        }
+
+        nextFireTime = Time.time + mode.fireRate; // burst cooldown
+        isBursting = false;
+    }
+
+
+
+    public void CycleFireMode()
+    {
+        if (fireSettings.modes == null || fireSettings.modes.Count == 0)
+            return;
+
+        int currentIndex = fireSettings.modes.FindIndex(
+            m => m.mode == fireSettings.currentFireMode
+        );
+
+        // If current mode not found, fallback to first
+        if (currentIndex < 0)
+        {
+            fireSettings.currentFireMode = fireSettings.modes[0].mode;
+            return;
+        }
+
+        int nextIndex = (currentIndex + 1) % fireSettings.modes.Count;
+        fireSettings.currentFireMode = fireSettings.modes[nextIndex].mode;
+    }
+
+
+
     void Shoot()
     {
         if (cam == null) return;
+        if (currentAmmo <= 0) return;
         Vector3 origin = cam.transform.position;
         Vector3 direction = cam.transform.forward;
         ShotFired(origin, direction, true);

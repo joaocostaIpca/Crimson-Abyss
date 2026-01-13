@@ -80,12 +80,18 @@ MonoBehaviour:
   rightHandGrip: {fileID: 6769623110521147572}
   range: 60
   damage: 5
-  fireRate: 0.05
   reloadCooldown: 5
+  fireSettings:
+    modes:
+    - mode: 1
+      fireRate: 0.05
+      burstCount: 0
+      burstInterval: 0
+    currentFireMode: 1
   maxMagAmmo: 50
   currentAmmo: 50
-  maxAmmo: 150
-  WeaponMaxAmmo: 150
+  maxAmmo: 200
+  WeaponMaxAmmo: 200
   hitEffect: {fileID: 4648549814432341388, guid: 4b339f26999c44a4e8c0f2a54a51d81b, type: 3}
   bulletTrailVFX: {fileID: 2700744275236868420, guid: 532d9b69d4cce6449aff6d08c56fe37b, type: 3}
   trailSpeed: 300
