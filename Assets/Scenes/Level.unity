@@ -5278,6 +5278,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 539055513172042078, guid: 6d13c6e2a05af9e46ac8007e7f5c4bcd, type: 3}
+      propertyPath: interactionText
+      value: 
+      objectReference: {fileID: 1850496313}
     - target: {fileID: 607277425523619063, guid: 6d13c6e2a05af9e46ac8007e7f5c4bcd, type: 3}
       propertyPath: m_Name
       value: ammo_box (3)
@@ -22661,6 +22665,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 539055513172042078, guid: 6d13c6e2a05af9e46ac8007e7f5c4bcd, type: 3}
+      propertyPath: interactionText
+      value: 
+      objectReference: {fileID: 1850496313}
     - target: {fileID: 607277425523619063, guid: 6d13c6e2a05af9e46ac8007e7f5c4bcd, type: 3}
       propertyPath: m_Name
       value: ammo_box (2)
@@ -27778,7 +27786,7 @@ PrefabInstance:
     - target: {fileID: 3433374834497556353, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: dcfb79ec64b089c47a572bfcdd50c016, type: 2}
+      objectReference: {fileID: 2100000, guid: 74c2e33991631f64f95f183110ad2c63, type: 2}
     - target: {fileID: 3472119243571837365, guid: 324096f8fd42b3647b28bcae50c0077c, type: 3}
       propertyPath: m_TagString
       value: Ground
@@ -35676,6 +35684,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 539055513172042078, guid: 6d13c6e2a05af9e46ac8007e7f5c4bcd, type: 3}
+      propertyPath: interactionText
+      value: 
+      objectReference: {fileID: 1850496313}
     - target: {fileID: 607277425523619063, guid: 6d13c6e2a05af9e46ac8007e7f5c4bcd, type: 3}
       propertyPath: m_Name
       value: ammo_box
@@ -35738,6 +35750,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 539055513172042078, guid: 6d13c6e2a05af9e46ac8007e7f5c4bcd, type: 3}
+      propertyPath: interactionText
+      value: 
+      objectReference: {fileID: 1850496313}
     - target: {fileID: 607277425523619063, guid: 6d13c6e2a05af9e46ac8007e7f5c4bcd, type: 3}
       propertyPath: m_Name
       value: ammo_box (1)
