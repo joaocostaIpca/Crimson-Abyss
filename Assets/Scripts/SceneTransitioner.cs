@@ -73,7 +73,7 @@ public class SceneTransitioner : NetworkBehaviour
                     float timeLeft = Mathf.Max(0, holdDuration - currentHoldTimer);
                     
                     if (promptText != null)
-                        promptText.text = $"A Viajar em {timeLeft:F1}s...";
+                        promptText.text = $"Travelling in {timeLeft:F1}s...";
 
                     // --- AQUI ESTÁ A MUDANÇA ---
                     if (currentHoldTimer >= holdDuration)
@@ -85,14 +85,14 @@ public class SceneTransitioner : NetworkBehaviour
                 {
                     currentHoldTimer = 0f;
                     if (promptText != null)
-                        promptText.text = $"Segura [{interactKey}] para Viajar";
+                        promptText.text = $"Hold [{interactKey}] to travel";
                 }
             }
             else
             {
                 currentHoldTimer = 0f;
                 if (promptText != null)
-                    promptText.text = "À espera de outros jogadores...";
+                    promptText.text = "Waiting for the other players...";
             }
         }
     }
@@ -158,9 +158,9 @@ public class SceneTransitioner : NetworkBehaviour
         if (!isLocalPlayerInZone || promptText == null || isTransitioning) return;
 
         if (allPlayersReady.Value)
-            promptText.text = $"Segura [{interactKey}] para Viajar";
+            promptText.text = $"Hold [{interactKey}] to travek´l";
         else
-            promptText.text = "À espera de outros jogadores...";
+            promptText.text = "Waiting for the other Players...";
     }
 
     // --- SERVIDOR ---
