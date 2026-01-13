@@ -15,7 +15,7 @@ public class InterfaceController : MonoBehaviour
     [Header("Configurações")]
     [SerializeField] float minimapUpdateDelay = 50f;
     [SerializeField] float minimapRange = 50f;
-    public string[] characterNames = new string[] { "Freira", "Comandante", "Templario", "Fuzileiro", "Desconhecido" };
+    public string[] characterNames = new string[] { "Nun", "Commander", "Templar", "Marine", "Unknown" };
 
     [Header("Minimap Icons")]
     // You can drag these in the Inspector or rely on Resources.Load
