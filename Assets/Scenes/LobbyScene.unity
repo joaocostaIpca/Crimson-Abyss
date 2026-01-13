@@ -421,7 +421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a0a5e8a28ef0a7449424ac40b123918, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 392f3c53edf62d34db6e378bfa75ff0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a0a5e8a28ef0a7449424ac40b123918, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 392f3c53edf62d34db6e378bfa75ff0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2265,6 +2265,8 @@ GameObject:
   - component: {fileID: 792239209}
   - component: {fileID: 792239208}
   - component: {fileID: 792239207}
+  - component: {fileID: 792239210}
+  - component: {fileID: 792239211}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -2358,6 +2360,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &792239210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792239206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1366f0528d88a448a6f8535e3d477d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DontDestroy
+--- !u!114 &792239211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792239206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc6c2bb6143423843bcf35a979370bee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelManager
+  spawnPointName: SpawnPoint
 --- !u!1 &851971466
 GameObject:
   m_ObjectHideFlags: 0
@@ -4388,7 +4415,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a0a5e8a28ef0a7449424ac40b123918, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 392f3c53edf62d34db6e378bfa75ff0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
