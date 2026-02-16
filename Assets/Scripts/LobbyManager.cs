@@ -309,6 +309,14 @@ public class LobbyManager : NetworkBehaviour
         ShowPanel(panelWaiting);
         buttonStartGame.gameObject.SetActive(true);
         textHostIP.text = $"Room IP: {GetLocalIPv4()}";
+
+        if (NetworkManager.Singleton == null)
+        {
+            Debug.LogError("[LobbyManager] NetworkManager not found, cannot start host.");
+            textHostIP.text = "Network not available.";
+            return;
+        }
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         NetworkManager.Singleton.StartHost();
@@ -328,7 +336,22 @@ public class LobbyManager : NetworkBehaviour
     {
         string ip = inputIP.text;
         if (string.IsNullOrEmpty(ip)) ip = "127.0.0.1";
+
+        if (NetworkManager.Singleton == null)
+        {
+            Debug.LogError("[LobbyManager] NetworkManager not found, cannot join host.");
+            textHostIP.text = "Network not available.";
+            return;
+        }
+
         var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        if (transport == null)
+        {
+            Debug.LogError("[LobbyManager] UnityTransport component missing, cannot join.");
+            textHostIP.text = "Transport missing.";
+            return;
+        }
+
         transport.SetConnectionData(ip, transport.ConnectionData.Port);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -341,6 +364,7 @@ public class LobbyManager : NetworkBehaviour
     public bool TryLockCharacter(int charIndex, ulong clientId)
     {
         if (!NetworkManager.Singleton.IsServer) return false;
+        if (charIndex < 0 || charIndex >= characterLocks.Count) return false;
         if (characterLocks[charIndex] != 99) return false; 
         for (int i = 0; i < characterLocks.Count; i++)
         {
@@ -389,7 +413,8 @@ public class LobbyManager : NetworkBehaviour
 
     private void ConnectionApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        if (NetworkManager.Singleton.ConnectedClients.Count >= maxPlayers) response.Approved = false;
+        int limit = Mathf.Min(maxPlayers, characterLocks.Count > 0 ? characterLocks.Count : maxPlayers);
+        if (NetworkManager.Singleton.ConnectedClients.Count >= limit) response.Approved = false;
         else { response.Approved = true; response.CreatePlayerObject = true; }
         response.Pending = false;
     }
@@ -454,6 +479,11 @@ public class LobbyManager : NetworkBehaviour
         {
             NetworkManager.Singleton.Shutdown();
             Destroy(NetworkManager.Singleton.gameObject);
+        }
+        if (persistentAudioListener != null)
+        {
+            Destroy(persistentAudioListener);
+            persistentAudioListener = null;
         }
         
         if (InterfaceController.Instance != null) Destroy(InterfaceController.Instance.gameObject);
