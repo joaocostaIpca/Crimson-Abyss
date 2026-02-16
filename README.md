@@ -9,6 +9,12 @@ A história segue um esquadrão de soldados que cai no inferno e lutam o seu cam
 
 Este projeto implementa uma arquitetura de IA moderna e modular, desenhada para ambientes Multiplayer. O sistema abandona os if/else tradicionais em favor de uma abordagem baseada em Utility AI (IA Baseada em Utilidade) combinada com uma Máquina de Estados (FSM).
 
+## Organização do Projeto
+- `Assets/Scenes`: cenas principais (MainMenu, LobbyScene, Level/SubLevel e finais de demo).
+- `Assets/Scripts`: lógica de jogo e UI (PlayerController, EnemyAI, sistemas de armas, menus e gestores de nível).
+- `Assets/Audio`, `Assets/Materials`, `Assets/Models`, `Assets/shaders`: conteúdos artísticos e efeitos.
+- `Packages` e `ProjectSettings`: configuração Unity e dependências do projeto.
+
 <h2> 1. O Cérebro: Modelo de Utilidade (Utility AI) </h2>
 Em vez de seguir uma árvore fixa, o inimigo "pensa" em termos de utilidade. A cada frame, o sistema avalia o contexto do jogo e atribui uma pontuação (Score) a cada ação possível. A ação com a pontuação mais alta é a escolhida.
 
