@@ -85,6 +85,8 @@ public class PlayerLobbyShell : NetworkBehaviour
     [ServerRpc]
     public void RequestCharacterLockServerRpc(int charIndex)
     {
+        if (LobbyManager.Instance == null) return;
+        if (charIndex < 0 || charIndex >= LobbyManager.Instance.characterLocks.Count) return;
         bool success = LobbyManager.Instance.TryLockCharacter(charIndex, OwnerClientId);
 
         if (success)
